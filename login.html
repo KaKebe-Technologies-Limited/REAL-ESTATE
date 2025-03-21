@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Rental Company</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <img src="img/logo.jpg" alt="Company Logo">
+            </div>
+            <ul class="nav nav-tabs" id="loginTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#adminLogin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#ownerLogin">Owner</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#managerLogin">Manager</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="adminLogin">
+                    <form class="login-form">
+                        <h2>Admin Login</h2>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="ownerLogin">
+                    <form class="login-form">
+                        <h2>Owner Login</h2>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="managerLogin">
+                    <form class="login-form">
+                        <h2>Manager Login</h2>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+            <a href="landing.html" class="back-home">← Back to Home</a>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

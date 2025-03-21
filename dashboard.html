@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Rental Company</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <button class="btn btn-light" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand ms-3" href="#">Dashboard</a>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">New Message</a></li>
+                            <li><a class="dropdown-item" href="#">Property Update</a></li>
+                            <li><a class="dropdown-item" href="#">System Alert</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">English</a></li>
+                            <li><a class="dropdown-item" href="#">Spanish</a></li>
+                            <li><a class="dropdown-item" href="#">French</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="img/profile.jpg" alt="Profile" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="img/logo.jpg" alt="Logo" class="logo">
+        </div>
+        <ul class="sidebar-nav">
+            <li class="nav-item active">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                    <i class="fas fa-building"></i>
+                    <span>Properties</span>
+                    <i class="fas fa-chevron-down submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#" class="submenu-link">
+                            <i class="fas fa-key"></i>
+                            <span>Rentals</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="submenu-link">
+                            <i class="fas fa-home"></i>
+                            <span>Sales</span>
+                        </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add Property</span>
+                            <i class="fas fa-chevron-right property-submenu-arrow"></i>
+                        </a>
+                        <ul class="property-submenu">
+                            <li>
+                                <a href="#" class="submenu-link">
+                                    <i class="fas fa-key"></i>
+                                    <span>Add Rental</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="submenu-link">
+                                    <i class="fas fa-home"></i>
+                                    <span>Add Sale</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Manage Owners</span>
+                    <i class="fas fa-chevron-down submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#" class="submenu-link">
+                            <i class="fas fa-list"></i>
+                            <span>Owner List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="submenu-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Owner</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Manage Managers</span>
+                    <i class="fas fa-chevron-down submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#" class="submenu-link">
+                            <i class="fas fa-list"></i>
+                            <span>All Managers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="submenu-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Manager</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Dashboard Content -->
+        <div id="dashboard-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="page-title">Dashboard Overview</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon bg-primary">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Total Owners</h3>
+                                    <p class="summary-number">128</p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> 12% from last month
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon bg-success">
+                                    <i class="fas fa-user-cog"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Total Managers</h3>
+                                    <p class="summary-number">45</p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> 8% from last month
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Property Statistics -->
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Property Statistics</h3>
+                                <div class="card-actions">
+                                    <select class="form-select form-select-sm">
+                                        <option>Last 7 days</option>
+                                        <option>Last 30 days</option>
+                                        <option>Last 90 days</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <canvas id="propertyChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Property Distribution</h3>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <canvas id="distributionChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities & Quick Actions -->
+                <div class="row mt-4">
+                    <div class="col-xl-8">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Recent Activities</h3>
+                                <button class="btn btn-sm btn-light">View All</button>
+                            </div>
+                            <div class="dashboard-card-body p-0">
+                                <div class="activity-list">
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-soft-primary">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>New Property Added</h4>
+                                            <p>3 bedroom house in Wakiso</p>
+                                            <span class="activity-time">2 hours ago</span>
+                                        </div>
+                                        <div class="activity-status">
+                                            <span class="badge bg-success">New</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-soft-warning">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>New Owner Registered</h4>
+                                            <p>John Doe</p>
+                                            <span class="activity-time">5 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-soft-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>Property Verified</h4>
+                                            <p>2 bedroom apartment in Kira</p>
+                                            <span class="activity-time">1 day ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Quick Actions</h3>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <div class="quick-actions">
+                                    <a href="#" class="quick-action-btn">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Property</span>
+                                    </a>
+                                    <a href="#" class="quick-action-btn">
+                                        <i class="fas fa-user-plus"></i>
+                                        <span>Add Owner</span>
+                                    </a>
+                                    <a href="#" class="quick-action-btn">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Generate Report</span>
+                                    </a>
+                                    <a href="#" class="quick-action-btn">
+                                        <i class="fas fa-cog"></i>
+                                        <span>Settings</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Content -->
+        <div id="settings-content" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="page-title">Dashboard Settings</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>General Settings</h3>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <form class="settings-form" onsubmit="saveSettings(event)">
+                                    <div class="mb-4">
+                                        <h5 class="settings-section-title">Site Information</h5>
+                                        <div class="mb-3">
+                                            <label class="form-label">Site Name</label>
+                                            <input type="text" class="form-control" value="Rental Company">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Site Description</label>
+                                            <textarea class="form-control" rows="3">Your trusted real estate partner</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h5 class="settings-section-title">Email Settings</h5>
+                                        <div class="mb-3">
+                                            <label class="form-label">Contact Email</label>
+                                            <input type="email" class="form-control" value="contact@example.com">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Email Notifications</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" checked>
+                                                <label class="form-check-label">New Property Alerts</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" checked>
+                                                <label class="form-check-label">Owner Registration</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h5 class="settings-section-title">System Settings</h5>
+                                        <div class="mb-3">
+                                            <label class="form-label">Default Language</label>
+                                            <select class="form-select">
+                                                <option selected>English</option>
+                                                <option>Spanish</option>
+                                                <option>French</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Time Zone</label>
+                                            <select class="form-select">
+                                                <option selected>UTC+03:00 East Africa Time</option>
+                                                <option>UTC+00:00 GMT</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h5 class="settings-section-title">Theme Settings</h5>
+                                        <div class="mb-3">
+                                            <label class="form-label">Theme Mode</label>
+                                            <div class="theme-options">
+                                                <div class="theme-option" onclick="setTheme('light')" id="light-theme">
+                                                    <i class="fas fa-sun"></i>
+                                                    <span>Light</span>
+                                                </div>
+                                                <div class="theme-option" onclick="setTheme('dark')" id="dark-theme">
+                                                    <i class="fas fa-moon"></i>
+                                                    <span>Dark</span>
+                                                </div>
+                                                <div class="theme-option" onclick="setTheme('blue')" id="blue-theme">
+                                                    <i class="fas fa-palette"></i>
+                                                    <span>Blue</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Quick Settings</h3>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <div class="settings-shortcuts">
+                                    <a href="#" class="settings-shortcut-btn">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Security Settings</span>
+                                    </a>
+                                    <a href="#" class="settings-shortcut-btn">
+                                        <i class="fas fa-bell"></i>
+                                        <span>Notification Settings</span>
+                                    </a>
+                                    <a href="#" class="settings-shortcut-btn">
+                                        <i class="fas fa-database"></i>
+                                        <span>Backup Settings</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Toggle sidebar
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main-content').classList.toggle('expanded');
+        });
+
+        // Add submenu toggle function
+        function toggleSubmenu(el) {
+            const parent = el.parentElement;
+            parent.classList.toggle('open');
+        }
+
+        // Initialize Charts
+        const propertyChart = new Chart(document.getElementById('propertyChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Properties Listed',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: '#007bff',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        const distributionChart = new Chart(document.getElementById('distributionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['For Sale', 'For Rent', 'Sold', 'Rented'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        function showSettings() {
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('settings-content').style.display = 'block';
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelector('.nav-link i.fa-cog').parentElement.parentElement.classList.add('active');
+        }
+
+        // Add to existing sidebar toggle handler
+        document.querySelector('.nav-link i.fa-tachometer-alt').parentElement.addEventListener('click', function() {
+            document.getElementById('settings-content').style.display = 'none';
+            document.getElementById('dashboard-content').style.display = 'block';
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            this.parentElement.classList.add('active');
+        });
+
+        let tempTheme = '';
+
+        // Theme switching functionality
+        function setTheme(theme, isPermanent = false) {
+            document.body.className = ''; // Remove existing theme classes
+            document.body.classList.add(`theme-${theme}`);
+            
+            if (isPermanent) {
+                localStorage.setItem('preferred-theme', theme);
+            } else {
+                tempTheme = theme;
+            }
+            
+            // Update active state of theme options
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.getElementById(`${theme}-theme`).classList.add('active');
+        }
+
+        // Save settings including theme
+        function saveSettings(event) {
+            event.preventDefault();
+            
+            // Make the temporary theme permanent if one was selected
+            if (tempTheme) {
+                setTheme(tempTheme, true);
+            }
+            
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                <strong>Success!</strong> Settings have been saved. Theme: ${tempTheme || localStorage.getItem('preferred-theme') || 'light'}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insert alert at the top of settings form
+            const form = document.querySelector('.settings-form');
+            form.insertBefore(alertDiv, form.firstChild);
+            
+            // Auto dismiss after 3 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Restore saved theme when leaving settings without saving
+        document.querySelector('.nav-link i.fa-tachometer-alt').parentElement.addEventListener('click', function() {
+            const savedTheme = localStorage.getItem('preferred-theme') || 'light';
+            setTheme(savedTheme, true);
+            tempTheme = ''; // Reset temporary theme
+            // ...rest of existing dashboard click handler code...
+        });
+
+        // Set initial theme from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('preferred-theme') || 'light';
+            setTheme(savedTheme, true);
+        });
+
+        function togglePropertySubmenu(el) {
+            const parent = el.parentElement;
+            parent.classList.toggle('open');
+            // Stop event propagation
+            event.stopPropagation();
+        }
+    </script>
+</body>
+</html>

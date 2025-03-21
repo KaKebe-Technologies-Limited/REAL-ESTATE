@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentals</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="img/logo.jpg" alt="Company Logo">
+        </div>
+        <div class="company-name">
+            Rental Company
+        </div>
+        <div class="login">
+            <a href="login.html" class="login-btn"><i class="bi bi-person"></i> Login</a>
+        </div>
+    </header>
+    <section class="hero-section">
+        <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="img/property1.jpg" alt="Property 1">
+                    <div class="carousel-caption">
+                        <h1>Find Your Dream Home</h1>
+                        <p>Discover the perfect property for your lifestyle</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="img/property2.jpg" alt="Property 2">
+                    <div class="carousel-caption">
+                        <h1>Premium Properties</h1>
+                        <p>Exclusive listings in prime locations</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="img/property3.jpg" alt="Property 3">
+                    <div class="carousel-caption">
+                        <h1>Expert Real Estate Agents</h1>
+                        <p>Professional guidance every step of the way</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="category-buttons">
+            <li class="category-btn active" data-filter="all">All</li>
+            <li class="category-btn" data-filter="rent">Rent</li>
+            <li class="category-btn" data-filter="sale">Sale</li>
+        </ul>
+    </section>
+    <section id="content-section" class="content-section">
+        <div class="property-grid">
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="200">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="300">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="rent" data-aos="fade-up" data-aos-delay="400">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Rent</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="rent" data-aos="fade-up" data-aos-delay="500">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Rent</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="rent" data-aos="fade-up" data-aos-delay="600">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Rent</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="property_listing property_card_default" data-category="sale" data-aos="fade-up" data-aos-delay="100">
+                <div class="listing-unit-img-wrapper">
+                    <div class="prop_new_details">
+                        <div class="prop_new_details_back"></div>
+                        <div class="property_media">
+                            <i class="fas fa-camera"></i> 6
+                        </div>
+                        <div class="property_location_image">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <a href="'" rel="tag">Kira</a>, 
+                            <a href="#" rel="tag">Wakiso</a>, 
+                            <a href="#" rel="tag">Wakiso</a>
+                        </div>
+                        <div class="featured_gradient"></div>
+                    </div>
+                    <a href="#" target="_self">
+                        <img fetchpriority="high" decoding="async" width="525" height="328" src="img/property1.jpg" class="lazyload img-responsive wp-post-image image" alt="">
+                    </a>
+                    <div class="tag-wrapper">
+                        <div class="featured_div">Featured</div>
+                        <div class="status-wrapper">
+                            <div class="action_tag_wrapper Sales">Sales</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="property-unit-information-wrapper">
+                    <h4>
+                        <a href="#" style="text-decoration: none; color: #222222;">
+                            Gorgeous new house in kira
+                        </a>
+                    </h4>
+                    <div class="listing_unit_price_wrapper"  style="text-decoration: none; color: #222222;">
+                        Ugx 411,000,000 <span class="price_label"></span>
+                    </div>
+                    <div class="listing_details the_grid_view">
+                        4bed, 4bath house in kira for sale
+                    </div>
+                    <div class="property_listing_details">
+                        <span class="inforoom">
+                            <i class="fa fa-bed" style="width: 25px;"></i>
+                            4
+                        </span>
+                        <span class="infobath">
+                            <i class="fa fa-bath" style="width: 25px;"></i>
+                            5
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section" data-aos="fade-right">
+                <h3>Contact Info</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> Kira, Wakiso, Uganda</li>
+                    <li><i class="fas fa-phone"></i> +256 700 000000</li>
+                    <li><i class="fas fa-envelope"></i> info@rental.com</li>
+                </ul>
+            </div>
+            <div class="footer-section" data-aos="fade-up">
+                <h3>About Us</h3>
+                <p>Your trusted partner in finding the perfect property. We specialize in both sales and rentals across premium locations.</p>
+            </div>
+            <div class="footer-section" data-aos="fade-left">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Rental Company. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Add before closing body tag -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+
+        // Remove the toggleDropdown function and dropdown click handler
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        let currentSlide = 0;
+        const items = document.querySelectorAll('.carousel-item');
+        
+        function nextSlide() {
+            items[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % items.length;
+            items[currentSlide].classList.add('active');
+        }
+
+        // Start with first slide active
+        items[0].classList.add('active');
+
+        // Auto advance slides every 5 seconds
+        setInterval(nextSlide, 5000);
+
+        // Updated Property filtering with smooth scroll
+        const filterButtons = document.querySelectorAll('.category-btn');
+        const propertyCards = document.querySelectorAll('.property_listing');
+        const contentSection = document.getElementById('content-section');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+
+                propertyCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        card.style.opacity = '1';
+                    } else {
+                        card.style.display = 'none';
+                        card.style.opacity = '0';
+                    }
+                });
+
+                // Smooth scroll to content section
+                contentSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+
+        backToTopButton.onclick = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+    </script>
+</body>
+</html>
