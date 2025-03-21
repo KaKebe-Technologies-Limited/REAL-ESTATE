@@ -11,6 +11,14 @@
     --text-color: #333;
     --card-bg: white;
     --border-color: #eee;
+    --form-bg: #ffffff;
+    --form-text: #333333;
+    --form-border: #e0e0e0;
+    --form-focus: #4b49ac;
+    --form-label: #1f1f1f;
+    --btn-primary: #4b49ac;
+    --btn-primary-hover: #3f3e91;
+    --card-hover: rgba(0, 0, 0, 0.02);
 }
 
 /* Dark Theme */
@@ -23,6 +31,14 @@
     --bg-light: #363636;
     --navbar-bg: #2d2d2d;
     --sidebar-bg: #2d2d2d;
+    --form-bg: #2d2d2d;
+    --form-text: #ffffff;
+    --form-border: #404040;
+    --form-focus: #6c63ff;
+    --form-label: #e0e0e0;
+    --btn-primary: #6c63ff;
+    --btn-primary-hover: #5952d4;
+    --card-hover: rgba(255, 255, 255, 0.05);
 }
 
 /* Blue Theme */
@@ -35,6 +51,14 @@
     --bg-light: #2a558c;
     --navbar-bg: #254b7a;
     --sidebar-bg: #254b7a;
+    --form-bg: #1e3a5f;
+    --form-text: #ffffff;
+    --form-border: #315c94;
+    --form-focus: #64b5f6;
+    --form-label: #a8c6e8;
+    --btn-primary: #64b5f6;
+    --btn-primary-hover: #42a5f5;
+    --card-hover: rgba(255, 255, 255, 0.05);
 }
 
 body {
@@ -598,22 +622,151 @@ body {
     color: var(--text-color);
 }
 
+/* Form Styling */
+.form-sample .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-sample .form-control,
+.form-sample select.form-control,
+.form-sample textarea.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--form-bg);
+    border: 1px solid var(--form-border);
+    color: var(--form-text);
+    transition: all 0.3s ease;
+}
+
+.form-sample .form-control:focus,
+.form-sample select.form-control:focus,
+.form-sample textarea.form-control:focus {
+    border-color: var(--form-focus);
+    box-shadow: 0 0 0 0.2rem rgba(75, 73, 172, 0.25);
+    background-color: var(--form-bg);
+    color: var(--form-text);
+}
+
+.form-sample .col-form-label {
+    color: var(--form-text);
+    font-weight: 500;
+    padding-top: 0.9rem;
+}
+
+.form-sample select.form-control {
+    background-color: var(--form-bg);
+    color: var(--form-text);
+    border-color: var(--form-border);
+}
+
+.form-sample select.form-control option {
+    background-color: var(--form-bg);
+    color: var (--form-text);
+}
+
+.card-title {
+    color: var(--form-text);
+}
+
+/* Update the form submit button styles */
+.form-sample .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.form-sample .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.form-sample .btn-light {
+    background-color: var(--form-bg);
+    border-color: var(--form-border);
+    color: var(--form-text);
+}
+
+.form-sample .btn-light:hover {
+    background-color: var(--form-border);
+    border-color: var(--form-border);
+    color: var(--form-text);
+}
+
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    background-color: var(--form-bg);
+    color: var(--form-text);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    background-color: var(--card-hover);
+}
+
+.card-body {
+    padding: 2rem;
+    background-color: var(--form-bg);
+    color: var(--form-text);
+}
+
+/* Add spacing between form sections */
+.form-sample .row + .row {
+    margin-top: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .form-sample .row {
+        margin-bottom: 1rem;
+    }
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
+        width: 280px !important;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 1021;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s ease;
     }
 
     .sidebar.collapsed {
         transform: translateX(0);
-        width: var(--sidebar-width);
+        width: 280px !important;
     }
 
     .main-content {
         margin-left: 0;
+        width: 100%;
     }
 
     .main-content.expanded {
         margin-left: 0;
+    }
+
+    .sidebar .nav-link {
+        padding: 1rem 1.5rem;
+    }
+
+    .submenu-link {
+        padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+    }
+
+    .property-submenu .submenu-link {
+        padding-left: 4.5rem;
+    }
+
+    /* Improve touch targets */
+    .sidebar-nav .nav-link,
+    .submenu-link {
+        min-height: 44px;
     }
 }

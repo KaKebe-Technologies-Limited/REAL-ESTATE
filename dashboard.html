@@ -6,7 +6,7 @@
     <title>Dashboard - Rental Company</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -47,7 +47,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="img/profile.jpg" alt="Profile" class="rounded-circle">
+                            <img src="assets/images/profile.jpg" alt="Profile" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -64,7 +64,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <img src="img/logo.jpg" alt="Logo" class="logo">
+            <img src="assets/images/logo.jpg" alt="Logo" class="logo">
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item active">
@@ -81,13 +81,13 @@
                 </a>
                 <ul class="submenu">
                     <li>
-                        <a href="#" class="submenu-link">
+                        <a href="#" class="submenu-link" data-form="add-rental" onclick="showAddRental()">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="submenu-link">
+                        <a href="#" class="submenu-link" data-form="add-sale" onclick="showAddSale()">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                         </a>
@@ -100,13 +100,13 @@
                         </a>
                         <ul class="property-submenu">
                             <li>
-                                <a href="#" class="submenu-link">
+                                <a href="#" class="submenu-link" data-form="add-rental" onclick="showAddRental()">
                                     <i class="fas fa-key"></i>
                                     <span>Add Rental</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="submenu-link">
+                                <a href="#" class="submenu-link" data-form="add-sale" onclick="showAddSale()">
                                     <i class="fas fa-home"></i>
                                     <span>Add Sale</span>
                                 </a>
@@ -129,7 +129,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="submenu-link">
+                        <a href="#" class="submenu-link" data-form="create-owner" onclick="showCreateOwner()">
                             <i class="fas fa-user-plus"></i>
                             <span>Create Owner</span>
                         </a>
@@ -150,7 +150,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="submenu-link">
+                        <a href="#" class="submenu-link" data-form="create-manager" onclick="showCreateManager()">
                             <i class="fas fa-user-plus"></i>
                             <span>Create Manager</span>
                         </a>
@@ -182,7 +182,7 @@
                         <h1 class="page-title">Dashboard Overview</h1>
                     </div>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row" style="justify-content: space-between;">
                     <div class="col-md-6 col-xl-4">
                         <div class="summary-card">
                             <div class="summary-content">
@@ -453,140 +453,355 @@
                 </div>
             </div>
         </div>
+
+        <!-- Add before closing main-content div -->
+        <div id="create-manager-form" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Create Manager</h4>
+                                <form class="form-sample">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">First Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Last Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Email</label>
+                                                <div class="col-sm-9">
+                                                    <input type="email" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Phone</label>
+                                                <div class="col-sm-9">
+                                                    <input type="tel" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
+                                        <button class="btn btn-light">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Owner Form -->
+        <div id="create-owner-form" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Create Property Owner</h4>
+                                <form class="form-sample">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">First Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Last Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Email</label>
+                                                <div class="col-sm-9">
+                                                    <input type="email" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Phone</label>
+                                                <div class="col-sm-9">
+                                                    <input type="tel" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">ID Number</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">ID Type</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" required>
+                                                        <option>National ID</option>
+                                                        <option>Passport</option>
+                                                        <option>Driver's License</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Address</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
+                                        <button type="button" class="btn btn-light">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Sale Property Form -->
+        <div id="add-sale-form" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Add Property for Sale</h4>
+                                <form class="form-sample">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Price</label>
+                                                <div class="col-sm-9">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Bedrooms</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Bathrooms</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Area (sq ft)</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Address</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Images</label>
+                                                <div class="col-sm-10">
+                                                    <input type="file" class="form-control" multiple required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
+                                        <button type="button" class="btn btn-light">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Rental Property Form -->
+        <div id="add-rental-form" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Add Rental Property</h4>
+                                <form class="form-sample">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Monthly Rent</label>
+                                                <div class="col-sm-9">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Bedrooms</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Bathrooms</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Area (sq ft)</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Address</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Available From</label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Images</label>
+                                                <div class="col-sm-9">
+                                                    <input type="file" class="form-control" multiple required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
+                                        <button type="button" class="btn btn-light">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Toggle sidebar
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-            document.getElementById('main-content').classList.toggle('expanded');
-        });
-
-        // Add submenu toggle function
-        function toggleSubmenu(el) {
-            const parent = el.parentElement;
-            parent.classList.toggle('open');
-        }
-
-        // Initialize Charts
-        const propertyChart = new Chart(document.getElementById('propertyChart'), {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Properties Listed',
-                    data: [65, 59, 80, 81, 56, 55],
-                    borderColor: '#007bff',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        const distributionChart = new Chart(document.getElementById('distributionChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['For Sale', 'For Rent', 'Sold', 'Rented'],
-                datasets: [{
-                    data: [45, 25, 20, 10],
-                    backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        function showSettings() {
-            document.getElementById('dashboard-content').style.display = 'none';
-            document.getElementById('settings-content').style.display = 'block';
-            // Update active state
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.querySelector('.nav-link i.fa-cog').parentElement.parentElement.classList.add('active');
-        }
-
-        // Add to existing sidebar toggle handler
-        document.querySelector('.nav-link i.fa-tachometer-alt').parentElement.addEventListener('click', function() {
-            document.getElementById('settings-content').style.display = 'none';
-            document.getElementById('dashboard-content').style.display = 'block';
-            // Update active state
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            this.parentElement.classList.add('active');
-        });
-
-        let tempTheme = '';
-
-        // Theme switching functionality
-        function setTheme(theme, isPermanent = false) {
-            document.body.className = ''; // Remove existing theme classes
-            document.body.classList.add(`theme-${theme}`);
-            
-            if (isPermanent) {
-                localStorage.setItem('preferred-theme', theme);
-            } else {
-                tempTheme = theme;
-            }
-            
-            // Update active state of theme options
-            document.querySelectorAll('.theme-option').forEach(option => {
-                option.classList.remove('active');
-            });
-            document.getElementById(`${theme}-theme`).classList.add('active');
-        }
-
-        // Save settings including theme
-        function saveSettings(event) {
-            event.preventDefault();
-            
-            // Make the temporary theme permanent if one was selected
-            if (tempTheme) {
-                setTheme(tempTheme, true);
-            }
-            
-            // Show success message
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-success alert-dismissible fade show';
-            alertDiv.innerHTML = `
-                <strong>Success!</strong> Settings have been saved. Theme: ${tempTheme || localStorage.getItem('preferred-theme') || 'light'}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            
-            // Insert alert at the top of settings form
-            const form = document.querySelector('.settings-form');
-            form.insertBefore(alertDiv, form.firstChild);
-            
-            // Auto dismiss after 3 seconds
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 3000);
-        }
-
-        // Restore saved theme when leaving settings without saving
-        document.querySelector('.nav-link i.fa-tachometer-alt').parentElement.addEventListener('click', function() {
-            const savedTheme = localStorage.getItem('preferred-theme') || 'light';
-            setTheme(savedTheme, true);
-            tempTheme = ''; // Reset temporary theme
-            // ...rest of existing dashboard click handler code...
-        });
-
-        // Set initial theme from localStorage
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('preferred-theme') || 'light';
-            setTheme(savedTheme, true);
-        });
-
-        function togglePropertySubmenu(el) {
-            const parent = el.parentElement;
-            parent.classList.toggle('open');
-            // Stop event propagation
-            event.stopPropagation();
-        }
-    </script>
+    <script src="assets/js/dashboard.js"></script>
 </body>
 </html>
