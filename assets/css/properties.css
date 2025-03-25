@@ -2,7 +2,7 @@
     position: fixed;
     width: 100%;
     z-index: 1000;
-    background: transparent;
+    background: white;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     top: 0;
     left: 0;
@@ -84,7 +84,7 @@
 
 /* Main Header Styles */
 .header_wrapper {
-    background: transparent;
+    background: white;
     padding: 15px 0;
     transition: all 0.3s ease;
 }
@@ -97,7 +97,8 @@
 
 /* Update menu link colors for better visibility */
 .header_wrapper .menu a {
-    color: white;
+    color: #333 !important;
+    font-weight: 500;
 }
 
 .header_wrapper.scrolled .menu a {
@@ -106,13 +107,17 @@
 
 /* Update buttons for better visibility */
 .header_wrapper .login-btn {
-    border-color: white;
-    color: white;
+    border-color: #007bff;
+    color: #007bff !important;
 }
 
 .header_wrapper.scrolled .login-btn {
     border-color: #007bff;
     color: #007bff;
+}
+
+.header_wrapper .login-btn i {
+    color: #007bff !important;
 }
 
 .header_wrapper_inside {
@@ -141,7 +146,7 @@
 }
 
 .main_menu .menu a {
-    color: white !important; /* Override default color */
+    color: #333 !important;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
@@ -217,7 +222,7 @@
     display: none;
     background: transparent;
     border: none;
-    color: #333;
+    color: #333 !important;
     font-size: 24px;
     cursor: pointer;
     padding: 5px;
@@ -298,6 +303,7 @@
 
     .header_wrapper {
         height: 60px;
+        background: white;
     }
 
     .main_menu, 
@@ -307,6 +313,7 @@
 
     .mobile-menu-button {
         display: block;
+        color: #333 !important;
     }
 
     .header_wrapper_inside {
@@ -356,6 +363,7 @@
         font-weight: 500;
         border-bottom: 1px solid #eee;
         transition: color 0.3s ease;
+        color: #333 !important;
     }
 
     .mobile-menu-wrapper .menu a:hover {
@@ -704,13 +712,6 @@
     border-radius: 8px;
     background: #fff;
     height: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s ease;
-}
-
-.dropdown.form-control:hover {
-    border-color: #b0b0b0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
 }
 
 /* Scrollbar Styles for Dropdown Menus */
@@ -1062,3 +1063,143 @@
         font-size: 18px;
     }
 }
+
+.footer {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 4rem 2rem 1rem;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 3rem;
+    padding: 0 2rem;
+}
+
+.footer-section h3 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 50px;
+    height: 2px;
+    background-color: #007bff;
+}
+
+.footer-section p {
+    color: #999;
+    line-height: 1.6;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+    color: #999;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #007bff;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #666;
+}
+
+.footer-content .footer-section:nth-child(2) {
+    text-align: center;
+}
+
+.footer-content .footer-section:nth-child(2) h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media screen and (max-width: 768px) {
+    .footer {
+        padding: 3rem 1rem 1rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
+    
+    .footer-content .footer-section:nth-child(2) {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    }
+
+    @media screen and (max-width: 480px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+    
+        .contact-info li {
+            justify-content: center;
+        }
+    
+        .social-links {
+            justify-content: center;
+        }
+    }
+
+    .contact-info li {
+        color: #999;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-links a {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        background-color: #007bff;
+        transform: translateY(-3px);
+    }
