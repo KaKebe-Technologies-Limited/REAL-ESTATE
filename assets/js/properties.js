@@ -118,3 +118,30 @@ backToTopButton.onclick = function() {
         behavior: 'smooth'
     });
 };
+
+// Add mobile header scroll behavior
+let lastScroll = 0;
+const header = document.querySelector('.master_header');
+
+window.addEventListener('scroll', () => {
+    if (window.innerWidth <= 768) {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll <= 0) {
+            header.classList.remove('nav-up');
+            header.classList.add('nav-down');
+            return;
+        }
+        
+        if (currentScroll > lastScroll && currentScroll > 60) {
+            // Scrolling down & past header height
+            header.classList.remove('nav-down');
+            header.classList.add('nav-up');
+        } else {
+            // Scrolling up
+            header.classList.remove('nav-up');
+            header.classList.add('nav-down');
+        }
+        lastScroll = currentScroll;
+    }
+});

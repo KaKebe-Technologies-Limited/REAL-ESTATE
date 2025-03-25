@@ -1,3 +1,462 @@
+.master_header {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    background: transparent;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Bar Styles */
+.top_bar_wrapper {
+    display: flex;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    height: 40px;
+    opacity: 1;
+    overflow: hidden;
+}
+
+.top_bar_wrapper.hidden {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+}
+
+.top_bar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    padding: 0 15px;
+}
+
+.left-top-widet, .right-top-widet {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.social_sidebar_internal a {
+    color: white;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+
+.social_sidebar_internal a:hover {
+    color: #007bff;
+}
+
+.currency_selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.widget-title-topbar {
+    color: white;
+    font-size: 12px;
+    margin: 0;
+}
+
+.contact_info {
+    color: white;
+}
+
+.contact_info span {
+    margin-left: 20px;
+}
+
+.contact_info a {
+    color: white;
+    text-decoration: none;
+}
+
+.contact_info a:hover {
+    color: #007bff;
+}
+
+/* Main Header Styles */
+.header_wrapper {
+    background: transparent;
+    padding: 15px 0;
+    transition: all 0.3s ease;
+}
+
+.header_wrapper.scrolled {
+    padding: 10px 0;
+    background: white !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Update menu link colors for better visibility */
+.header_wrapper .menu a {
+    color: white;
+}
+
+.header_wrapper.scrolled .menu a {
+    color: #333;
+}
+
+/* Update buttons for better visibility */
+.header_wrapper .login-btn {
+    border-color: white;
+    color: white;
+}
+
+.header_wrapper.scrolled .login-btn {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.header_wrapper_inside {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 70px;
+}
+
+.main_menu .menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 30px;
+}
+
+.main_menu .menu li {
+    position: relative;
+}
+
+.main_menu .menu a {
+    color: white !important; /* Override default color */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.header_wrapper.scrolled .menu a {
+    color: #333 !important; /* Dark color when scrolled */
+}
+
+.menu-item-has-children .sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.menu-item-has-children:hover .sub-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sub-menu li {
+    padding: 5px 15px;
+}
+
+.user_menu {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.login-btn, .submit-listing-btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.login-btn {
+    padding: 8px 20px;
+    border-radius: 25px;
+    border: 2px solid white;
+    color: white;
+    background: transparent;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.header_wrapper.scrolled .login-btn {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.login-btn:hover {
+    background: #007bff;
+    border-color: #007bff;
+    color: white !important;
+}
+
+/* Remove submit listing button */
+.submit-listing-btn {
+    display: none;
+}
+
+/* Mobile Header Styles */
+.mobile-menu-button {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: auto;
+}
+
+.mobile-menu-wrapper {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 999;
+}
+
+.mobile-menu-wrapper nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-menu-wrapper.active {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mobile-menu-wrapper .menu {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px; /* Add space before login button */
+}
+
+.mobile-menu-wrapper .login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%; /* Reduce width from 100% */
+    margin: 20px auto;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white !important;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-wrapper .login-btn i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.mobile-menu-wrapper .login-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+    .top_bar_wrapper {
+        display: none;
+    }
+
+    .header_wrapper {
+        height: 60px;
+    }
+
+    .main_menu, 
+    .header_wrapper .user_menu {
+        display: none;
+    }
+
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .header_wrapper_inside {
+        padding: 0 15px;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    .top_bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .main_menu {
+        display: none;
+    }
+    
+    .header_wrapper_inside {
+        padding: 10px 15px;
+    }
+    
+    .user_menu {
+        gap: 10px;
+    }
+    
+    .submit-listing-btn {
+        display: none;
+    }
+
+    .mobile-menu-wrapper {
+        background: white;
+        padding: 20px 0; /* Remove horizontal padding */
+    }
+
+    .mobile-menu-wrapper .menu {
+        padding: 0 20px; /* Add padding to menu items instead */
+        width: 100%;
+    }
+
+    .mobile-menu-wrapper .menu a {
+        display: block;
+        width: 100%;
+        padding: 12px 0;
+        text-align: center;
+        font-weight: 500;
+        border-bottom: 1px solid #eee;
+        transition: color 0.3s ease;
+    }
+
+    .mobile-menu-wrapper .menu a:hover {
+        color: #007bff !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .top_bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .main_menu {
+        display: none;
+    }
+    
+    .header_wrapper_inside {
+        padding: 10px 15px;
+    }
+    
+    .user_menu {
+        gap: 10px;
+    }
+    
+    .submit-listing-btn {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .master_header {
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        transition: transform 0.3s ease;
+    }
+
+    .header_wrapper {
+        height: 100%;
+        background: white;
+        padding: 0;
+    }
+
+    .header_wrapper_inside {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    .logo img {
+        height: 35px;
+    }
+
+    .mobile-menu-wrapper {
+        top: 60px;
+        border-top: 1px solid #eee;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+    .master_header.nav-up {
+        transform: translateY(-100%);
+        -webkit-transform: translateY(-100%);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .master_header {
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        will-change: transform;
+        transition: transform 0.3s ease;
+    }
+
+    .main-content {
+        padding-top: 60px; /* Add padding equal to header height */
+    }
+
+    .master_header.nav-up {
+        transform: translateY(-100%);
+    }
+
+    .master_header.nav-down {
+        transform: translateY(0);
+    }
+}
+
 /* Search Wrapper Styles */
 .search_wrapper {
     background: #fff;
