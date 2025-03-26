@@ -85,6 +85,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Search wrapper toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchToggle = document.getElementById('searchToggle');
+    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+    const searchWrapper = document.getElementById('search_wrapper');
+
+    function toggleSearch(button) {
+        searchWrapper.classList.toggle('show');
+        const icon = button.querySelector('i');
+        
+        if (searchWrapper.classList.contains('show')) {
+            icon.className = 'fas fa-times';
+            button.querySelector('span') ? button.querySelector('span').textContent = ' Close' : button.textContent = ' Close';
+        } else {
+            icon.className = 'fas fa-search';
+            button.querySelector('span') ? button.querySelector('span').textContent = ' Search' : button.textContent = ' Search';
+        }
+    }
+
+    searchToggle.addEventListener('click', () => toggleSearch(searchToggle));
+    mobileSearchToggle.addEventListener('click', () => toggleSearch(mobileSearchToggle));
+});
+
 // Add scroll event handler for header
 window.addEventListener('scroll', function() {
     const headerWrapper = document.querySelector('.header_wrapper');
@@ -144,4 +167,35 @@ window.addEventListener('scroll', () => {
         }
         lastScroll = currentScroll;
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all filter buttons and property listings
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const propertyListings = document.querySelectorAll('.property_listing');
+
+    // Add click event listener to each filter button
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            const filterValue = button.getAttribute('data-filter');
+
+            // Show/hide properties based on filter
+            propertyListings.forEach(property => {
+                if (filterValue === 'all') {
+                    property.style.display = 'block';
+                } else {
+                    if (property.getAttribute('data-category') === filterValue) {
+                        property.style.display = 'block';
+                    } else {
+                        property.style.display = 'none';
+                    }
+                }
+            });
+        });
+    });
 });

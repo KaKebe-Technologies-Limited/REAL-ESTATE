@@ -804,7 +804,6 @@
 
 .section-title {
     text-align: center;
-    margin-bottom: 2rem;
     font-size: 2rem;
     color: #333;
 }
@@ -1203,3 +1202,118 @@
         background-color: #007bff;
         transform: translateY(-3px);
     }
+
+.search-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin-right: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+.search-toggle-btn i {
+    margin-right: 8px;
+}
+
+.search_wrapper {
+    display: none; /* Hide by default */
+    transition: all 0.3s ease;
+}
+
+.search_wrapper.show {
+    display: block;
+}
+
+.mobile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+}
+
+.mobile-buttons .search-toggle-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mobile-buttons .search-toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+.mobile-buttons .login-btn {
+    width: 100%;
+    text-align: center;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-left: 80px;
+    margin-right: 80px;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 80px;
+}
+
+.property-filters {
+    display: flex;
+    gap: 1rem;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: 2px solid #007bff;
+    background: transparent;
+    color: #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.filter-btn:hover {
+    background: #007bff;
+    color: white;
+}
+
+.filter-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 0px;
+    }
+    
+    .property-filters {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
