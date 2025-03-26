@@ -1,3 +1,7 @@
+a:hover {
+    text-decoration: none;
+}
+
 .master_header {
     position: fixed;
     width: 100%;
@@ -1315,5 +1319,56 @@
     }
     .section-title {
         font-size: 1.5rem;
+    }
+}
+
+.pagination-wrapper {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.page-btn, .page-number {
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    background: white;
+    color: #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-btn:hover:not(:disabled), 
+.page-number:hover:not(.active) {
+    background: #007bff;
+    color: white;
+}
+
+.page-btn:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.page-number.active {
+    background: #007bff;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

@@ -199,3 +199,80 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Pagination variables
+    const itemsPerPage = 12;
+    let currentPage = 1;
+    
+    function setupPagination() {
+        const propertyGrid = document.querySelector('.property-grid');
+        const properties = propertyGrid.getElementsByClassName('property_listing');
+        const totalPages = Math.ceil(properties.length / itemsPerPage);
+        
+        // Generate page numbers
+        const pageNumbers = document.querySelector('.page-numbers');
+        pageNumbers.innerHTML = '';
+        
+        for (let i = 1; i <= totalPages; i++) {
+            const pageNumber = document.createElement('button');
+            pageNumber.className = `page-number ${i === currentPage ? 'active' : ''}`;
+            pageNumber.textContent = i;
+            pageNumber.addEventListener('click', () => goToPage(i));
+            pageNumbers.appendChild(pageNumber);
+        }
+        
+        // Update prev/next buttons
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+        
+        // Show/hide properties for current page
+        Array.from(properties).forEach((property, index) => {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            
+            if (index >= start && index < end) {
+                property.style.display = 'block';
+            } else {
+                property.style.display = 'none';
+            }
+        });
+    }
+    
+    function goToPage(page) {
+        currentPage = page;
+        setupPagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Add event listeners for prev/next buttons
+    document.querySelector('.prev-btn').addEventListener('click', () => {
+        if (currentPage > 1) {
+            goToPage(currentPage - 1);
+        }
+    });
+    
+    document.querySelector('.next-btn').addEventListener('click', () => {
+        const totalPages = Math.ceil(
+            document.getElementsByClassName('property_listing').length / itemsPerPage
+        );
+        if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+        }
+    });
+    
+    // Initialize pagination
+    setupPagination();
+    
+    // Update pagination when filters are applied
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentPage = 1;
+            setupPagination();
+        });
+    });
+});
