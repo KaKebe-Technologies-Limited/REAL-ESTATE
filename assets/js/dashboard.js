@@ -1,25 +1,34 @@
-// Remove old toggle handlers
-// ...existing code...
-
-// Remove this duplicate code
-// document.getElementById('sidebar-toggle').addEventListener('click', function() {
-//     document.getElementById('sidebar').classList.toggle('collapsed');
-//     document.getElementById('main-content').classList.toggle('expanded');
-// });
-
-// Replace with this single toggle handler
 document.addEventListener('DOMContentLoaded', function() {
+    // Get elements
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('main-content');
-    const isMobile = () => window.innerWidth <= 768;
 
-    sidebarToggle.addEventListener('click', function(e) {
-        e.preventDefault();
+    // Check if elements exist
+    if (!sidebarToggle || !sidebar || !mainContent) {
+        console.error('Required elements not found for sidebar toggle');
+        return;
+    }
+
+    // Toggle function
+    function toggleSidebar(e) {
+        if (e) e.preventDefault();
         sidebar.classList.toggle('collapsed');
         
-        if (!isMobile()) {
+        // Only adjust main content on desktop
+        if (window.innerWidth > 768) {
             mainContent.classList.toggle('expanded');
+        }
+    }
+
+    // Add click event listener
+    sidebarToggle.addEventListener('click', toggleSidebar);
+
+    // Handle responsive behavior
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.remove('expanded');
         }
     });
 });
@@ -193,19 +202,43 @@ function updateActiveNav(formId) {
     document.querySelector(`[data-form="${formId}"]`).classList.add('active');
 }
 
-// Update sidebar toggle (replace existing toggle code)
-const sidebarToggle = document.getElementById('sidebar-toggle');
-const sidebar = document.getElementById('sidebar');
-const mainContent = document.getElementById('main-content');
+// Remove all backdrop-related event listeners and code
 
-sidebarToggle.addEventListener('click', function(e) {
-    e.preventDefault();
-    sidebar.classList.toggle('collapsed');
+function togglePropertySubmenu(element) {
+    event.preventDefault();
     
-    if (window.innerWidth > 768) {
-        mainContent.classList.toggle('expanded');
+    // Toggle submenu visibility
+    const submenu = element.nextElementSibling;
+    submenu.classList.toggle('show');
+    
+    // Toggle arrow rotation
+    const arrow = element.querySelector('.property-submenu-arrow');
+    arrow.classList.toggle('rotate');
+    
+    // Close other property submenus if open
+    const allPropertySubmenus = document.querySelectorAll('.property-submenu');
+    const allPropertyArrows = document.querySelectorAll('.property-submenu-arrow');
+    
+    allPropertySubmenus.forEach(menu => {
+        if (menu !== submenu && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    });
+    
+    allPropertyArrows.forEach(arr => {
+        if (arr !== arrow && arr.classList.contains('rotate')) {
+            arr.classList.remove('rotate');
+        }
+    });
+}
+
+// Close submenu when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.has-submenu')) {
+        const propertySubmenus = document.querySelectorAll('.property-submenu');
+        const propertyArrows = document.querySelectorAll('.property-submenu-arrow');
+        
+        propertySubmenus.forEach(menu => menu.classList.remove('show'));
+        propertyArrows.forEach(arrow => arrow.classList.remove('rotate'));
     }
 });
-
-// Remove all backdrop-related event listeners and code
-// ...rest of existing code...

@@ -136,15 +136,15 @@ body {
     top: var(--navbar-height);
     left: 0;
     height: calc(100vh - var(--navbar-height));
-    width: var(--sidebar-width);
+    width: 250px;
     background: var(--sidebar-bg, white);
     box-shadow: 2px 0 4px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+    transition: width 0.3s ease;
     z-index: 1020;
 }
 
 .sidebar.collapsed {
-    width: var(--sidebar-collapsed-width);
+    width: 70px;
 }
 
 .sidebar-header {
@@ -254,6 +254,26 @@ body {
 
 /* Property Submenu Styles */
 .property-submenu {
+    display: none;
+    padding-left: 2rem;
+    transition: max-height 0.3s ease;
+}
+
+.property-submenu.show {
+    display: block;
+}
+
+.property-submenu-arrow {
+    transition: transform 0.3s ease;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.property-submenu-arrow.rotate {
+    transform: rotate(90deg);
+}
+
+.property-submenu {
     list-style: none;
     padding: 0;
     max-height: 0;
@@ -282,14 +302,14 @@ body {
 
 /* Main Content Styles */
 .main-content {
-    margin-left: var(--sidebar-width);
+    margin-left: 250px;
     margin-top: var(--navbar-height);
     padding: 2rem;
-    transition: all 0.3s ease;
+    transition: margin-left 0.3s ease;
 }
 
 .main-content.expanded {
-    margin-left: var(--sidebar-collapsed-width);
+    margin-left: 70px;
 }
 
 .page-title {
@@ -730,6 +750,8 @@ body {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .sidebar {
+        position: fixed;
+        left: -250px;
         transform: translateX(-100%);
         width: 280px !important;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -739,6 +761,7 @@ body {
     }
 
     .sidebar.collapsed {
+        left: 0;
         transform: translateX(0);
         width: 280px !important;
     }
