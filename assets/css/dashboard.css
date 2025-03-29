@@ -793,3 +793,116 @@ body {
         min-height: 44px;
     }
 }
+
+.search-box {
+    min-width: 250px;
+}
+
+.table {
+    vertical-align: middle;
+}
+
+.table th {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    font-weight: 600;
+    border-color: var(--border-color);
+}
+
+.table td {
+    color: var(--text-color);
+    background-color: var(--bg-light);
+    border-color: var(--border-color);
+}
+
+.badge {
+    padding: 0.5em 0.75em;
+}
+
+.btn-group .btn {
+    padding: 0.25rem 0.5rem;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .page-item .page-link {
+    background-color: var(--bg-light);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: var(--card-bg);
+}
+
+.showing-entries {
+    color: #6c757d;
+}
+
+.table-responsive {
+    min-height: 400px;
+}
+
+.btn-outline-primary:hover, 
+.btn-outline-warning:hover, 
+.btn-outline-danger:hover {
+    color: var(--text-color);
+}
+
+/* Profile Section Styling */
+#profile-content .card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#profile-content .card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+#profile-content .form-sample input,
+#profile-content .form-sample textarea {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+#profile-content .form-sample input:focus,
+#profile-content .form-sample textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+#profile-content .btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* Profile Picture Styling */
+.profile-picture-wrapper {
+    position: relative;
+}
+
+.profile-picture-wrapper img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.profile-picture-wrapper button {
+    margin-top: 10px;
+}
+
+/* Language Dropdown Styling */
+.nav-link img {
+    vertical-align: middle;
+}
+
+.language-option img {
+    vertical-align: middle;
+}

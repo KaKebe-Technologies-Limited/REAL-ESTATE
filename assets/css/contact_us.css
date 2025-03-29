@@ -4,6 +4,7 @@
     background-position: center;
     color: white;
     position: relative;
+    top: auto;
 }
 
 .contact-section {

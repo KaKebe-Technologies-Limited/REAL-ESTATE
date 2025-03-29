@@ -73,7 +73,7 @@ const distributionChart = new Chart(document.getElementById('distributionChart')
 });
 
 function showSettings() {
-    document.getElementById('dashboard-content').style.display = 'none';
+    hideAllForms();
     document.getElementById('settings-content').style.display = 'block';
     // Update active state
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -108,6 +108,8 @@ function setTheme(theme, isPermanent = false) {
     });
     document.getElementById(`${theme}-theme`).classList.add('active');
 }
+
+
 
 // Save settings including theme
 function saveSettings(event) {
@@ -164,7 +166,7 @@ function togglePropertySubmenu(el) {
 }
 
 function hideAllForms() {
-    const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form'];
+    const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form', 'rental-listing', 'sales-listing', 'owners-listing', 'managers-listing', 'profile-content'];
     forms.forEach(form => {
         document.getElementById(form).style.display = 'none';
     });
@@ -241,4 +243,136 @@ document.addEventListener('click', function(event) {
         propertySubmenus.forEach(menu => menu.classList.remove('show'));
         propertyArrows.forEach(arrow => arrow.classList.remove('rotate'));
     }
+});
+
+function showRentalListing() {
+    // Hide all other content
+    hideAllForms();
+    
+    // Show rental listing
+    document.getElementById('rental-listing').style.display = 'block';
+    updateActiveNav('rental-listing');
+}
+
+// Update your existing click handler
+document.querySelector('[data-form="rental-listing"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    showRentalListing();
+});
+
+function showSalesListing() {
+    // Hide all other content
+    hideAllForms();
+
+    // Show sales listing
+    document.getElementById('sales-listing').style.display = 'block';
+    updateActiveNav('sales-listing');
+}
+
+// Add event listener for the sales listing menu item
+document.querySelector('[data-form="sales-listing"]').addEventListener('click', function (e) {
+    e.preventDefault();
+    showSalesListing();
+});
+
+function showOwnersListing() {
+    // Hide all other content
+    hideAllForms();
+
+    // Show owners listing
+    document.getElementById('owners-listing').style.display = 'block';
+    updateActiveNav('owners-listing');
+}
+
+// Add event listener for the owners listing menu item
+document.querySelector('[data-form="owners-listing"]').addEventListener('click', function (e) {
+    e.preventDefault();
+    showOwnersListing();
+});
+
+function showManagersListing() {
+    // Hide all other content
+    hideAllForms();
+
+    // Show managers listing
+    document.getElementById('managers-listing').style.display = 'block';
+    updateActiveNav('managers-listing');
+}
+
+// Add event listener for the managers listing menu item
+document.querySelector('[data-form="managers-listing"]').addEventListener('click', function (e) {
+    e.preventDefault();
+    showManagersListing();
+});
+
+function showDashboard() {
+    // Hide all other content
+    hideAllForms();
+
+    // Show managers listing
+    document.getElementById('dashboard-content').style.display = 'block';
+    updateActiveNav('dashboard-content');
+}
+
+// Add event listener for the managers listing menu item
+document.querySelector('[data-form="dashboard-content"]').addEventListener('click', function (e) {
+    e.preventDefault();
+    showDashboard();
+});
+
+function showProfile() {
+    // Hide all other content
+    hideAllForms();
+
+    // Show profile content
+    document.getElementById('profile-content').style.display = 'block';
+    updateActiveNav('profile-content');
+}
+
+// Add event listener for the profile link
+document.querySelector('.profile-link').addEventListener('click', function (e) {
+    e.preventDefault();
+    showProfile();
+});
+
+// Handle edit profile button
+document.getElementById('edit-profile-btn').addEventListener('click', function () {
+    document.getElementById('profile-view').style.display = 'none';
+    document.getElementById('profile-form').style.display = 'block';
+});
+
+// Handle cancel edit button
+document.getElementById('cancel-edit-btn').addEventListener('click', function () {
+    document.getElementById('profile-view').style.display = 'block';
+    document.getElementById('profile-form').style.display = 'none';
+});
+
+// Handle profile picture change
+document.getElementById('change-picture-btn').addEventListener('click', function () {
+    document.getElementById('profile-picture-input').click();
+});
+
+document.getElementById('profile-picture-input').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profile-picture-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.querySelectorAll('.language-option').forEach(option => {
+    option.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Get the selected language and flag
+        const selectedLanguage = this.getAttribute('data-lang');
+        const selectedFlag = this.getAttribute('data-flag');
+
+        // Update the dropdown display
+        document.getElementById('selected-language-name').textContent = selectedLanguage;
+        document.getElementById('selected-language-flag').src = selectedFlag;
+    });
 });
