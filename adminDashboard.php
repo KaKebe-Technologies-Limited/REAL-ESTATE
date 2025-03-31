@@ -561,13 +561,13 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Create Property Owner</h4>
-                                <form class="form-sample">
+                                <form id="createOwner" class="form-sample">
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">First Name</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="first_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -575,7 +575,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Last Name</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="last_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -585,7 +585,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Email</label>
                                                 <div class="col-sm-9">
-                                                    <input type="email" class="form-control" required />
+                                                    <input name="email" type="email" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -593,7 +593,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Phone</label>
                                                 <div class="col-sm-9">
-                                                    <input type="tel" class="form-control" required />
+                                                    <input name="phone" type="tel" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -603,7 +603,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Username</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="username" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -611,7 +611,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" required />
+                                                    <input name="password" type="password" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -621,7 +621,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">ID Type</label>
                                                 <div class="col-sm-9">
-                                                    <select class="form-control" required>
+                                                    <select name="id_type" class="form-control" required>
                                                         <option>National ID</option>
                                                         <option>Passport</option>
                                                         <option>Driver's License</option>
@@ -633,7 +633,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">ID Number</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="id_num" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -643,7 +643,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label">Address</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                    <textarea name="address" class="form-control" rows="4" required></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -674,7 +674,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Title</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="propertyt_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -682,7 +682,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Price</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" class="form-control" required />
+                                                    <input name="price" type="number" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -1303,5 +1303,6 @@ if (!isset($_SESSION['user_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/admin-dashboard.js"></script>
+    <script src="assets/js/register.js"></script>
 </body>
 </html>
