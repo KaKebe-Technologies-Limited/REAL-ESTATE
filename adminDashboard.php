@@ -13,6 +13,10 @@ if (!isset($_SESSION['user_id'])) {
     <title>Dashboard - Rental Company</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Add to the <head> section -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="assets/css/admin-dashboard.css">
     
 </head>
@@ -486,49 +490,49 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Create Manager</h4>
-                                <form class="form-sample">
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">First Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Last Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Email</label>
-                                                <div class="col-sm-9">
-                                                    <input type="email" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Phone</label>
-                                                <div class="col-sm-9">
-                                                    <input type="tel" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <form id="createManager" class="form-sample">
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Username</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="username" type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">First Name</label>
+                                                <div class="col-sm-9">
+                                                    <input name="first_name" type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Last Name</label>
+                                                <div class="col-sm-9">
+                                                    <input name="last_name" type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Email</label>
+                                                <div class="col-sm-9">
+                                                    <input name="email" type="email" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Phone</label>
+                                                <div class="col-sm-9">
+                                                    <input name="phone" type="tel" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -536,7 +540,17 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" required />
+                                                    <input name="password" type="password" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Experience (Years)</label>
+                                                <div class="col-sm-9">
+                                                    <input name="experience" type="number" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -668,13 +682,14 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Add Property for Sale</h4>
-                                <form class="form-sample">
+                                <form id="addSales" class="form-sample">
+                                    <!-- Basic Information -->
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <label class="col-sm-3 col-form-label">Property Name</label>
                                                 <div class="col-sm-9">
-                                                    <input name="propertyt_name" type="text" class="form-control" required />
+                                                    <input name="property_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -682,67 +697,191 @@ if (!isset($_SESSION['user_id'])) {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Price</label>
                                                 <div class="col-sm-9">
-                                                    <input name="price" type="number" class="form-control" required />
+                                                    <select name="price" class="form-control" required>
+                                                        <option value="">Select Method</option>
+                                                        <option value="cash">Cash</option>
+                                                        <option value="installments">Installments</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Property Details -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Utilities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="utilities" class="form-control" required>
+                                                        <option value="">Select Utilities</option>
+                                                        <option value="included">Included</option>
+                                                        <option value="not_included">Not Included</option>
+                                                        <option value="partial">Partially Included</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Type</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_type" class="form-control" required>
+                                                        <option value="">Select Property Type</option>
+                                                        <option value="land">Only Land</option>
+                                                        <option value="flat">Flat</option>
+                                                        <option value="permanent">Permanent</option>
+                                                        <option value="semi_permanent">Semi-permanent</option>
+                                                        <option value="ground">Grounds</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <div class="col-sm-9">
+                                                    <select name="title" class="form-control" required>
+                                                        <option value="">Select Title</option>
+                                                        <option value="yes">Yes</option>
+                                                        <option value="no">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                                        <option value="market">Market</option>
+                                                        <option value="school">School</option>
+                                                        <option value="church">Church / Mosque</option>
+                                                        <option value="institution">Institution</option>
+                                                        <option value="hospital">Hospital</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Size</label>
+                                                <div class="col-sm-9">
+                                                    <input name="property_size" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Owner</label>
+                                                <div class="col-sm-9">
+                                                    <select name="owner_id" id="owner_id" class="form-control" required>
+                                                        <option value="">Select Owner</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Manager</label>
+                                                <div class="col-sm-9">
+                                                    <select name="manager_id" id="manager_id" class="form-control">
+                                                        <option value="">Select Manager</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location Information -->
+                                    <h5 class="mb-4">Location Details</h5>
                                     <div class="row mb-4">
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bedrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label">Country</label>
+                                                <div class="col-sm-9">
+                                                    <select name="country" id="country" class="form-control" required>
+                                                        <option value="">Select Country</option>
+                                                        <option value="uganda">Uganda</option>
+                                                        <option value="kenya">Kenya</option>
+                                                        <option value="tanzania">Tanzania</option>
+                                                        <option value="rwanda">Rwanda</option>
+                                                        <option value="burundi">Burundi</option>
+                                                        <option value="south_sudan">South Sudan</option>
+                                                        <option value="drc">DR Congo</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bathrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label" id="region-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="region" id="region" class="form-control" required placeholder="Enter region" disabled>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Area (sq ft)</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label" id="subregion-label">Sub-Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="subregion" id="subregion" class="form-control" required placeholder="Enter sub-region" disabled>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="parish-label">Parish</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="parish" id="parish" class="form-control" required placeholder="Enter parish" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="ward-label">Ward</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="ward" id="ward" class="form-control" required placeholder="Enter ward" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="cell-label">Cell</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="cell" id="cell" class="form-control" required placeholder="Enter cell" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Images -->
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Address</label>
+                                                <label class="col-sm-2 col-form-label">Property Images</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                    <input type="file" name="images[]" class="form-control" multiple required />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Description</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Images</label>
-                                                <div class="col-sm-10">
-                                                    <input type="file" class="form-control" multiple required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    <!-- Submit Buttons -->
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-3">Submit</button>
                                         <button type="button" class="btn btn-light">Cancel</button>
@@ -763,89 +902,263 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Add Rental Property</h4>
-                                <form class="form-sample">
+                                <form id="addRental" class="form-sample">
+                                    <!-- Basic Information -->
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <label class="col-sm-3 col-form-label">Property Name</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="property_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Monthly Rent</label>
+                                                <label class="col-sm-3 col-form-label">Price</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" class="form-control" required />
+                                                    <input name="price" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Property Details -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Landlord</label>
+                                                <div class="col-sm-9">
+                                                    <select name="landlord" class="form-control" required>
+                                                        <option value="">Select Landlord</option>
+                                                        <option value="resident">Resident</option>
+                                                        <option value="non_resident">Non resident</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Security</label>
+                                                <div class="col-sm-9">
+                                                    <select name="security[]" class="form-control select2-multiple" multiple="multiple">
+                                                        <option value="cctv">CCTV</option>
+                                                        <option value="guards">Security Guards</option>
+                                                        <option value="electric_fence">Electric Fence</option>
+                                                        <option value="alarm">Alarm System</option>
+                                                        <option value="security_lights">Security Lights</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Utilities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="utilities" class="form-control" required>
+                                                        <option value="">Select Utilities</option>
+                                                        <option value="included">Included</option>
+                                                        <option value="not_included">Not Included</option>
+                                                        <option value="partial">Partially Included</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Type</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_type" class="form-control" required>
+                                                        <option value="">Select Property Type</option>
+                                                        <option value="flat">Flat</option>
+                                                        <option value="permanent">Permanent</option>
+                                                        <option value="semi_permanent">Semi-permanent</option>
+                                                        <option value="ground">Grounds</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Convenience</label>
+                                                <div class="col-sm-9">
+                                                    <select name="convenience" class="form-control" required>
+                                                        <option value="">Select Convenience Level</option>
+                                                        <option value="crowded">Crowded</option>
+                                                        <option value="private">Private</option>
+                                                        <option value="self_contained">Self contained</option>
+                                                        <option value="non_self_contained">Non self contained</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Class</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_class" class="form-control" required>
+                                                        <option value="">Select Property Class</option>
+                                                        <option value="hall">Hall</option>
+                                                        <option value="commercial">Commercial</option>
+                                                        <option value="residential">Residential</option>
+                                                        <option value="hostel">Hostel</option>
+                                                        <option value="hotel">Hotel</option>
+                                                        <option value="lodge">Lodge</option>
+                                                        <option value="event_space">Event space</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Size</label>
+                                                <div class="col-sm-9">
+                                                    <input name="property_size" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Parking Space</label>
+                                                <div class="col-sm-9">
+                                                    <select name="parking" class="form-control" required>
+                                                        <option value="">Select Parking Type</option>
+                                                        <option value="yse">Yes</option>
+                                                        <option value="no">No</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bedrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                                        <option value="market">Market</option>
+                                                        <option value="school">School</option>
+                                                        <option value="church">Church / Mosque</option>
+                                                        <option value="institution">Institution</option>
+                                                        <option value="hospital">Hospital</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bathrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Area (sq ft)</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label">Property Owner</label>
+                                                <div class="col-sm-9">
+                                                    <select name="owner_id" id="owner_id" class="form-control" required>
+                                                        <option value="">Select Owner</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Manager</label>
+                                                <div class="col-sm-9">
+                                                    <select name="manager_id" id="manager_id" class="form-control">
+                                                        <option value="">Select Manager</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location Information -->
+                                    <h5 class="mb-4">Location Details</h5>
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Country</label>
+                                                <div class="col-sm-9">
+                                                    <select name="country" id="country" class="form-control" required>
+                                                        <option value="">Select Country</option>
+                                                        <option value="uganda">Uganda</option>
+                                                        <option value="kenya">Kenya</option>
+                                                        <option value="tanzania">Tanzania</option>
+                                                        <option value="rwanda">Rwanda</option>
+                                                        <option value="burundi">Burundi</option>
+                                                        <option value="south_sudan">South Sudan</option>
+                                                        <option value="drc">DR Congo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="region-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="region" id="region" class="form-control" required placeholder="Enter region" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="subregion-label">Sub-Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="subregion" id="subregion" class="form-control" required placeholder="Enter sub-region" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="parish-label">Parish</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="parish" id="parish" class="form-control" required placeholder="Enter parish" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="ward-label">Ward</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="ward" id="ward" class="form-control" required placeholder="Enter ward" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="cell-label">Cell</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="cell" id="cell" class="form-control" required placeholder="Enter cell" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Images -->
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Address</label>
+                                                <label class="col-sm-2 col-form-label">Property Images</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                    <input type="file" name="images[]" class="form-control" multiple required />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Description</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Available From</label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Images</label>
-                                                <div class="col-sm-9">
-                                                    <input type="file" class="form-control" multiple required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    <!-- Submit Buttons -->
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-3">Submit</button>
                                         <button type="button" class="btn btn-light">Cancel</button>
@@ -1302,7 +1615,28 @@ if (!isset($_SESSION['user_id'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
     <script src="assets/js/admin-dashboard.js"></script>
     <script src="assets/js/register.js"></script>
+    <script src="assets/js/property.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2-multiple').select2({
+                placeholder: 'Select security features',
+                allowClear: true,
+                closeOnSelect: false,
+                width: '100%',
+                templateResult: function(data) {
+                    if (!data.id) return data.text;
+                    
+                    return $('<div><input type="checkbox" ' + (data.selected ? 'checked' : '') + '/> ' + data.text + '</div>');
+                },
+                templateSelection: function(data) {
+                    if (!data.id) return data.text;
+                    return data.text;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

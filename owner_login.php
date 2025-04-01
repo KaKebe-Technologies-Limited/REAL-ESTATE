@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     // Use prepared statements to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ?");
+    $stmt = $conn->prepare("SELECT * FROM property_owner WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (password_verify($password, $user['password'])) {
             session_start();
-            $_SESSION['user_id'] = $user['admin_id'];
+            $_SESSION['user_id'] = $user['owner_id'];
             $_SESSION['username'] = $user['username'];
             echo json_encode(['success' => true, 'message' => 'Login successful']);
         } else {

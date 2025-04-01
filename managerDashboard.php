@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.html');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -414,188 +421,6 @@
                                         <span>Backup Settings</span>
                                     </a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add before closing main-content div -->
-        <div id="create-manager-form" style="display: none;">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-4">Create Manager</h4>
-                                <form class="form-sample">
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">First Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Last Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Email</label>
-                                                <div class="col-sm-9">
-                                                    <input type="email" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Phone</label>
-                                                <div class="col-sm-9">
-                                                    <input type="tel" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Username</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Password</label>
-                                                <div class="col-sm-9">
-                                                    <input type="password" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
-                                        <button type="button" class="btn btn-light">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Create Owner Form -->
-        <div id="create-owner-form" style="display: none;">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-4">Create Property Owner</h4>
-                                <form class="form-sample">
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">First Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Last Name</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Email</label>
-                                                <div class="col-sm-9">
-                                                    <input type="email" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Phone</label>
-                                                <div class="col-sm-9">
-                                                    <input type="tel" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Username</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Password</label>
-                                                <div class="col-sm-9">
-                                                    <input type="password" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">ID Type</label>
-                                                <div class="col-sm-9">
-                                                    <select class="form-control" required>
-                                                        <option>National ID</option>
-                                                        <option>Passport</option>
-                                                        <option>Driver's License</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">ID Number</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Address</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
-                                        <button type="button" class="btn btn-light">Cancel</button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -1246,5 +1071,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/manager-dashboard.js"></script>
+    <script src="assets/js/register.js"></script>
 </body>
 </html>

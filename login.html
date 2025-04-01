@@ -16,17 +16,17 @@
             </div>
             <ul class="nav nav-tabs" id="loginTabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#adminLogin">Admin</a>
+                    <a class="nav-link active" data-toggle="tab" href="#admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#ownerLogin">Owner</a>
+                    <a class="nav-link" data-toggle="tab" href="#owner">Owner</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#managerLogin">Manager</a>
+                    <a class="nav-link" data-toggle="tab" href="#manager">Manager</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane fade show active">
+                <div class="tab-pane fade show active" id="admin">
                     <form id="adminLogin" class="login-form">
                         <h2>Admin Login</h2>
                         <div class="form-group">
@@ -40,29 +40,29 @@
                         <button type="submit">Login</button>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="ownerLogin">
-                    <form class="login-form">
+                <div class="tab-pane fade" id="owner">
+                    <form id="ownerLogin" class="login-form">
                         <h2>Owner Login</h2>
                         <div class="form-group">
-                            <input type="email" placeholder="Email" required>
-                            <i class="fas fa-envelope"></i>
+                            <input type="text" name="username" placeholder="Username" required>
+                            <i class="fas fa-user"></i>
                         </div>
                         <div class="form-group">
-                            <input type="password" placeholder="Password" required>
+                            <input type="password" name="password" placeholder="Password" required>
                             <i class="fas fa-lock"></i>
                         </div>
                         <button type="submit">Login</button>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="managerLogin">
-                    <form class="login-form">
+                <div class="tab-pane fade" id="manager">
+                    <form id="managerLogin" class="login-form">
                         <h2>Manager Login</h2>
                         <div class="form-group">
-                            <input type="email" placeholder="Email" required>
-                            <i class="fas fa-envelope"></i>
+                            <input type="text" name="username" placeholder="Username" required>
+                            <i class="fas fa-user"></i>
                         </div>
                         <div class="form-group">
-                            <input type="password" placeholder="Password" required>
+                            <input type="password" name="password" placeholder="Password" required>
                             <i class="fas fa-lock"></i>
                         </div>
                         <button type="submit">Login</button>
@@ -75,6 +75,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/admin_auth.js"></script>
+    <script src="assets/js/owner_auth.js"></script>
+    <script src="assets/js/manager_auth.js"></script>
 </body>
 </html>

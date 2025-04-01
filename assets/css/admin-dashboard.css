@@ -906,3 +906,55 @@ body {
 .language-option img {
     vertical-align: middle;
 }
+
+/* .select2-container--default .select2-selection--multiple {
+    border: 4px solid var(--form-border);
+    border-radius: 0.25rem;
+    min-height: 38px;
+    padding: 6px;
+    background-color: var(--form-bg);
+} */
+
+.select2-container--default .select2-selection--multiple {
+    background-color: var(--form-bg) !important;
+    border: 1px solid var(--form-border) !important;
+    border-radius: 4px !important;
+    cursor: text !important;
+    padding-bottom: 5px !important;
+    padding-right: 5px !important;
+    position: relative !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 2px 8px;
+    margin: 4px 2px;
+    border-radius: 3px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+    margin-right: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-control:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    opacity: 0.65;
+}
+
