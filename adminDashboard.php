@@ -4,6 +4,46 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.html');
     exit();
 }
+
+// Fetch data from get_rentals.php
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$limit = 10; // Number of entries per page
+$data = file_get_contents("http://localhost/REAL-ESTATE/get_rentals.php?page=$page&limit=$limit");
+$response = json_decode($data, true); // Decode JSON into an associative array
+
+$rentals = $response['success'] ? $response['rentals'] : [];
+$total_rentals = $response['total'];
+$total_pages = ceil($total_rentals / $limit);
+
+// Fetch data from get_sales.php
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$limit = 10; // Number of entries per page
+$data = file_get_contents("http://localhost/REAL-ESTATE/get_sales.php?page=$page&limit=$limit");
+$response = json_decode($data, true); // Decode JSON into an associative array
+
+$sales = $response['success'] ? $response['sales'] : [];
+$total_sales = $response['total'];
+$total_pages = ceil($total_sales / $limit);
+
+// Fetch data from get_owners.php
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$limit = 10; // Number of entries per page
+$data = file_get_contents("http://localhost/REAL-ESTATE/get_owners.php?page=$page&limit=$limit");
+$response = json_decode($data, true); // Decode JSON into an associative array
+
+$owners = $response['success'] ? $response['owners'] : [];
+$total_owners = $response['total'];
+$total_pages = ceil($total_owners / $limit);
+
+// Fetch data from get_managers.php
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$limit = 10; // Number of entries per page
+$data = file_get_contents("http://localhost/REAL-ESTATE/get_managers.php?page=$page&limit=$limit");
+$response = json_decode($data, true); // Decode JSON into an associative array
+
+$managers = $response['success'] ? $response['managers'] : [];
+$total_managers = $response['total'];
+$total_pages = ceil($total_managers / $limit);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -219,7 +259,7 @@ if (!isset($_SESSION['user_id'])) {
                                 </div>
                                 <div class="summary-details">
                                     <h3 class="summary-title">Total Owners</h3>
-                                    <p class="summary-number">128</p>
+                                    <p class="summary-number"><?php echo $total_owners; ?></p>
                                     <p class="summary-trend positive">
                                         <i class="fas fa-arrow-up"></i> 12% from last month
                                     </p>
@@ -240,7 +280,7 @@ if (!isset($_SESSION['user_id'])) {
                                 </div>
                                 <div class="summary-details">
                                     <h3 class="summary-title">Total Managers</h3>
-                                    <p class="summary-number">45</p>
+                                    <p class="summary-number"><?php echo $total_managers; ?></p>
                                     <p class="summary-trend positive">
                                         <i class="fas fa-arrow-up"></i> 8% from last month
                                     </p>
@@ -674,226 +714,6 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </div>
 
-        <!-- Add Sale Property Form -->
-        <div id="add-sale-form" style="display: none;">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-4">Add Property for Sale</h4>
-                                <form id="addSales" class="form-sample">
-                                    <!-- Basic Information -->
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Property Name</label>
-                                                <div class="col-sm-9">
-                                                    <input name="property_name" type="text" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Price</label>
-                                                <div class="col-sm-9">
-                                                    <select name="price" class="form-control" required>
-                                                        <option value="">Select Method</option>
-                                                        <option value="cash">Cash</option>
-                                                        <option value="installments">Installments</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Property Details -->
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Utilities</label>
-                                                <div class="col-sm-9">
-                                                    <select name="utilities" class="form-control" required>
-                                                        <option value="">Select Utilities</option>
-                                                        <option value="included">Included</option>
-                                                        <option value="not_included">Not Included</option>
-                                                        <option value="partial">Partially Included</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Property Type</label>
-                                                <div class="col-sm-9">
-                                                    <select name="property_type" class="form-control" required>
-                                                        <option value="">Select Property Type</option>
-                                                        <option value="land">Only Land</option>
-                                                        <option value="flat">Flat</option>
-                                                        <option value="permanent">Permanent</option>
-                                                        <option value="semi_permanent">Semi-permanent</option>
-                                                        <option value="ground">Grounds</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Title</label>
-                                                <div class="col-sm-9">
-                                                    <select name="title" class="form-control" required>
-                                                        <option value="">Select Title</option>
-                                                        <option value="yes">Yes</option>
-                                                        <option value="no">No</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Close Amenities</label>
-                                                <div class="col-sm-9">
-                                                    <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
-                                                        <option value="market">Market</option>
-                                                        <option value="school">School</option>
-                                                        <option value="church">Church / Mosque</option>
-                                                        <option value="institution">Institution</option>
-                                                        <option value="hospital">Hospital</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Property Size</label>
-                                                <div class="col-sm-9">
-                                                    <input name="property_size" type="number" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Property Owner</label>
-                                                <div class="col-sm-9">
-                                                    <select name="owner_id" id="owner_id" class="form-control" required>
-                                                        <option value="">Select Owner</option>
-                                                        <!-- Options will be populated dynamically -->
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Property Manager</label>
-                                                <div class="col-sm-9">
-                                                    <select name="manager_id" id="manager_id" class="form-control">
-                                                        <option value="">Select Manager</option>
-                                                        <!-- Options will be populated dynamically -->
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Location Information -->
-                                    <h5 class="mb-4">Location Details</h5>
-                                    <div class="row mb-4">
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Country</label>
-                                                <div class="col-sm-9">
-                                                    <select name="country" id="country" class="form-control" required>
-                                                        <option value="">Select Country</option>
-                                                        <option value="uganda">Uganda</option>
-                                                        <option value="kenya">Kenya</option>
-                                                        <option value="tanzania">Tanzania</option>
-                                                        <option value="rwanda">Rwanda</option>
-                                                        <option value="burundi">Burundi</option>
-                                                        <option value="south_sudan">South Sudan</option>
-                                                        <option value="drc">DR Congo</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" id="region-label">Region</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="region" id="region" class="form-control" required placeholder="Enter region" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" id="subregion-label">Sub-Region</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="subregion" id="subregion" class="form-control" required placeholder="Enter sub-region" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" id="parish-label">Parish</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="parish" id="parish" class="form-control" required placeholder="Enter parish" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" id="ward-label">Ward</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="ward" id="ward" class="form-control" required placeholder="Enter ward" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" id="cell-label">Cell</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="cell" id="cell" class="form-control" required placeholder="Enter cell" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Images -->
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Property Images</label>
-                                                <div class="col-sm-10">
-                                                    <input type="file" name="images[]" class="form-control" multiple required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Submit Buttons -->
-                                    <div class="mt-4">
-                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
-                                        <button type="button" class="btn btn-light">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Add Rental Property Form -->
         <div id="add-rental-form" style="display: none;">
             <div class="container-fluid">
@@ -1171,6 +991,226 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </div>
 
+        <!-- Add Sale Property Form -->
+        <div id="add-sale-form" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Add Property for Sale</h4>
+                                <form id="addSales" class="form-sample">
+                                    <!-- Basic Information -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Name</label>
+                                                <div class="col-sm-9">
+                                                    <input name="property_name" type="text" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Price</label>
+                                                <div class="col-sm-9">
+                                                    <select name="price" class="form-control" required>
+                                                        <option value="">Select Method</option>
+                                                        <option value="cash">Cash</option>
+                                                        <option value="installments">Installments</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Property Details -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Utilities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="utilities" class="form-control" required>
+                                                        <option value="">Select Utilities</option>
+                                                        <option value="included">Included</option>
+                                                        <option value="not_included">Not Included</option>
+                                                        <option value="partial">Partially Included</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Type</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_type" class="form-control" required>
+                                                        <option value="">Select Property Type</option>
+                                                        <option value="land">Only Land</option>
+                                                        <option value="flat">Flat</option>
+                                                        <option value="permanent">Permanent</option>
+                                                        <option value="semi_permanent">Semi-permanent</option>
+                                                        <option value="ground">Grounds</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <div class="col-sm-9">
+                                                    <select name="title" class="form-control" required>
+                                                        <option value="">Select Title</option>
+                                                        <option value="yes">Yes</option>
+                                                        <option value="no">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                                        <option value="market">Market</option>
+                                                        <option value="school">School</option>
+                                                        <option value="church">Church / Mosque</option>
+                                                        <option value="institution">Institution</option>
+                                                        <option value="hospital">Hospital</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Size</label>
+                                                <div class="col-sm-9">
+                                                    <input name="property_size" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Owner</label>
+                                                <div class="col-sm-9">
+                                                    <select name="owner_id" id="owner_id" class="form-control" required>
+                                                        <option value="">Select Owner</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Manager</label>
+                                                <div class="col-sm-9">
+                                                    <select name="manager_id" id="manager_id" class="form-control">
+                                                        <option value="">Select Manager</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location Information -->
+                                    <h5 class="mb-4">Location Details</h5>
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Country</label>
+                                                <div class="col-sm-9">
+                                                    <select name="country" id="country" class="form-control" required>
+                                                        <option value="">Select Country</option>
+                                                        <option value="uganda">Uganda</option>
+                                                        <option value="kenya">Kenya</option>
+                                                        <option value="tanzania">Tanzania</option>
+                                                        <option value="rwanda">Rwanda</option>
+                                                        <option value="burundi">Burundi</option>
+                                                        <option value="south_sudan">South Sudan</option>
+                                                        <option value="drc">DR Congo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="region-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="region" id="region" class="form-control" required placeholder="Enter region" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="subregion-label">Sub-Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="subregion" id="subregion" class="form-control" required placeholder="Enter sub-region" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="parish-label">Parish</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="parish" id="parish" class="form-control" required placeholder="Enter parish" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="ward-label">Ward</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="ward" id="ward" class="form-control" required placeholder="Enter ward" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="cell-label">Cell</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="cell" id="cell" class="form-control" required placeholder="Enter cell" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Images -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Property Images</label>
+                                                <div class="col-sm-10">
+                                                    <input type="file" name="images[]" class="form-control" multiple required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Buttons -->
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
+                                        <button type="button" class="btn btn-light">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Add this after the add-rental-form div -->
         <div id="rental-listing" style="display: none;">
             <div class="container-fluid">
@@ -1203,45 +1243,58 @@ if (!isset($_SESSION['user_id'])) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Luxury Apartment</td>
-                                                <td>John Doe</td>
-                                                <td>Sarah Smith</td>
-                                                <td>Kira, Wakiso</td>
-                                                <td>$1,200</td>
-                                                <td><span class="badge bg-success">Available</span></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-warning">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- Add more rows as needed -->
+                                            <?php if (!empty($rentals)): ?>
+                                                <?php foreach ($rentals as $rental): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($rental['property_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($rental['owner_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($rental['manager_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($rental['location']); ?></td>
+                                                        <td>$<?php echo htmlspecialchars($rental['rent']); ?></td>
+                                                        <td>
+                                                            <span class="badge <?php echo $rental['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
+                                                                <?php echo htmlspecialchars($rental['availability']); ?>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-outline-primary">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-warning">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-danger">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">No rental properties found</td>
+                                                </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                     <div class="showing-entries">
-                                        Showing 1 to 10 of 50 entries
+                                        Showing <?php echo ($page - 1) * $limit + 1; ?> to <?php echo min($page * $limit, $total_rentals); ?> of <?php echo $total_rentals; ?> entries
                                     </div>
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination mb-0">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" tabindex="-1">Previous</a>
                                             </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
+                                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -1284,45 +1337,58 @@ if (!isset($_SESSION['user_id'])) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Modern Villa</td>
-                                                <td>Jane Doe</td>
-                                                <td>Michael Brown</td>
-                                                <td>Kololo, Kampala</td>
-                                                <td>$350,000</td>
-                                                <td><span class="badge bg-success">Available</span></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-warning">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- Add more rows as needed -->
+                                            <?php if (!empty($sales)): ?>
+                                                <?php foreach ($sales as $sale): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($sale['property_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($sale['owner_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($sale['manager_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($sale['location']); ?></td>
+                                                        <td>$<?php echo htmlspecialchars($sale['price']); ?></td>
+                                                        <td>
+                                                            <span class="badge <?php echo $sale['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
+                                                                <?php echo htmlspecialchars($sale['availability']); ?>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-outline-primary">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-warning">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-danger">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">No sales properties found</td>
+                                                </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                     <div class="showing-entries">
-                                        Showing 1 to 10 of 30 entries
+                                        Showing <?php echo ($page - 1) * $limit + 1; ?> to <?php echo min($page * $limit, $total_sales); ?> of <?php echo $total_sales; ?> entries
                                     </div>
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination mb-0">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" tabindex="-1">Previous</a>
                                             </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
+                                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -1362,48 +1428,45 @@ if (!isset($_SESSION['user_id'])) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>John Doe</td>
-                                                <td>5</td>
-                                                <td>2025-12-31</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye"></i> View
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jane Smith</td>
-                                                <td>3</td>
-                                                <td>2025-11-15</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye"></i> View
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- Add more rows as needed -->
+                                            <?php if (!empty($owners)): ?>
+                                                <?php foreach ($owners as $owner): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($owner['owner_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($owner['property_count']); ?></td>
+                                                        <td><?php echo htmlspecialchars($owner['email']); ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-outline-primary">
+                                                                    <i class="fas fa-eye"></i> View
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No property owners found</td>
+                                                </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                     <div class="showing-entries">
-                                        Showing 1 to 10 of 20 entries
+                                        Showing <?php echo ($page - 1) * $limit + 1; ?> to <?php echo min($page * $limit, $total_owners); ?> of <?php echo $total_owners; ?> entries
                                     </div>
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination mb-0">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" tabindex="-1">Previous</a>
                                             </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
+                                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -1443,48 +1506,45 @@ if (!isset($_SESSION['user_id'])) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Michael Brown</td>
-                                                <td>12</td>
-                                                <td>+256 751 123 456</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye"></i> View
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Sarah Johnson</td>
-                                                <td>8</td>
-                                                <td>+256 772 987 654</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye"></i> View
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- Add more rows as needed -->
+                                            <?php if (!empty($managers)): ?>
+                                                <?php foreach ($managers as $manager): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($manager['manager_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($manager['property_count']); ?></td>
+                                                        <td><?php echo htmlspecialchars($manager['phone']); ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-sm btn-outline-primary">
+                                                                    <i class="fas fa-eye"></i> View
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No property managers found</td>
+                                                </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                     <div class="showing-entries">
-                                        Showing 1 to 10 of 15 entries
+                                        Showing <?php echo ($page - 1) * $limit + 1; ?> to <?php echo min($page * $limit, $total_managers); ?> of <?php echo $total_managers; ?> entries
                                     </div>
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination mb-0">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" tabindex="-1">Previous</a>
                                             </li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">Next</a>
+                                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                                <a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a>
                                             </li>
                                         </ul>
                                     </nav>

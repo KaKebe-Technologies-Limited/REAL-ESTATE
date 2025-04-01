@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('get_owners_managers.php')
+    fetch('http://localhost/REAL-ESTATE/get_owners_managers.php')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
