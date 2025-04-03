@@ -247,7 +247,7 @@ document.addEventListener('click', function(event) {
 
 function showRentalListing() {
     // Hide all other content
-    hideAllForms();
+    // hideAllForms();
     
     // Show rental listing
     document.getElementById('rental-listing').style.display = 'block';

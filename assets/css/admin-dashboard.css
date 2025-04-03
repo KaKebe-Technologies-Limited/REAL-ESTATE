@@ -958,3 +958,35 @@ body {
     opacity: 0.65;
 }
 
+.profile-picture-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-picture-wrapper img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#change-picture-btn {
+    margin-top: 10px;
+}
+
+#profile-form {
+    margin-top: 20px;
+}
+
+.profile-view p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.profile-view strong {
+    color: #333;
+    min-width: 120px;
+    display: inline-block;
+}
+

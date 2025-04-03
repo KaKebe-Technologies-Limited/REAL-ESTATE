@@ -1,4 +1,5 @@
 <?php 
+require_once 'log_activity.php';
 header('Content-Type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -77,6 +78,8 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
+    // Log the activity after successful property addition
+    logPropertyAdded($property_name, $location);
     echo json_encode(['success' => true, 'message' => 'Rental property added successfully']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to add rental property']);

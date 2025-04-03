@@ -1,4 +1,5 @@
 <?php
+require_once 'log_activity.php';
 header('Content-Type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -10,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($conn->connect_error) {
         echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
         exit;
-    }
+    } 
 
     // Validate required fields
     $requiredFields = ['username', 'first_name', 'last_name', 'email', 'password', 'phone', 'experience'];
@@ -49,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssssssi", $username, $first_name, $last_name, $email, $hashedPassword, $phone, $experience);
 
     if ($stmt->execute()) {
+        // Log the activity after successful manager registration
+        logManagerRegistered($manager_name);
         echo json_encode(['success' => true, 'message' => 'Manager registration successful!']);
     } else {
         error_log('SQL Error: ' . $stmt->error); // Log the SQL error

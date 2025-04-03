@@ -165,97 +165,144 @@ document.addEventListener('DOMContentLoaded', function() {
             field.label.textContent = defaultLabels[key];
             field.input.placeholder = `Enter ${defaultLabels[key].toLowerCase()}`;
             field.input.value = '';
-            field.input.disabled = true;
+            field.input.disabled = false;
         });
     }
-});
 
-document.addEventListener('DOMContentLoaded', function () {
-    const addRentalForm = document.getElementById('addRental');
-
-    addRentalForm.addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent the default form submission
-
-        const formData = new FormData(addRentalForm);
-
-        // Send the form data to the server using Fetch API
-        fetch('http://localhost/REAL-ESTATE/add_rental.php', {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Rental property added successfully!');
-                    addRentalForm.reset(); // Reset the form
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form.');
+    // Function to populate select elements with error handling
+    const populateSelect = (selectId, options, valueKey, textKey) => {
+        const selectElement = document.getElementById(selectId);
+        if (!selectElement) {
+            console.warn(`Select element with id '${selectId}' not found`);
+            return false;
+        }
+        
+        try {
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option[valueKey];
+                optionElement.textContent = option[textKey];
+                selectElement.appendChild(optionElement);
             });
-    });
-});
+            return true;
+        } catch (error) {
+            console.error(`Error populating select ${selectId}:`, error);
+            return false;
+        }
+    };
 
-document.addEventListener('DOMContentLoaded', function () {
+    // Handle Rental Form
+    const addRentalForm = document.getElementById('addRental');
+    if (addRentalForm) {
+        addRentalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!document.getElementById('rental_owner_id')?.value) {
+                alert('Please select an owner');
+                return;
+            }
+
+            const formData = new FormData(addRentalForm);
+            submitForm(formData, 'http://localhost/REAL-ESTATE/add_rental.php', addRentalForm);
+        });
+    }
+
+    // Handle Sales Form
+    const addSaleForm = document.getElementById('addSales');
+    if (addSaleForm) {
+        addSaleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!document.getElementById('sale_owner_id')?.value) {
+                alert('Please select an owner');
+                return;
+            }
+
+            const formData = new FormData(addSaleForm);
+            submitForm(formData, 'http://localhost/REAL-ESTATE/add_sales.php', addSaleForm);
+        });
+    }
+
+    // Fetch and populate owners and managers
     fetch('http://localhost/REAL-ESTATE/get_owners_managers.php')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            if (data.success) {
-                const ownerSelect = document.getElementById('owner_id');
-                const managerSelect = document.getElementById('manager_id');
+            if (!data.success) {
+                throw new Error(data.message || 'Failed to fetch data');
+            }
 
-                // Populate owners
-                data.owners.forEach(owner => {
-                    const option = document.createElement('option');
-                    option.value = owner.owner_id;
-                    option.textContent = owner.username;
-                    ownerSelect.appendChild(option);
-                });
+            const selects = {
+                owners: ['rental_owner_id', 'sale_owner_id'],
+                managers: ['rental_manager_id', 'sale_manager_id']
+            };
 
-                // Populate managers
-                data.managers.forEach(manager => {
-                    const option = document.createElement('option');
-                    option.value = manager.manager_id;
-                    option.textContent = manager.username;
-                    managerSelect.appendChild(option);
-                });
-            } else {
-                alert('Failed to fetch owners and managers');
+            // Debug logging
+            console.log('Looking for select elements...');
+            selects.owners.forEach(id => {
+                const elem = document.getElementById(id);
+                console.log(`${id} element:`, elem);
+            });
+            selects.managers.forEach(id => {
+                const elem = document.getElementById(id);
+                console.log(`${id} element:`, elem);
+            });
+
+            // Modified population logic with checks
+            let populatedSelects = 0;
+
+            // Populate owners
+            selects.owners.forEach(selectId => {
+                if (populateSelect(selectId, data.owners, 'owner_id', 'username')) {
+                    populatedSelects++;
+                }
+            });
+
+            // Populate managers
+            selects.managers.forEach(selectId => {
+                if (populateSelect(selectId, data.managers, 'manager_id', 'username')) {
+                    populatedSelects++;
+                }
+            });
+
+            if (populatedSelects === 0) {
+                throw new Error('No select elements were found to populate');
             }
         })
         .catch(error => {
-            console.error('Error fetching owners and managers:', error);
+            console.error('Error fetching owners and managers:', error); 
+            // Optionally show user-friendly error message
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'alert alert-danger';
+            errorMessage.textContent = 'Failed to load owners and managers. Please refresh the page.';
+            document.querySelector('.main-content')?.prepend(errorMessage);
         });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const addSaleForm = document.getElementById('addSales');
-
-    addSaleForm.addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent the default form submission
-
-        const formData = new FormData(addSaleForm);
-
-        // Send the form data to the server using Fetch API
-        fetch('http://localhost/REAL-ESTATE/add_sales.php', {
-            method: 'POST',
-            body: formData,
+// Helper function for form submission
+function submitForm(formData, endpoint, form) {
+    fetch(`http://localhost/REAL-ESTATE/${endpoint}`, {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Sales Property added successfully!');
-                    addSaleForm.reset(); // Reset the form
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form.');
-            });
-    });
-});
+        .then(data => {
+            if (data.success) {
+                alert('Property added successfully!');
+                form.reset();
+            } else {
+                throw new Error(data.message || 'Unknown error occurred');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(`An error occurred: ${error.message}`);
+        });
+}

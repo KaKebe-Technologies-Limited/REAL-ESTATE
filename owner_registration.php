@@ -1,4 +1,5 @@
 <?php
+require_once 'log_activity.php';
 header('Content-Type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -51,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sssssisis", $username, $first_name, $last_name, $email, $hashedPassword, $phone, $id_type, $id_num, $address);
 
     if ($stmt->execute()) {
+        // Log the activity after successful owner registration
+        logOwnerRegistered($owner_name);
         echo json_encode(['success' => true, 'message' => 'Registration successful!']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);

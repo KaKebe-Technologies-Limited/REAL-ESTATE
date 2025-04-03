@@ -1,8 +1,25 @@
 <?php
 session_start();
+// Make sure this matches your admin table's user_id
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.html');
     exit();
+}
+
+// Load user profile picture on page load
+$conn = new mysqli('localhost', 'root', '', 'allea');
+if (!$conn->connect_error) {
+    $user_id = $_SESSION['user_id'];
+    $query = "SELECT profile_picture FROM admin WHERE admin_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $_SESSION['profile_picture'] = $row['profile_picture'] ?: 'uploads/profile_picture/default-profile.jpg';
+    }
+    $stmt->close();
+    $conn->close();
 }
 
 // Fetch data from get_rentals.php
@@ -112,13 +129,13 @@ $total_pages = ceil($total_managers / $limit);
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="assets/images/profile.jpg" alt="Profile" class="rounded-circle">
+                            <img src="<?php echo isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle img-thumbnai profile-picture">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
                             <li><a class="dropdown-item" href="#" onclick="showSettings()"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -331,73 +348,44 @@ $total_pages = ceil($total_managers / $limit);
                         <div class="dashboard-card">
                             <div class="dashboard-card-header">
                                 <h3>Recent Activities</h3>
-                                <button class="btn btn-sm btn-light">View All</button>
+                                <button class="btn btn-sm btn-light" onclick="viewAllActivities()">View All</button>
                             </div>
                             <div class="dashboard-card-body p-0">
                                 <div class="activity-list">
-                                    <div class="activity-item">
-                                        <div class="activity-icon bg-soft-primary">
-                                            <i class="fas fa-plus-circle"></i>
+                                    <?php
+                                    require_once 'get_recent_activities.php';
+                                    $activities = getRecentActivities(5);
+                                    
+                                    if (!empty($activities)):
+                                        foreach ($activities as $activity):
+                                    ?>
+                                        <div class="activity-item">
+                                            <div class="activity-icon <?php echo htmlspecialchars($activity['icon_bg_class']); ?>">
+                                                <i class="<?php echo htmlspecialchars($activity['icon_class']); ?>"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <h4><?php echo htmlspecialchars($activity['title']); ?></h4>
+                                                <p><?php echo htmlspecialchars($activity['description']); ?></p>
+                                                <span class="activity-time"><?php echo getTimeAgo($activity['created_at']); ?></span>
+                                            </div>
+                                            <?php if ($activity['status'] == 'new'): ?>
+                                            <div class="activity-status">
+                                                <span class="badge bg-success">New</span>
+                                            </div>
+                                            <?php endif; ?>
                                         </div>
-                                        <div class="activity-content">
-                                            <h4>New Property Added</h4>
-                                            <p>3 bedroom house in Wakiso</p>
-                                            <span class="activity-time">2 hours ago</span>
+                                    <?php 
+                                        endforeach;
+                                    else:
+                                    ?>
+                                        <div class="activity-item">
+                                            <p class="text-center py-3">No recent activities</p>
                                         </div>
-                                        <div class="activity-status">
-                                            <span class="badge bg-success">New</span>
-                                        </div>
-                                    </div>
-                                    <div class="activity-item">
-                                        <div class="activity-icon bg-soft-warning">
-                                            <i class="fas fa-user-plus"></i>
-                                        </div>
-                                        <div class="activity-content">
-                                            <h4>New Owner Registered</h4>
-                                            <p>John Doe</p>
-                                            <span class="activity-time">5 hours ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="activity-item">
-                                        <div class="activity-icon bg-soft-success">
-                                            <i class="fas fa-check-circle"></i>
-                                        </div>
-                                        <div class="activity-content">
-                                            <h4>Property Verified</h4>
-                                            <p>2 bedroom apartment in Kira</p>
-                                            <span class="activity-time">1 day ago</span>
-                                        </div>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-4">
-                        <div class="dashboard-card">
-                            <div class="dashboard-card-header">
-                                <h3>Quick Actions</h3>
-                            </div>
-                            <div class="dashboard-card-body">
-                                <div class="quick-actions">
-                                    <a href="#" class="quick-action-btn" onclick="showAddRental()">
-                                        <i class="fas fa-plus"></i>
-                                        <span>Add Property</span>
-                                    </a>
-                                    <a href="#" class="quick-action-btn" onclick="showCreateOwner()">
-                                        <i class="fas fa-user-plus"></i>
-                                        <span>Add Owner</span>
-                                    </a>
-                                    <a href="#" class="quick-action-btn">
-                                        <i class="fas fa-file-alt"></i>
-                                        <span>Generate Report</span>
-                                    </a>
-                                    <a href="#" class="quick-action-btn" onclick="showSettings()">
-                                        <i class="fas fa-cog"></i>
-                                        <span>Settings</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Quick Actions section remains the same -->
                     </div>
                 </div>
             </div>
@@ -878,7 +866,7 @@ $total_pages = ceil($total_managers / $limit);
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Owner</label>
                                                 <div class="col-sm-9">
-                                                    <select name="owner_id" id="owner_id" class="form-control" required>
+                                                    <select name="owner_id" id="rental_owner_id" class="form-control" required>
                                                         <option value="">Select Owner</option>
                                                         <!-- Options will be populated dynamically -->
                                                     </select>
@@ -892,7 +880,7 @@ $total_pages = ceil($total_managers / $limit);
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Manager</label>
                                                 <div class="col-sm-9">
-                                                    <select name="manager_id" id="manager_id" class="form-control">
+                                                    <select name="manager_id" id="rental_manager_id" class="form-control">
                                                         <option value="">Select Manager</option>
                                                         <!-- Options will be populated dynamically -->
                                                     </select>
@@ -1098,7 +1086,7 @@ $total_pages = ceil($total_managers / $limit);
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Owner</label>
                                                 <div class="col-sm-9">
-                                                    <select name="owner_id" id="owner_id" class="form-control" required>
+                                                    <select name="owner_id" id="sale_owner_id" class="form-control" required>
                                                         <option value="">Select Owner</option>
                                                         <!-- Options will be populated dynamically -->
                                                     </select>
@@ -1112,7 +1100,7 @@ $total_pages = ceil($total_managers / $limit);
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Manager</label>
                                                 <div class="col-sm-9">
-                                                    <select name="manager_id" id="manager_id" class="form-control">
+                                                    <select name="manager_id" id="sale_manager_id" class="form-control">
                                                         <option value="">Select Manager</option>
                                                         <!-- Options will be populated dynamically -->
                                                     </select>
@@ -1566,12 +1554,15 @@ $total_pages = ceil($total_managers / $limit);
                                     <h4 class="card-title">User Profile</h4>
                                     <button class="btn btn-primary" id="edit-profile-btn">Edit Profile</button>
                                 </div>
-                                <form id="profile-form" class="form-sample" style="display: none;">
+                                <form id="profile-form" class="form-sample" style="display: none;" enctype="multipart/form-data">
                                     <div class="row mb-4">
                                         <div class="col-md-4 text-center">
                                             <div class="profile-picture-wrapper">
-                                                <img id="profile-picture-preview" src="assets/images/profile.jpg" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
-                                                <input type="file" id="profile-picture-input" class="form-control" accept="image/*" style="display: none;">
+                                                <img id="profile-picture-preview" 
+                                                    src="<?php echo isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : 'uploads/profile_picture/default-profile.jpg'; ?>" 
+                                                    alt="Profile Picture" 
+                                                    class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
+                                                <input type="file" id="profile-picture-input" name="profile_picture" accept="image/*" style="display: none;">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm" id="change-picture-btn">Change Picture</button>
                                             </div>
                                         </div>
@@ -1581,7 +1572,7 @@ $total_pages = ceil($total_managers / $limit);
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">First Name</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" value="John" required />
+                                                            <input type="text" name="first_name" class="form-control" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1589,7 +1580,7 @@ $total_pages = ceil($total_managers / $limit);
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Last Name</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" value="Doe" required />
+                                                            <input type="text" name="last_name" class="form-control" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1599,7 +1590,7 @@ $total_pages = ceil($total_managers / $limit);
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Email</label>
                                                         <div class="col-sm-9">
-                                                            <input type="email" class="form-control" value="john.doe@example.com" required />
+                                                            <input type="email" name="email" class="form-control" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1607,7 +1598,7 @@ $total_pages = ceil($total_managers / $limit);
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Phone</label>
                                                         <div class="col-sm-9">
-                                                            <input type="tel" class="form-control" value="+256 751 123 456" required />
+                                                            <input type="tel" name="phone" class="form-control" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1617,15 +1608,47 @@ $total_pages = ceil($total_managers / $limit);
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Username</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" value="johndoe" required />
+                                                            <input type="text" name="username" class="form-control" required />
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-3 col-form-label">Password</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="password" class="form-control" value="password123" required />
+                                            </div>
+
+                                            <!-- Password Change Section -->
+                                            <div class="row mb-4">
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-link ps-0" id="change-password-toggle">
+                                                        <i class="fas fa-key"></i> Change Password
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div id="password-change-fields" style="display: none;">
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-3 col-form-label">Current Password</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="password" name="current_password" id="current_password" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-3 col-form-label">New Password</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="password" name="new_password" id="new_password" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-3 col-form-label">Confirm Password</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="password" name="confirm_password" id="confirm_password" class="form-control">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1637,28 +1660,29 @@ $total_pages = ceil($total_managers / $limit);
                                         <button type="button" class="btn btn-light" id="cancel-edit-btn">Cancel</button>
                                     </div>
                                 </form>
+
                                 <div id="profile-view">
                                     <div class="row mb-4">
-                                        <div class="col-md-4 text-center">
-                                            <img src="assets/images/profile.jpg" alt="Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
+                                    <div class="col-md-4 text-center">
+                                        <img src="<?php echo isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : 'uploads/profile_picture/default-profile.jpg'; ?>" 
+                                            alt="Profile Picture" 
+                                            class="rounded-circle img-thumbnail profile-picture" 
+                                            style="width: 150px; height: 150px;">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="row mb-4">
                                                 <div class="col-md-6">
-                                                    <p><strong>First Name:</strong> John</p>
-                                                    <p><strong>Last Name:</strong> Doe</p>
+                                                    <p><strong>First Name:</strong> <span data-field="first_name"></span></p>
+                                                    <p><strong>Last Name:</strong> <span data-field="last_name"></span></p>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p><strong>Email:</strong> john.doe@example.com</p>
-                                                    <p><strong>Phone:</strong> +256 751 123 456</p>
+                                                    <p><strong>Email:</strong> <span data-field="email"></span></p>
+                                                    <p><strong>Phone:</strong> <span data-field="phone"></span></p>
                                                 </div>
                                             </div>
-                                            <div class="row mb-4">
+                                            <div class="row">
                                                 <div class="col-md-6">
-                                                    <p><strong>Username:</strong> johndoe</p>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p><strong>Password:</strong> ********</p>
+                                                    <p><strong>Username:</strong> <span data-field="username"></span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1679,6 +1703,8 @@ $total_pages = ceil($total_managers / $limit);
     <script src="assets/js/admin-dashboard.js"></script>
     <script src="assets/js/register.js"></script>
     <script src="assets/js/property.js"></script>
+    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/activity.js"></script>
     <script>
         $(document).ready(function() {
             $('.select2-multiple').select2({
