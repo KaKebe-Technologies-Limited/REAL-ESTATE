@@ -1,3 +1,119 @@
+class ImageUploadHandler {
+    constructor(inputId, previewContainerId, maxFiles = 5, maxFileSize = 5) {
+        this.input = document.getElementById(inputId);
+        this.previewContainer = document.getElementById(previewContainerId);
+        this.maxFiles = maxFiles;
+        this.maxFileSize = maxFileSize * 1024 * 1024; // Convert to bytes
+        this.selectedFiles = new Set();
+
+        if (this.input && this.previewContainer) {
+            this.initialize();
+        }
+    }
+
+    initialize() {
+        this.input.addEventListener('change', (e) => this.handleFileSelect(e));
+        this.setupDragAndDrop();
+    }
+
+    setupDragAndDrop() {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            this.previewContainer.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            this.previewContainer.addEventListener(eventName, () => {
+                this.previewContainer.classList.add('drag-over');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            this.previewContainer.addEventListener(eventName, () => {
+                this.previewContainer.classList.remove('drag-over');
+            });
+        });
+
+        this.previewContainer.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            this.handleFiles(files);
+        });
+    }
+
+    handleFileSelect(e) {
+        const files = Array.from(e.target.files);
+        this.handleFiles(files);
+    }
+
+    handleFiles(files) {
+        if (this.selectedFiles.size + files.length > this.maxFiles) {
+            alert(`You can only upload a maximum of ${this.maxFiles} images`);
+            return;
+        }
+
+        files.forEach(file => this.processFile(file));
+    }
+
+    processFile(file) {
+        if (!file.type.startsWith('image/')) {
+            alert(`${file.name} is not an image file`);
+            return;
+        }
+
+        if (file.size > this.maxFileSize) {
+            alert(`${file.name} is too large. Maximum file size is ${this.maxFileSize / 1024 / 1024}MB`);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => this.createPreviewElement(e.target.result, file);
+        reader.readAsDataURL(file);
+    }
+
+    createPreviewElement(previewUrl, file) {
+        const preview = document.createElement('div');
+        preview.className = 'image-preview';
+        preview.innerHTML = `
+            <img src="${previewUrl}" alt="Preview">
+            <button type="button" class="remove-image">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+
+        preview.querySelector('.remove-image').addEventListener('click', () => {
+            preview.remove();
+            this.selectedFiles.delete(file);
+            this.updateInputFiles();
+        });
+
+        this.previewContainer.appendChild(preview);
+        this.selectedFiles.add(file);
+        this.updateInputFiles();
+    }
+
+    updateInputFiles() {
+        const dataTransfer = new DataTransfer();
+        this.selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        this.input.files = dataTransfer.files;
+    }
+
+    getFiles() {
+        return Array.from(this.selectedFiles);
+    }
+
+    clear() {
+        this.selectedFiles.clear();
+        this.previewContainer.innerHTML = '';
+        this.updateInputFiles();
+    }
+}
+
+// Initialize image upload handlers for both forms
 document.addEventListener('DOMContentLoaded', function() {
     const countrySelect = document.getElementById('country');
     const inputs = {
@@ -191,36 +307,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Handle Rental Form
-    // const addRentalForm = document.getElementById('addRental');
-    // if (addRentalForm) {
-    //     addRentalForm.addEventListener('submit', function(e) {
-    //         e.preventDefault();
-    //         if (!document.getElementById('rental_owner_id')?.value) {
-    //             alert('Please select an owner');
-    //             return;
-    //         }
-
-    //         const formData = new FormData(addRentalForm);
-    //         submitForm(formData, 'http://localhost/REAL-ESTATE/add_rental.php', addRentalForm);
-    //     });
-    // }
-
-    // Handle Sales Form
-    // const addSaleForm = document.getElementById('addSales');
-    // if (addSaleForm) {
-    //     addSaleForm.addEventListener('submit', function(e) {
-    //         e.preventDefault();
-    //         if (!document.getElementById('sale_owner_id')?.value) {
-    //             alert('Please select an owner');
-    //             return;
-    //         }
-
-    //         const formData = new FormData(addSaleForm);
-    //         submitForm(formData, 'http://localhost/REAL-ESTATE/add_sales.php', addSaleForm);
-    //     });
-    // }
-
     // Fetch and populate owners and managers
     fetch('http://localhost/REAL-ESTATE/get_owners_managers.php')
         .then(response => {
@@ -279,30 +365,63 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessage.textContent = 'Failed to load owners and managers. Please refresh the page.';
             document.querySelector('.main-content')?.prepend(errorMessage);
         });
-});
+    });
 
-// Helper function for form submission
-// function submitForm(formData, endpoint, form) {
-//     fetch(`http://localhost/REAL-ESTATE/${endpoint}`, {
-//         method: 'POST',
-//         body: formData,
-//     })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error(`HTTP error! status: ${response.status}`);
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             if (data.success) {
-//                 alert('Property added successfully!');
-//                 form.reset();
-//             } else {
-//                 throw new Error(data.message || 'Unknown error occurred');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             alert(`An error occurred: ${error.message}`);
-//         });
-// }
+    const rentalImageHandler = new ImageUploadHandler('rental-images', 'rental-preview-container');
+    const saleImageHandler = new ImageUploadHandler('sale-images', 'sale-preview-container');
+
+    // Update form submission handlers
+    const addRentalForm = document.getElementById('addRental');
+    if (addRentalForm) {
+        addRentalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (rentalImageHandler.getFiles().length === 0) {
+                alert('Please select at least one image');
+                return;
+            }
+            submitPropertyForm(this, 'add_rental.php', rentalImageHandler);
+        });
+    }
+
+    const addSaleForm = document.getElementById('addSales');
+    if (addSaleForm) {
+        addSaleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (saleImageHandler.getFiles().length === 0) {
+                alert('Please select at least one image');
+                return;
+            }
+            submitPropertyForm(this, 'add_sales.php', saleImageHandler);
+        });
+    }
+
+function submitPropertyForm(form, endpoint, imageHandler) {
+    const formData = new FormData(form);
+    
+    // Add files to FormData
+    imageHandler.getFiles().forEach((file, index) => {
+        formData.append(`images[]`, file);
+    });
+
+    fetch(`http://localhost/REAL-ESTATE/${endpoint}`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Property added successfully!');
+            form.reset();
+            imageHandler.clear();
+        } else {
+            throw new Error(data.message || 'Unknown error occurred');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to add property: ' + error.message);
+    });
+}

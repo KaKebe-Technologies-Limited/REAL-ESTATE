@@ -1,81 +1,95 @@
-<?php 
-header('Content-Type: application/json');
+<?php
+require_once 'image_handler.php';
+require_once 'log_activity.php';
 
-// Enable error reporting for debugging
+header('Content-Type: application/json'); // Ensure JSON response
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_startup_errors', 1); 
 error_reporting(E_ALL);
 
-// Database connection
-$conn = new mysqli('localhost', 'root', '', 'allea');
-
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
-    exit;
-}
-
-// Retrieve form data
-$property_name = $_POST['property_name'] ?? '';
-$price = $_POST['price'] ?? '';
-$utilities = $_POST['utilities'] ?? '';
-$property_type = $_POST['property_type'] ?? '';
-$title = $_POST['title'] ?? '';
-$amenities = isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '';
-$property_size = $_POST['property_size'] ?? '';
-$owner_id = $_POST['owner_id'] ?? null;
-$manager_id = $_POST['manager_id'] ?? null;
-$country = $_POST['country'] ?? '';
-$region = $_POST['region'] ?? '';
-$subregion = $_POST['subregion'] ?? '';
-$parish = $_POST['parish'] ?? '';
-$ward = $_POST['ward'] ?? '';
-$cell = $_POST['cell'] ?? '';
-
-// Handle file uploads
-$uploaded_images = [];
-if (isset($_FILES['images'])) {
-    $upload_dir = 'uploads/sales';
-    foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-        $file_name = basename($_FILES['images']['name'][$key]);
-        $target_file = $upload_dir . $file_name;
-
-        if (move_uploaded_file($tmp_name, $target_file)) {
-            $uploaded_images[] = $target_file;
-        }
+try {
+    // Database connection
+    $conn = new mysqli('localhost', 'root', '', 'allea');
+    if ($conn->connect_error) {
+        throw new Exception('Database connection failed');
     }
+
+    // Handle image uploads
+    $imageHandler = new ImageHandler('sales');
+    $uploadResult = $imageHandler->handleImageUploads($_FILES);
+    
+    if (!$uploadResult['success']) {
+        throw new Exception('Failed to upload images: ' . implode(', ', $uploadResult['errors']));
+    }
+
+    // Prepare property data
+    $propertyData = [
+        'property_name' => $_POST['property_name'] ?? '',
+        'price' => $_POST['price'] ?? '',
+        'property_type' => $_POST['property_type'] ?? '',
+        'title' => $_POST['title'] ?? '',
+        'utilities' => $_POST['utilities'] ?? '',
+        'property_size' => $_POST['property_size'] ?? '',
+        'amenities' => isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '',
+        'country' => $_POST['country'] ?? '',
+        'region' => $_POST['region'] ?? '',
+        'subregion' => $_POST['subregion'] ?? '',
+        'parish' => $_POST['parish'] ?? '',
+        'ward' => $_POST['ward'] ?? '',
+        'cell' => $_POST['cell'] ?? '',
+        'owner_id' => $_POST['owner_id'] ?? null,
+        'manager_id' => $_POST['manager_id'] ?? null,
+        'images' => implode(',', $uploadResult['images'])
+    ];
+
+    // Insert into database
+    $query = "INSERT INTO sales_property (property_name, title, utilities, price, property_type, 
+                property_size, amenities, country, region, subregion, 
+                parish, ward, cell, owner_id, manager_id, images) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param(
+        'sssssisssssssiis',
+        $propertyData['property_name'],
+        $propertyData['title'],
+        $propertyData['utilities'],
+        $propertyData['price'],
+        $propertyData['property_type'],
+        $propertyData['property_size'],
+        $propertyData['amenities'],
+        $propertyData['country'],
+        $propertyData['region'],
+        $propertyData['subregion'],
+        $propertyData['parish'],
+        $propertyData['ward'],
+        $propertyData['cell'],
+        $propertyData['owner_id'],
+        $propertyData['manager_id'],
+        $propertyData['images']
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception('Failed to add sales property: ' . $stmt->error);
+    }
+
+    // Log the activity
+    logPropertyAdded($propertyData['property_name'], $propertyData['region'], 'sales');
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Sales property added successfully',
+        'images' => $uploadResult['images']
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
+} finally {
+    if (isset($stmt)) $stmt->close();
+    if (isset($conn)) $conn->close();
 }
 
-// Insert data into the database
-$query = "INSERT INTO sales_property (property_name, price, utilities, property_type, title, amenities, property_size, owner_id, manager_id, country, region, subregion, parish, ward, cell, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-$stmt = $conn->prepare($query);
-$images = implode(',', $uploaded_images);
-$stmt->bind_param(
-    'sssssssiisssssss',
-    $property_name,
-    $price,
-    $utilities,
-    $property_type,
-    $title,
-    $amenities,
-    $property_size,
-    $owner_id,
-    $manager_id,
-    $country,
-    $region,
-    $subregion,
-    $parish,
-    $ward,
-    $cell,
-    $images
-);
-
-if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'Property added successfully']);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Failed to add property']);
-}
-
-$stmt->close();
-$conn->close();
 ?>
