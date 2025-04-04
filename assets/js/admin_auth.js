@@ -3,7 +3,7 @@ document.getElementById('adminLogin').addEventListener('submit', function (e) {
 
     const formData = new FormData(this);
 
-    fetch('http://localhost/REAL-ESTATE/login.php', {
+    fetch('https://eastafricanlandandrentals.net/login.php', {
         method: 'POST',
         body: formData
     })
@@ -11,7 +11,7 @@ document.getElementById('adminLogin').addEventListener('submit', function (e) {
         .then(data => {
             if(data.success) {
                 alert(data.message);
-                window.location.href = 'http://localhost/REAL-ESTATE/adminDashboard.php';
+                window.location.href = 'https://eastafricanlandandrentals.net/adminDashboard.php';
             } else {
                 alert(data.message);
             }
