@@ -1218,7 +1218,7 @@ $total_pages = ceil($total_managers / $limit);
                                     <h4 class="card-title">Rental Properties</h4>
                                     <div class="d-flex gap-2">
                                         <div class="search-box">
-                                            <input type="text" class="form-control" placeholder="Search properties...">
+                                            <input type="text" class="form-control" placeholder="Search..." data-type="rentals">
                                         </div>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-filter"></i> Filter
@@ -1312,7 +1312,7 @@ $total_pages = ceil($total_managers / $limit);
                                     <h4 class="card-title">Sales Properties</h4>
                                     <div class="d-flex gap-2">
                                         <div class="search-box">
-                                            <input type="text" class="form-control" placeholder="Search properties...">
+                                            <input type="text" class="form-control" placeholder="Search..." data-type="sales">
                                         </div>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-filter"></i> Filter
@@ -1406,7 +1406,7 @@ $total_pages = ceil($total_managers / $limit);
                                     <h4 class="card-title">Property Owners</h4>
                                     <div class="d-flex gap-2">
                                         <div class="search-box">
-                                            <input type="text" class="form-control" placeholder="Search owners...">
+                                            <input type="text" class="form-control" placeholder="Search..." data-type="owners">
                                         </div>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-filter"></i> Filter
@@ -1484,7 +1484,7 @@ $total_pages = ceil($total_managers / $limit);
                                     <h4 class="card-title">Property Managers</h4>
                                     <div class="d-flex gap-2">
                                         <div class="search-box">
-                                            <input type="text" class="form-control" placeholder="Search managers...">
+                                            <input type="text" class="form-control" placeholder="Search..." data-type="managers">
                                         </div>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-filter"></i> Filter
@@ -1710,7 +1710,7 @@ $total_pages = ceil($total_managers / $limit);
     <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
     <script src="assets/js/admin-dashboard.js"></script>
     <script src="assets/js/register.js"></script>
-    <!-- <script src="assets/js/property.js"></script> -->
+    <script src="assets/js/search.js"></script>
     <script src="assets/js/profile.js"></script>
     <script src="assets/js/activity.js"></script>
     <script src="assets/js/imageupload.js"></script>
