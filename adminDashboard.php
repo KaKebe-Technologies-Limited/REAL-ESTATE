@@ -1253,17 +1253,26 @@ $total_pages = ceil($total_managers / $limit);
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-sm btn-outline-primary">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button>
-                                                                <button class="btn btn-sm btn-outline-warning">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </button>
-                                                                <button class="btn btn-sm btn-outline-danger">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </div>
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-sm btn-outline-primary view-property" 
+                                                                    data-id="<?php echo isset($rental['property_id']) ? htmlspecialchars($rental['property_id']) : ''; ?>" 
+                                                                    data-bs-toggle="modal" 
+                                                                    data-bs-target="#viewPropertyModal">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-warning edit-property" 
+                                                                    data-id="<?php echo isset($rental['property_id']) ? htmlspecialchars($rental['property_id']) : ''; ?>" 
+                                                                    data-bs-toggle="modal" 
+                                                                    data-bs-target="#editPropertyModal">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger delete-property" 
+                                                                    data-id="<?php echo isset($rental['property_id']) ? htmlspecialchars($rental['property_id']) : ''; ?>" 
+                                                                    data-bs-toggle="modal" 
+                                                                    data-bs-target="#deletePropertyModal">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -1705,6 +1714,73 @@ $total_pages = ceil($total_managers / $limit);
 
     </div>
 
+    <!-- View Property Modal -->
+    <div class="modal fade" id="viewPropertyModal" tabindex="-1" aria-labelledby="viewPropertyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewPropertyModalLabel">Property Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="propertyDetails">
+                        <!-- Property details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Property Modal -->
+    <div class="modal fade" id="editPropertyModal" tabindex="-1" aria-labelledby="editPropertyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPropertyModalLabel">Edit Property</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPropertyForm">
+                        <input type="hidden" id="editPropertyId" name="property_id">
+                        <!-- Add your form fields here -->
+                        <div class="mb-3">
+                            <label for="editPropertyName" class="form-label">Property Name</label>
+                            <input type="text" class="form-control" id="editPropertyName" name="property_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPropertyPrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="editPropertyPrice" name="price" required>
+                        </div>
+                        <!-- Add more fields as needed -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Property Modal -->
+    <div class="modal fade" id="deletePropertyModal" tabindex="-1" aria-labelledby="deletePropertyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePropertyModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this property? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
@@ -1714,6 +1790,7 @@ $total_pages = ceil($total_managers / $limit);
     <script src="assets/js/profile.js"></script>
     <script src="assets/js/activity.js"></script>
     <script src="assets/js/imageupload.js"></script>
+    <script src="assets/js/property-management.js"></script>
     <script>
         $(document).ready(function() {
             $('.select2-multiple').select2({

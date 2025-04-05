@@ -10,10 +10,9 @@ document.getElementById('adminLogin').addEventListener('submit', function (e) {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert(data.message);
                 window.location.href = 'http://localhost/REAL-ESTATE/adminDashboard.php';
             } else {
-                alert(data.message);
+                console.log(data.message);
             }
         })
         .catch(error => console.error('Error: ', error))

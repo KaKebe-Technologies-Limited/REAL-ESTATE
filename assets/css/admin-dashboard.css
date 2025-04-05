@@ -469,6 +469,11 @@ body {
     color: #ffc107;
 }
 
+.bg-soft-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
 .bg-soft-success {
     background-color: rgba(40, 167, 69, 0.1);
     color: #28a745;

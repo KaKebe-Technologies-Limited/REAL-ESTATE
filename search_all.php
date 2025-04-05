@@ -75,7 +75,7 @@ function searchDatabase($type, $search, $page = 1, $limit = 10) {
                 o.username LIKE ? OR
                 m.username LIKE ? OR
                 s.region LIKE ? OR
-                s.country LIKE ?";
+                s.country LIKE ?"; 
 
             $stmt = $conn->prepare($query);
             $countStmt = $conn->prepare($countQuery);

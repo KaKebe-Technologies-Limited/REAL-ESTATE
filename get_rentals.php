@@ -17,7 +17,7 @@ $total_result = $conn->query($total_query);
 $total_rentals = $total_result->fetch_assoc()['total'];
 
 // Fetch rental properties with pagination
-$query = "SELECT property_name, owner_id, manager_id, CONCAT(parish, ', ', ward) AS location, price, property_class 
+$query = "SELECT property_id, property_name, owner_id, manager_id, CONCAT(parish, ', ', ward) AS location, price, property_class 
             FROM rental_property 
             LIMIT $limit OFFSET $offset";
 $result = $conn->query($query);
@@ -37,6 +37,7 @@ if ($result->num_rows > 0) {
 
         // Combine data
         $rentals[] = [
+            'property_id' => $row['property_id'],
             'property_name' => $row['property_name'],
             'owner_name' => $owner_name,
             'manager_name' => $manager_name,

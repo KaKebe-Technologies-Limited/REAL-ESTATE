@@ -42,6 +42,28 @@ function logOwnerRegistered($owner_name) {
     );
 }
 
+// Log property deletion
+function logPropertyDeleted($property_name, $location) {
+    logActivity(
+        'property_registered',
+        'Property Deleted',
+        "$property_name in $location",
+        'fas fa-trash',
+        'bg-soft-warning'
+    );
+}
+
+// Log property updated
+function logPropertyUpdated($property_name, $location) {
+    logActivity(
+        'property_registered',
+        'Property Updated',
+        "$property_name in $location",
+        'fas fa-trash',
+        'bg-soft-warning'
+    );
+}
+
 // Log manager registration
 function logManagerRegistered($manager_name) {
     logActivity(
