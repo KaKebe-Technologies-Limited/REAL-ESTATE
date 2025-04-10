@@ -1,0 +1,150 @@
+/* Modern Styles */
+:root {
+    /* --primary-color: #4361ee;
+    --secondary-color: #3f37c9; */
+    --success-color: #4cd964;
+    --danger-color: #ff3b30;
+    --background-color: #f8f9fa;
+    --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: var(--card-shadow);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1.5rem;
+}
+
+.modal-header .btn-close {
+    color: white;
+    filter: brightness(0) invert(1);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    border-color: var(--primary-color);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.profile-image-wrapper {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.profile-image-wrapper img {
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease;
+}
+
+.profile-image-wrapper img:hover {
+    transform: scale(1.05);
+}
+
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #ff1a1a;
+    transform: translateY(-2px);
+}
+
+.card {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: var(--card-shadow);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Custom Select Styling */
+.form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    background-position: right 1rem center;
+}
+
+/* Password Change Toggle Button */
+#change-password-toggle {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 0;
+}
+
+#change-password-toggle:hover {
+    color: var(--secondary-color);
+}
+
+/* Profile View Styling */
+#profile-view {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.profile-picture {
+    box-shadow: var(--card-shadow);
+    border: 4px solid white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .form-group row {
+        margin-bottom: 1rem;
+    }
+    
+    .col-form-label {
+        padding-bottom: 0.5rem;
+    }
+}
