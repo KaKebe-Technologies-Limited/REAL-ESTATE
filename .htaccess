@@ -13,6 +13,27 @@ RewriteCond %{REQUEST_URI} ^/owner_login\.php$ [OR]
 RewriteCond %{REQUEST_URI} ^/manager_login\.php$
 RewriteRule .* - [R=404,L]
 
+# Fix image paths with multiple REAL-ESTATE directories
+RewriteCond %{REQUEST_URI} ^/REAL-ESTATE/REAL-ESTATE
+RewriteRule ^REAL-ESTATE/REAL-ESTATE(.*)$ /REAL-ESTATE$1 [R=301,L]
+
+# Set proper MIME types for images
+AddType image/jpeg .jpg .jpeg
+AddType image/png .png
+AddType image/gif .gif
+
+# Enable CORS for images
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+
+    # Cache control for images
+    <FilesMatch "\.(jpg|jpeg|png|gif)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+</IfModule>
+
 # PHP error handling
 php_flag display_errors on
 php_value error_reporting E_ALL

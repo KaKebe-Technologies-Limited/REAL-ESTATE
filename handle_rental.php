@@ -49,6 +49,10 @@ try {
                     $rental['image_urls'] = array_map(function($img) {
                         // Make sure the path starts with 'uploads/'
                         $img = trim($img);
+
+                        // First, remove any existing /REAL-ESTATE prefixes to prevent duplication
+                        $img = preg_replace('#^(/REAL-ESTATE)+/?#i', '/', $img);
+
                         if (strpos($img, 'uploads/') !== 0 && strpos($img, '/uploads/') !== 0) {
                             // If it's an old path (just 'rentals/'), update it
                             if (strpos($img, 'rentals/') === 0) {
@@ -57,14 +61,15 @@ try {
                                 $img = '/uploads' . $img;
                             }
                         }
-                        // Ensure it has the correct URL format for the REAL-ESTATE project
-                        if (strpos($img, '/') === 0) {
-                            // If it starts with a slash, add the project name
-                            return '/REAL-ESTATE' . $img;
-                        } else {
-                            // Otherwise add both the project name and a slash
-                            return '/REAL-ESTATE/' . $img;
+
+                        // Use absolute paths with domain name to prevent path issues
+                        // First ensure the path starts with a slash
+                        if (strpos($img, '/') !== 0) {
+                            $img = '/' . $img;
                         }
+
+                        // Return the path with a single /REAL-ESTATE prefix
+                        return '/REAL-ESTATE' . $img;
                     }, explode(',', $rental['images']));
                 }
 
