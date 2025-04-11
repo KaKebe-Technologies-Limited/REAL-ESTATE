@@ -58,10 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const formData = new FormData(this);
 
-        // Get the base URL to handle both localhost and live site
-        const baseUrl = window.location.href.includes('localhost') ? '' : '/REAL-ESTATE/';
-
-        fetch(baseUrl + 'update_user_profile.php', {
+        fetch(AppConfig.getApiUrl('update_user_profile.php'), {
             method: 'POST',
             body: formData
         })
@@ -90,10 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadUserProfile() {
-    // Get the base URL to handle both localhost and live site
-    const baseUrl = window.location.href.includes('localhost') ? '' : '/REAL-ESTATE/';
-
-    fetch(baseUrl + 'get_user_profile.php')
+    fetch(AppConfig.getApiUrl('get_user_profile.php'))
         .then(response => response.json())
         .then(data => {
             if (data.success) {

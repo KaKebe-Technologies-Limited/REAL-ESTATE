@@ -308,10 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Fetch and populate owners and managers
-    // Get the base URL to handle both localhost and live site
-    const baseUrl = window.location.href.includes('localhost') ? '' : '/REAL-ESTATE/';
-
-    fetch(baseUrl + 'get_owners_managers.php')
+    fetch(AppConfig.getApiUrl('get_owners_managers.php'))
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

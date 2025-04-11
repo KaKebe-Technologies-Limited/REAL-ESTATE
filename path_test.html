@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .result {
+            margin-top: 15px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+    <!-- Include the configuration file -->
+    <script src="assets/js/config.js"></script>
+</head>
+<body>
+    <h1>Path Test</h1>
+    <p>This page tests various path configurations to help diagnose issues with API endpoints.</p>
+    
+    <div class="test-section">
+        <h2>Configuration Information</h2>
+        <div id="config-info" class="result">
+            <pre>Loading configuration information...</pre>
+        </div>
+        <button id="test-config">Refresh Configuration</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Server Path Information</h2>
+        <button id="test-server-paths">Test Server Paths</button>
+        <div id="server-paths-result" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>API Endpoint Tests</h2>
+        <div class="api-tests">
+            <h3>User Profile API</h3>
+            <button class="test-api" data-endpoint="get_user_profile.php">Test get_user_profile.php</button>
+            <div class="api-result" data-endpoint="get_user_profile.php">
+                <pre>Results will appear here...</pre>
+            </div>
+            
+            <h3>Owners and Managers API</h3>
+            <button class="test-api" data-endpoint="get_owners_managers.php">Test get_owners_managers.php</button>
+            <div class="api-result" data-endpoint="get_owners_managers.php">
+                <pre>Results will appear here...</pre>
+            </div>
+            
+            <h3>Path Debug API</h3>
+            <button class="test-api" data-endpoint="path_debug.php">Test path_debug.php</button>
+            <div class="api-result" data-endpoint="path_debug.php">
+                <pre>Results will appear here...</pre>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Manual URL Tests</h2>
+        <p>Enter a URL to test:</p>
+        <div style="display: flex; margin-bottom: 15px;">
+            <input type="text" id="manual-url" style="flex: 1; padding: 8px; margin-right: 10px;" placeholder="Enter URL (e.g., get_user_profile.php)">
+            <button id="test-manual-url">Test URL</button>
+        </div>
+        <div id="manual-url-result" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <script>
+        // Display configuration information
+        function displayConfigInfo() {
+            const configInfo = {
+                baseUrl: AppConfig.baseUrl,
+                hostname: window.location.hostname,
+                pathname: window.location.pathname,
+                href: window.location.href,
+                protocol: window.location.protocol,
+                port: window.location.port,
+                apiUrlExample: AppConfig.getApiUrl('example.php'),
+                imageUrlExample: AppConfig.getImageUrl('example.jpg')
+            };
+            
+            document.getElementById('config-info').querySelector('pre').textContent = JSON.stringify(configInfo, null, 2);
+        }
+        
+        // Test server paths
+        document.getElementById('test-server-paths').addEventListener('click', function() {
+            fetch(AppConfig.getApiUrl('path_debug.php'))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        throw new Error('Server returned invalid JSON: ' + text);
+                    }
+                })
+                .then(data => {
+                    document.getElementById('server-paths-result').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('server-paths-result').querySelector('pre').textContent = 'Error: ' + error.message;
+                });
+        });
+        
+        // Test API endpoints
+        document.querySelectorAll('.test-api').forEach(button => {
+            button.addEventListener('click', function() {
+                const endpoint = this.getAttribute('data-endpoint');
+                const resultElement = document.querySelector(`.api-result[data-endpoint="${endpoint}"]`).querySelector('pre');
+                
+                resultElement.textContent = 'Loading...';
+                
+                fetch(AppConfig.getApiUrl(endpoint))
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(text => {
+                        try {
+                            return JSON.parse(text);
+                        } catch (e) {
+                            console.error('Failed to parse JSON:', e);
+                            throw new Error('Server returned invalid JSON: ' + text);
+                        }
+                    })
+                    .then(data => {
+                        resultElement.textContent = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => {
+                        resultElement.textContent = 'Error: ' + error.message;
+                    });
+            });
+        });
+        
+        // Test manual URL
+        document.getElementById('test-manual-url').addEventListener('click', function() {
+            const url = document.getElementById('manual-url').value;
+            const resultElement = document.getElementById('manual-url-result').querySelector('pre');
+            
+            if (!url) {
+                resultElement.textContent = 'Please enter a URL to test';
+                return;
+            }
+            
+            resultElement.textContent = 'Loading...';
+            
+            // Try different URL combinations
+            const urlVariations = [
+                url,                           // As entered
+                AppConfig.getApiUrl(url),      // With config base URL
+                '/' + url,                     // With leading slash
+                '/REAL-ESTATE/' + url,         // With REAL-ESTATE directory
+                '../' + url                    // Parent directory
+            ];
+            
+            // Create a table of results
+            let resultsTable = '<table><tr><th>URL</th><th>Status</th><th>Response</th></tr>';
+            
+            // Test each URL variation
+            Promise.all(urlVariations.map(testUrl => {
+                return fetch(testUrl)
+                    .then(response => {
+                        return {
+                            url: testUrl,
+                            status: response.status,
+                            ok: response.ok,
+                            response: response.text()
+                        };
+                    })
+                    .then(result => {
+                        return result.response.then(text => {
+                            result.responseText = text;
+                            return result;
+                        });
+                    })
+                    .catch(error => {
+                        return {
+                            url: testUrl,
+                            status: 'Error',
+                            ok: false,
+                            responseText: error.message
+                        };
+                    });
+            }))
+            .then(results => {
+                results.forEach(result => {
+                    const statusClass = result.ok ? 'success' : 'error';
+                    const responsePreview = result.responseText.substring(0, 100) + (result.responseText.length > 100 ? '...' : '');
+                    
+                    resultsTable += `<tr>
+                        <td>${result.url}</td>
+                        <td class="${statusClass}">${result.status}</td>
+                        <td><pre style="max-height: 100px;">${responsePreview}</pre></td>
+                    </tr>`;
+                });
+                
+                resultsTable += '</table>';
+                resultElement.innerHTML = resultsTable;
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error testing URLs: ' + error.message;
+            });
+        });
+        
+        // Refresh configuration
+        document.getElementById('test-config').addEventListener('click', displayConfigInfo);
+        
+        // Initialize
+        displayConfigInfo();
+    </script>
+</body>
+</html>
