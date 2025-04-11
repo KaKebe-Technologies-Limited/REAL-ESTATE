@@ -6,26 +6,16 @@ class ImageHandler {
     private $uploadDir;
 
     public function __construct($subDirectory = 'rentals') {
-        // Check if we're on localhost or live site
-        $serverName = strtolower($_SERVER['SERVER_NAME'] ?? 'localhost');
-        $isLocalhost = strpos($serverName, 'localhost') !== false || $serverName === '127.0.0.1';
-
-        // Base directory depends on environment
-        $baseDir = $isLocalhost ? 'uploads' : 'uploads';
-
         // Create the uploads directory if it doesn't exist
-        if (!file_exists($baseDir)) {
-            mkdir($baseDir, 0777, true);
+        if (!file_exists('uploads')) {
+            mkdir('uploads', 0777, true);
         }
 
         // Create the subdirectory if it doesn't exist
-        $this->uploadDir = $baseDir . '/' . $subDirectory;
+        $this->uploadDir = 'uploads/' . $subDirectory;
         if (!file_exists($this->uploadDir)) {
             mkdir($this->uploadDir, 0777, true);
         }
-
-        // Log the upload directory for debugging
-        error_log("Upload directory: {$this->uploadDir} (Server: {$serverName}, Localhost: " . ($isLocalhost ? 'Yes' : 'No') . ")");
     }
 
     private function ensureDirectoryExists() {
@@ -109,14 +99,9 @@ class ImageHandler {
 
                 if (move_uploaded_file($files['tmp_name'][$key], $filepath)) {
                     // Store the path relative to web root
-                    // We store the path without the REAL-ESTATE prefix for consistency
-                    // The path will be adjusted when displaying images based on environment
-                    $relativePath = $filepath;
-                    $uploadedImages[] = $relativePath;
-                    error_log("Uploaded image: {$relativePath}");
+                    $uploadedImages[] = $filepath;
                 } else {
                     $errors[] = "Failed to move uploaded file: $name";
-                    error_log("Failed to move uploaded file: {$name} to {$filepath}");
                 }
             } else {
                 $errors[] = "Error uploading file: $name";

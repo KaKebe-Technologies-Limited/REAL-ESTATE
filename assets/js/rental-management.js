@@ -365,27 +365,18 @@ document.getElementById('editRentalForm')?.addEventListener('submit', function(e
         console.log(`${key}: ${value}`);
     }
 
-    // Debug log all form data
-    console.log('Form data being sent:');
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
     fetch('handle_rental.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => {
-        console.log('Response status:', response.status);
-        return response.text();
-    })
+    .then(response => response.text())  // First get the raw response
     .then(text => {
-        console.log('Raw response:', text);
+        console.log('Raw response:', text);  // Log the raw response
         try {
-            return JSON.parse(text);
+            return JSON.parse(text);  // Then try to parse it
         } catch (e) {
             console.error('Failed to parse JSON:', e);
-            throw new Error('Server returned invalid JSON: ' + text);
+            throw new Error('Server returned invalid JSON');
         }
     })
     .then(data => {

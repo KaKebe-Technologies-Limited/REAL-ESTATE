@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Fetch and populate owners and managers
-    fetch(AppConfig.getApiUrl('get_owners_managers.php'))
+    fetch('get_owners_managers.php')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

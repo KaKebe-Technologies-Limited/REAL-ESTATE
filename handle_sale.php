@@ -26,20 +26,8 @@ try {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
 
-    // Get action from POST or GET as a fallback
-    $action = '';
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-    } elseif (isset($_GET['action'])) {
-        $action = $_GET['action'];
-    } elseif (isset($_REQUEST['action'])) {
-        $action = $_REQUEST['action'];
-    }
-
-    // Log the action and the entire request for debugging
+    $action = $_POST['action'] ?? '';
     error_log("Action received: " . $action);
-    error_log("REQUEST data: " . print_r($_REQUEST, true));
-    error_log("Raw POST data: " . file_get_contents('php://input'));
 
     switch($action) {
         case 'view':
@@ -58,24 +46,9 @@ try {
             if ($sale) {
                 // Convert image paths to URLs
                 if (!empty($sale['images'])) {
-                    // Get the base URL for the current environment
-                    $baseUrl = '';
-
-                    // Check if we're on localhost or live site
-                    $serverName = strtolower($_SERVER['SERVER_NAME']);
-                    $isLocalhost = strpos($serverName, 'localhost') !== false || $serverName === '127.0.0.1';
-
-                    // Log server information for debugging
-                    error_log("Server name: {$serverName}, Is localhost: " . ($isLocalhost ? 'true' : 'false'));
-
-                    $sale['image_urls'] = array_map(function($img) use ($isLocalhost) {
-                        // Clean up the image path
+                    $sale['image_urls'] = array_map(function($img) {
+                        // Make sure the path starts with 'uploads/'
                         $img = trim($img);
-
-                        // Remove any existing /REAL-ESTATE prefixes
-                        $img = preg_replace('#^(/REAL-ESTATE)+/?#i', '/', $img);
-
-                        // Normalize the path to ensure it starts with uploads/
                         if (strpos($img, 'uploads/') !== 0 && strpos($img, '/uploads/') !== 0) {
                             // If it's an old path (just 'sales/'), update it
                             if (strpos($img, 'sales/') === 0) {
@@ -84,21 +57,15 @@ try {
                                 $img = '/uploads' . $img;
                             }
                         }
-
-                        // Remove any leading slash for consistency
-                        $img = ltrim($img, '/');
-
-                        // For localhost, we need to add the /REAL-ESTATE prefix
-                        // For live site, we use the path as is
-                        if ($isLocalhost) {
-                            return '/REAL-ESTATE/' . $img;
+                        // Ensure it has the correct URL format for the REAL-ESTATE project
+                        if (strpos($img, '/') === 0) {
+                            // If it starts with a slash, add the project name
+                            return '/REAL-ESTATE' . $img;
                         } else {
-                            return '/' . $img;
+                            // Otherwise add both the project name and a slash
+                            return '/REAL-ESTATE/' . $img;
                         }
                     }, explode(',', $sale['images']));
-
-                    // Log the image URLs for debugging
-                    error_log("Image URLs: " . print_r($sale['image_urls'], true));
                 }
                 $response['success'] = true;
                 $response['data'] = $sale;

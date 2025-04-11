@@ -20,20 +20,7 @@ try {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
 
-    // Get action from POST or GET as a fallback
-    $action = '';
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-    } elseif (isset($_GET['action'])) {
-        $action = $_GET['action'];
-    } elseif (isset($_REQUEST['action'])) {
-        $action = $_REQUEST['action'];
-    }
-
-    // Log the action and the entire request for debugging
-    error_log("Action received: " . $action);
-    error_log("REQUEST data: " . print_r($_REQUEST, true));
-    error_log("Raw POST data: " . file_get_contents('php://input'));
+    $action = $_POST['action'] ?? '';
 
     switch($action) {
         case 'view':

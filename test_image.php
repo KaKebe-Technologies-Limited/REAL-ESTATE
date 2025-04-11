@@ -21,21 +21,10 @@ if ($result->num_rows > 0) {
     echo "<h2>Property ID: $property_id</h2>";
     echo "<p>Raw image paths from database: $images</p>";
 
-    // Process images with environment detection
-    // Check if we're on localhost or live site
-    $serverName = strtolower($_SERVER['SERVER_NAME']);
-    $isLocalhost = strpos($serverName, 'localhost') !== false || $serverName === '127.0.0.1';
-
-    echo "<p>Server: $serverName, Is localhost: " . ($isLocalhost ? 'Yes' : 'No') . "</p>";
-
-    $image_urls = array_map(function($img) use ($isLocalhost) {
-        // Clean up the image path
+    // Process images like in handle_rental.php
+    $image_urls = array_map(function($img) {
+        // Make sure the path starts with 'uploads/'
         $img = trim($img);
-
-        // Remove any existing /REAL-ESTATE prefixes
-        $img = preg_replace('#^(/REAL-ESTATE)+/?#i', '/', $img);
-
-        // Normalize the path to ensure it starts with uploads/
         if (strpos($img, 'uploads/') !== 0 && strpos($img, '/uploads/') !== 0) {
             // If it's an old path (just 'rentals/'), update it
             if (strpos($img, 'rentals/') === 0) {
@@ -44,16 +33,13 @@ if ($result->num_rows > 0) {
                 $img = '/uploads' . $img;
             }
         }
-
-        // Remove any leading slash for consistency
-        $img = ltrim($img, '/');
-
-        // For localhost, we need to add the /REAL-ESTATE prefix
-        // For live site, we use the path as is
-        if ($isLocalhost) {
-            return '/REAL-ESTATE/' . $img;
+        // Ensure it has the correct URL format for the REAL-ESTATE project
+        if (strpos($img, '/') === 0) {
+            // If it starts with a slash, add the project name
+            return '/REAL-ESTATE' . $img;
         } else {
-            return '/' . $img;
+            // Otherwise add both the project name and a slash
+            return '/REAL-ESTATE/' . $img;
         }
     }, explode(',', $images));
 
