@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Parameter Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .result {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Action Parameter Test</h1>
+    <p>This page tests different ways of sending the action parameter to the server.</p>
+    
+    <div class="test-section">
+        <h2>Test 1: FormData with POST</h2>
+        <button id="test1">Run Test</button>
+        <div id="result1" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: URL-encoded with POST</h2>
+        <button id="test2">Run Test</button>
+        <div id="result2" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: JSON with POST</h2>
+        <button id="test3">Run Test</button>
+        <div id="result3" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Query Parameter with GET</h2>
+        <button id="test4">Run Test</button>
+        <div id="result4" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 5: Test Rental Handler</h2>
+        <button id="test5">Run Test</button>
+        <div id="result5" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 6: Test Sale Handler</h2>
+        <button id="test6">Run Test</button>
+        <div id="result6" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 7: Test Owner Handler</h2>
+        <button id="test7">Run Test</button>
+        <div id="result7" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 8: Test Manager Handler</h2>
+        <button id="test8">Run Test</button>
+        <div id="result8" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Test 1: FormData with POST
+        document.getElementById('test1').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('action', 'test_action');
+            formData.append('param1', 'value1');
+            formData.append('param2', 'value2');
+            
+            fetch('action_test.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result1').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result1').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 2: URL-encoded with POST
+        document.getElementById('test2').addEventListener('click', function() {
+            fetch('action_test.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'action=test_action&param1=value1&param2=value2'
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result2').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result2').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 3: JSON with POST
+        document.getElementById('test3').addEventListener('click', function() {
+            fetch('action_test.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'test_action',
+                    param1: 'value1',
+                    param2: 'value2'
+                })
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result3').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result3').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 4: Query Parameter with GET
+        document.getElementById('test4').addEventListener('click', function() {
+            fetch('action_test.php?action=test_action&param1=value1&param2=value2', {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result4').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result4').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 5: Test Rental Handler
+        document.getElementById('test5').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('action', 'get_managers');
+            
+            fetch('handle_rental.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result5').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result5').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 6: Test Sale Handler
+        document.getElementById('test6').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('action', 'get_managers');
+            
+            fetch('handle_sale.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result6').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result6').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 7: Test Owner Handler
+        document.getElementById('test7').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('action', 'list');
+            
+            fetch('handle_owner.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result7').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result7').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+        
+        // Test 8: Test Manager Handler
+        document.getElementById('test8').addEventListener('click', function() {
+            const formData = new FormData();
+            formData.append('action', 'list');
+            
+            fetch('handle_manager.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                    throw new Error('Server returned invalid JSON: ' + text);
+                }
+            })
+            .then(data => {
+                document.getElementById('result8').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('result8').querySelector('pre').textContent = 'Error: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>

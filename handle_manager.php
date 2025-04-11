@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json'); // Ensure JSON response
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1); 
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 
@@ -15,13 +15,26 @@ if (!file_exists($upload_dir)) {
 
 try {
     $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    
+
     if ($conn->connect_error) {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
 
-    $action = $_POST['action'] ?? '';
-    
+    // Get action from POST or GET as a fallback
+    $action = '';
+    if (isset($_POST['action'])) {
+        $action = $_POST['action'];
+    } elseif (isset($_GET['action'])) {
+        $action = $_GET['action'];
+    } elseif (isset($_REQUEST['action'])) {
+        $action = $_REQUEST['action'];
+    }
+
+    // Log the action and the entire request for debugging
+    error_log("Action received: " . $action);
+    error_log("REQUEST data: " . print_r($_REQUEST, true));
+    error_log("Raw POST data: " . file_get_contents('php://input'));
+
     switch($action) {
         case 'view':
             $manager_id = $_POST['manager_id'] ?? 0;
@@ -31,7 +44,7 @@ try {
             $stmt->execute();
             $result = $stmt->get_result();
             $manager = $result->fetch_assoc();
-            
+
             if ($manager) {
                 $response['success'] = true;
                 $response['data'] = $manager;
@@ -63,28 +76,28 @@ try {
             // Handle profile picture upload
             $profile_picture_update = "";
             $profile_picture_params = [];
-            
+
             if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === 0) {
                 $upload_dir = 'uploads/managers/';
                 if (!file_exists($upload_dir)) {
                     mkdir($upload_dir, 0777, true);
                 }
-                
+
                 // Get file extension and create new filename
                 $file_extension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
                 $file_name = 'manager_' . $manager_id . '_' . time() . '.' . $file_extension;
                 $target_path = $upload_dir . $file_name;
-                
+
                 // Get old image path before uploading new one
                 $stmt = $conn->prepare("SELECT profile_picture FROM property_manager WHERE manager_id = ?");
                 $stmt->bind_param("i", $manager_id);
                 $stmt->execute();
                 $old_image = $stmt->get_result()->fetch_assoc()['profile_picture'];
-                
+
                 if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $target_path)) {
                     $profile_picture_update = ", profile_picture = ?";
                     $profile_picture_params[] = $target_path;
-                    
+
                     // Delete old image if it exists
                     if (!empty($old_image) && file_exists($old_image)) {
                         unlink($old_image);
@@ -93,7 +106,7 @@ try {
             }
 
             // Build query
-            $query = "UPDATE property_manager SET 
+            $query = "UPDATE property_manager SET
                 first_name = ?,
                 last_name = ?,
                 email = ?,
@@ -151,14 +164,14 @@ try {
                 $check_stmt->bind_param("i", $manager_id);
                 $check_stmt->execute();
                 $current_data = $check_stmt->get_result()->fetch_assoc();
-                
-                if ($current_data['first_name'] === $first_name && 
-                    $current_data['last_name'] === $last_name && 
-                    $current_data['email'] === $email && 
-                    $current_data['phone'] === $phone && 
-                    $current_data['username'] === $username && 
-                    $current_data['id_type'] === $id_type && 
-                    $current_data['id_num'] === $id_num && 
+
+                if ($current_data['first_name'] === $first_name &&
+                    $current_data['last_name'] === $last_name &&
+                    $current_data['email'] === $email &&
+                    $current_data['phone'] === $phone &&
+                    $current_data['username'] === $username &&
+                    $current_data['id_type'] === $id_type &&
+                    $current_data['id_num'] === $id_num &&
                     $current_data['address'] === $address) {
                     $response['success'] = true;
                     $response['message'] = 'No changes were necessary';
@@ -170,10 +183,10 @@ try {
 
         case 'delete':
             $manager_id = $_POST['manager_id'] ?? 0;
-            
+
             // Start transaction
             $conn->begin_transaction();
-            
+
             try {
                 // Get image path before deleting
                 $stmt = $conn->prepare("SELECT profile_picture FROM property_manager WHERE manager_id = ?");
@@ -181,22 +194,22 @@ try {
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $manager = $result->fetch_assoc();
-                
+
                 // Update properties to remove manager reference
                 $stmt = $conn->prepare("UPDATE rental_property SET manager_id = NULL WHERE manager_id = ?");
                 $stmt->bind_param("i", $manager_id);
                 $stmt->execute();
-                
+
                 // Delete the manager
                 $stmt = $conn->prepare("DELETE FROM property_manager WHERE manager_id = ?");
                 $stmt->bind_param("i", $manager_id);
                 $stmt->execute();
-                
+
                 // Delete the image file if it exists
                 if ($manager && $manager['profile_picture'] && file_exists($manager['profile_picture'])) {
                     unlink($manager['profile_picture']);
                 }
-                
+
                 $conn->commit();
                 $response['success'] = true;
                 $response['message'] = 'Manager deleted successfully';
