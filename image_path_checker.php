@@ -8,7 +8,7 @@ function checkFile($path) {
     $exists = file_exists($fullPath);
     $size = $exists ? filesize($fullPath) : 0;
     $mime = $exists ? mime_content_type($fullPath) : '';
-    
+
     return [
         'path' => $path,
         'full_path' => $fullPath,
@@ -23,7 +23,7 @@ function checkFile($path) {
 function checkDirectory($path) {
     $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/' . ltrim($path, '/');
     $exists = is_dir($fullPath);
-    
+
     return [
         'path' => $path,
         'full_path' => $fullPath,
@@ -36,6 +36,7 @@ function checkDirectory($path) {
 
 // List of image paths to check
 $imagePaths = [
+    // Rental images
     'uploads/rentals/67f8daff523e0.jpeg',
     'uploads/rentals/67f8281b6d455.png',
     'uploads/rentals/67f6ecc38100d.jpeg',
@@ -43,16 +44,26 @@ $imagePaths = [
     'REAL-ESTATE/uploads/rentals/67f8daff523e0.jpeg',
     'REAL-ESTATE/uploads/rentals/67f8281b6d455.png',
     'REAL-ESTATE/uploads/rentals/67f6ecc38100d.jpeg',
-    'REAL-ESTATE/uploads/rentals/67f6ad3f017d1.jpeg'
+    'REAL-ESTATE/uploads/rentals/67f6ad3f017d1.jpeg',
+
+    // Sales images
+    'uploads/sales/67f6e34582b9a.png',
+    'uploads/sales/67f6e378e40e7.png',
+    'uploads/sales/67f6ed2c5550e.jpeg',
+    'REAL-ESTATE/uploads/sales/67f6e34582b9a.png',
+    'REAL-ESTATE/uploads/sales/67f6e378e40e7.png',
+    'REAL-ESTATE/uploads/sales/67f6ed2c5550e.jpeg'
 ];
 
 // Directories to check
 $directories = [
     'uploads',
     'uploads/rentals',
+    'uploads/sales',
     'REAL-ESTATE',
     'REAL-ESTATE/uploads',
-    'REAL-ESTATE/uploads/rentals'
+    'REAL-ESTATE/uploads/rentals',
+    'REAL-ESTATE/uploads/sales'
 ];
 
 // Check each image path

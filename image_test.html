@@ -72,9 +72,10 @@
 <body>
     <h1>Image Path Testing</h1>
     <p>This page tests different image path formats to help diagnose path issues.</p>
-    
+
     <div class="test-section">
         <h2>Test 1: Direct Paths (No REAL-ESTATE)</h2>
+        <h3>Rental Images</h3>
         <div class="image-grid">
             <div class="image-item">
                 <h3>Path: /uploads/rentals/67f8daff523e0.jpeg</h3>
@@ -82,21 +83,21 @@
                 <div class="path">/uploads/rentals/67f8daff523e0.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: /uploads/rentals/67f8281b6d455.png</h3>
                 <img src="/uploads/rentals/67f8281b6d455.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">/uploads/rentals/67f8281b6d455.png</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: /uploads/rentals/67f6ecc38100d.jpeg</h3>
                 <img src="/uploads/rentals/67f6ecc38100d.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">/uploads/rentals/67f6ecc38100d.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: /uploads/rentals/67f6ad3f017d1.jpeg</h3>
                 <img src="/uploads/rentals/67f6ad3f017d1.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
@@ -104,10 +105,35 @@
                 <div class="status"><span class="success">OK</span></div>
             </div>
         </div>
+
+        <h3>Sales Images</h3>
+        <div class="image-grid">
+            <div class="image-item">
+                <h3>Path: /uploads/sales/67f6e34582b9a.png</h3>
+                <img src="/uploads/sales/67f6e34582b9a.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">/uploads/sales/67f6e34582b9a.png</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+
+            <div class="image-item">
+                <h3>Path: /uploads/sales/67f6e378e40e7.png</h3>
+                <img src="/uploads/sales/67f6e378e40e7.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">/uploads/sales/67f6e378e40e7.png</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+
+            <div class="image-item">
+                <h3>Path: /uploads/sales/67f6ed2c5550e.jpeg</h3>
+                <img src="/uploads/sales/67f6ed2c5550e.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">/uploads/sales/67f6ed2c5550e.jpeg</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+        </div>
     </div>
-    
+
     <div class="test-section">
         <h2>Test 2: With REAL-ESTATE Prefix</h2>
+        <h3>Rental Images</h3>
         <div class="image-grid">
             <div class="image-item">
                 <h3>Path: /REAL-ESTATE/uploads/rentals/67f8daff523e0.jpeg</h3>
@@ -115,21 +141,21 @@
                 <div class="path">/REAL-ESTATE/uploads/rentals/67f8daff523e0.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: /REAL-ESTATE/uploads/rentals/67f8281b6d455.png</h3>
                 <img src="/REAL-ESTATE/uploads/rentals/67f8281b6d455.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">/REAL-ESTATE/uploads/rentals/67f8281b6d455.png</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: /REAL-ESTATE/uploads/rentals/67f6ecc38100d.jpeg</h3>
                 <img src="/REAL-ESTATE/uploads/rentals/67f6ecc38100d.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">/REAL-ESTATE/uploads/rentals/67f6ecc38100d.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: /REAL-ESTATE/uploads/rentals/67f6ad3f017d1.jpeg</h3>
                 <img src="/REAL-ESTATE/uploads/rentals/67f6ad3f017d1.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
@@ -137,10 +163,35 @@
                 <div class="status"><span class="success">OK</span></div>
             </div>
         </div>
+
+        <h3>Sales Images</h3>
+        <div class="image-grid">
+            <div class="image-item">
+                <h3>Path: /REAL-ESTATE/uploads/sales/67f6e34582b9a.png</h3>
+                <img src="/REAL-ESTATE/uploads/sales/67f6e34582b9a.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">/REAL-ESTATE/uploads/sales/67f6e34582b9a.png</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+
+            <div class="image-item">
+                <h3>Path: /REAL-ESTATE/uploads/sales/67f6e378e40e7.png</h3>
+                <img src="/REAL-ESTATE/uploads/sales/67f6e378e40e7.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">/REAL-ESTATE/uploads/sales/67f6e378e40e7.png</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+
+            <div class="image-item">
+                <h3>Path: /REAL-ESTATE/uploads/sales/67f6ed2c5550e.jpeg</h3>
+                <img src="/REAL-ESTATE/uploads/sales/67f6ed2c5550e.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">/REAL-ESTATE/uploads/sales/67f6ed2c5550e.jpeg</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+        </div>
     </div>
-    
+
     <div class="test-section">
         <h2>Test 3: Relative Paths</h2>
+        <h3>Rental Images</h3>
         <div class="image-grid">
             <div class="image-item">
                 <h3>Path: uploads/rentals/67f8daff523e0.jpeg</h3>
@@ -148,25 +199,49 @@
                 <div class="path">uploads/rentals/67f8daff523e0.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: uploads/rentals/67f8281b6d455.png</h3>
                 <img src="uploads/rentals/67f8281b6d455.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">uploads/rentals/67f8281b6d455.png</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: uploads/rentals/67f6ecc38100d.jpeg</h3>
                 <img src="uploads/rentals/67f6ecc38100d.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">uploads/rentals/67f6ecc38100d.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
-            
+
             <div class="image-item">
                 <h3>Path: uploads/rentals/67f6ad3f017d1.jpeg</h3>
                 <img src="uploads/rentals/67f6ad3f017d1.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
                 <div class="path">uploads/rentals/67f6ad3f017d1.jpeg</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+        </div>
+
+        <h3>Sales Images</h3>
+        <div class="image-grid">
+            <div class="image-item">
+                <h3>Path: uploads/sales/67f6e34582b9a.png</h3>
+                <img src="uploads/sales/67f6e34582b9a.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">uploads/sales/67f6e34582b9a.png</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+
+            <div class="image-item">
+                <h3>Path: uploads/sales/67f6e378e40e7.png</h3>
+                <img src="uploads/sales/67f6e378e40e7.png" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">uploads/sales/67f6e378e40e7.png</div>
+                <div class="status"><span class="success">OK</span></div>
+            </div>
+
+            <div class="image-item">
+                <h3>Path: uploads/sales/67f6ed2c5550e.jpeg</h3>
+                <img src="uploads/sales/67f6ed2c5550e.jpeg" alt="Test Image" onerror="this.parentNode.querySelector('.status').innerHTML='<span class=\'error\'>ERROR: Image not found</span>'">
+                <div class="path">uploads/sales/67f6ed2c5550e.jpeg</div>
                 <div class="status"><span class="success">OK</span></div>
             </div>
         </div>

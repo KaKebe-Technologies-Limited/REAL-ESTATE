@@ -46,9 +46,24 @@ try {
             if ($sale) {
                 // Convert image paths to URLs
                 if (!empty($sale['images'])) {
-                    $sale['image_urls'] = array_map(function($img) {
-                        // Make sure the path starts with 'uploads/'
+                    // Get the base URL for the current environment
+                    $baseUrl = '';
+
+                    // Check if we're on localhost or live site
+                    $serverName = strtolower($_SERVER['SERVER_NAME']);
+                    $isLocalhost = strpos($serverName, 'localhost') !== false || $serverName === '127.0.0.1';
+
+                    // Log server information for debugging
+                    error_log("Server name: {$serverName}, Is localhost: " . ($isLocalhost ? 'true' : 'false'));
+
+                    $sale['image_urls'] = array_map(function($img) use ($isLocalhost) {
+                        // Clean up the image path
                         $img = trim($img);
+
+                        // Remove any existing /REAL-ESTATE prefixes
+                        $img = preg_replace('#^(/REAL-ESTATE)+/?#i', '/', $img);
+
+                        // Normalize the path to ensure it starts with uploads/
                         if (strpos($img, 'uploads/') !== 0 && strpos($img, '/uploads/') !== 0) {
                             // If it's an old path (just 'sales/'), update it
                             if (strpos($img, 'sales/') === 0) {
@@ -57,15 +72,21 @@ try {
                                 $img = '/uploads' . $img;
                             }
                         }
-                        // Ensure it has the correct URL format for the REAL-ESTATE project
-                        if (strpos($img, '/') === 0) {
-                            // If it starts with a slash, add the project name
-                            return '/REAL-ESTATE' . $img;
-                        } else {
-                            // Otherwise add both the project name and a slash
+
+                        // Remove any leading slash for consistency
+                        $img = ltrim($img, '/');
+
+                        // For localhost, we need to add the /REAL-ESTATE prefix
+                        // For live site, we use the path as is
+                        if ($isLocalhost) {
                             return '/REAL-ESTATE/' . $img;
+                        } else {
+                            return '/' . $img;
                         }
                     }, explode(',', $sale['images']));
+
+                    // Log the image URLs for debugging
+                    error_log("Image URLs: " . print_r($sale['image_urls'], true));
                 }
                 $response['success'] = true;
                 $response['data'] = $sale;

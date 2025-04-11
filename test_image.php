@@ -17,14 +17,25 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $property_id = $row['property_id'];
     $images = $row['images'];
-    
+
     echo "<h2>Property ID: $property_id</h2>";
     echo "<p>Raw image paths from database: $images</p>";
-    
-    // Process images like in handle_rental.php
-    $image_urls = array_map(function($img) {
-        // Make sure the path starts with 'uploads/'
+
+    // Process images with environment detection
+    // Check if we're on localhost or live site
+    $serverName = strtolower($_SERVER['SERVER_NAME']);
+    $isLocalhost = strpos($serverName, 'localhost') !== false || $serverName === '127.0.0.1';
+
+    echo "<p>Server: $serverName, Is localhost: " . ($isLocalhost ? 'Yes' : 'No') . "</p>";
+
+    $image_urls = array_map(function($img) use ($isLocalhost) {
+        // Clean up the image path
         $img = trim($img);
+
+        // Remove any existing /REAL-ESTATE prefixes
+        $img = preg_replace('#^(/REAL-ESTATE)+/?#i', '/', $img);
+
+        // Normalize the path to ensure it starts with uploads/
         if (strpos($img, 'uploads/') !== 0 && strpos($img, '/uploads/') !== 0) {
             // If it's an old path (just 'rentals/'), update it
             if (strpos($img, 'rentals/') === 0) {
@@ -33,23 +44,26 @@ if ($result->num_rows > 0) {
                 $img = '/uploads' . $img;
             }
         }
-        // Ensure it has the correct URL format for the REAL-ESTATE project
-        if (strpos($img, '/') === 0) {
-            // If it starts with a slash, add the project name
-            return '/REAL-ESTATE' . $img;
-        } else {
-            // Otherwise add both the project name and a slash
+
+        // Remove any leading slash for consistency
+        $img = ltrim($img, '/');
+
+        // For localhost, we need to add the /REAL-ESTATE prefix
+        // For live site, we use the path as is
+        if ($isLocalhost) {
             return '/REAL-ESTATE/' . $img;
+        } else {
+            return '/' . $img;
         }
     }, explode(',', $images));
-    
+
     echo "<h2>Processed Image URLs</h2>";
     echo "<ul>";
     foreach ($image_urls as $url) {
         echo "<li>$url</li>";
     }
     echo "</ul>";
-    
+
     echo "<h2>Image Display Test</h2>";
     foreach ($image_urls as $url) {
         echo "<div style='margin-bottom: 20px;'>";
