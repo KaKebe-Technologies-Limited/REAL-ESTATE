@@ -9,36 +9,103 @@ $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: {$conn->connect_error}");
 }
 
 // Set character set
 $conn->set_charset("utf8mb4");
 
-// Check if property ID is provided
-if (!isset($_GET['id']) || empty($_GET['id'])) {
+// Check if property ID and type are provided
+if (!isset($_GET['id']) || empty($_GET['id']) || !isset($_GET['type']) || empty($_GET['type'])) {
     header('Location: properties.php');
     exit;
 }
 
 $property_id = intval($_GET['id']);
+$property_type = $_GET['type'];
 
-// Fetch property details
-$sql = "SELECT p.*, 
-        COALESCE(o.name, '') as owner_name, 
-        COALESCE(o.phone, '') as owner_phone,
-        COALESCE(o.email, '') as owner_email,
-        COALESCE(m.name, '') as manager_name,
-        COALESCE(m.phone, '') as manager_phone,
-        COALESCE(m.email, '') as manager_email,
-        COALESCE(c.name, '') as city_name,
-        COALESCE(a.name, '') as area_name
-        FROM properties p
-        LEFT JOIN owners o ON p.owner_id = o.id
-        LEFT JOIN managers m ON p.manager_id = m.id
-        LEFT JOIN cities c ON p.city_id = c.id
-        LEFT JOIN areas a ON p.area_id = a.id
-        WHERE p.id = ?";
+// Validate property type
+if ($property_type !== 'rental' && $property_type !== 'sale') {
+    header('Location: properties.php');
+    exit;
+}
+
+// Initialize property array
+$property = [];
+$images = [];
+
+// Fetch property details based on type
+if ($property_type === 'rental') {
+    // Fetch rental property details
+    $sql = "SELECT
+        r.property_id as id,
+        r.property_name as title,
+        r.price,
+        r.property_class,
+        r.property_size as size,
+        r.utilities,
+        r.amenities,
+        r.images,
+        r.parking as garage,
+        CONCAT(r.country, ', ', r.region, ', ', r.subregion, ', ', r.parish, ', ', r.ward) as location,
+        CONCAT(o.first_name, ' ', o.last_name) as owner_name,
+        o.phone as owner_phone,
+        o.email as owner_email,
+        CONCAT(m.first_name, ' ', m.last_name) as manager_name,
+        m.phone as manager_phone,
+        m.email as manager_email,
+        m.profile_picture as profile_picture,
+        m.experience as experience,
+        'rental' as property_type,
+        r.property_type as property_category,
+        r.country,
+        r.region,
+        r.subregion,
+        r.parish,
+        r.ward,
+        r.cell,
+        r.security,
+        r.convenience as description
+        FROM rental_property r
+        LEFT JOIN property_owner o ON r.owner_id = o.owner_id
+        LEFT JOIN property_manager m ON r.manager_id = m.manager_id
+        WHERE r.property_id = ?";
+} else {
+    // Fetch sales property details
+    $sql = "SELECT
+        s.property_id as id,
+        s.property_name as title,
+        s.price,
+        s.property_type as property_class,
+        s.property_size as size,
+        s.utilities,
+        s.amenities,
+        s.images,
+        0 as garage,
+        CONCAT(s.country, ', ', s.region, ', ', s.subregion, ', ', s.parish, ', ', s.ward) as location,
+        CONCAT(o.first_name, ' ', o.last_name) as owner_name,
+        o.phone as owner_phone,
+        o.email as owner_email,
+        CONCAT(m.first_name, ' ', m.last_name) as manager_name,
+        m.phone as manager_phone,
+        m.email as manager_email,
+        m.profile_picture as profile_picture,
+        m.experience as experience,
+        'sale' as property_type,
+        s.property_type as property_category,
+        s.country,
+        s.region,
+        s.subregion,
+        s.parish,
+        s.ward,
+        s.cell,
+        '' as security,
+        s.title as description
+        FROM sales_property s
+        LEFT JOIN property_owner o ON s.owner_id = o.owner_id
+        LEFT JOIN property_manager m ON s.manager_id = m.manager_id
+        WHERE s.property_id = ?";
+}
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $property_id);
@@ -52,27 +119,23 @@ if ($result->num_rows === 0) {
 
 $property = $result->fetch_assoc();
 
-// Fetch property images
-$imagesSql = "SELECT image_path FROM property_images WHERE property_id = ?";
-$imagesStmt = $conn->prepare($imagesSql);
-$imagesStmt->bind_param("i", $property_id);
-$imagesStmt->execute();
-$imagesResult = $imagesStmt->get_result();
-
-$images = [];
-while ($imageRow = $imagesResult->fetch_assoc()) {
-    $images[] = $imageRow['image_path'];
-}
-
-// If no images, add a placeholder
-if (empty($images)) {
-    $images[] = 'assets/images/property-placeholder.jpg';
+// Process images from the comma-separated list
+if (!empty($property['images'])) {
+    $images = array_map('trim', explode(',', $property['images']));
+} else {
+    // If no images, add a placeholder
+    $images[] = 'uploads/contact.jpeg';
 }
 
 // Format price function
 function formatPrice($price) {
     return number_format($price);
 }
+
+// Status (hardcoded for now, could be added to the database tables later)
+$property['status'] = 'available';
+$property['is_featured'] = true; // Set to true for demonstration
+$property['year_built'] = 2022; // Default value
 
 // Close connection
 $conn->close();
@@ -83,6 +146,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($property['title']); ?> - East African Land and Rentals</title>
+    <link rel="icon" href="logo1.ico" sizes="any">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -120,7 +184,7 @@ $conn->close();
                 </button>
             </div>
         </div>
-    
+
         <!-- Add Mobile Menu -->
         <div class="mobile-menu-wrapper">
             <nav>
@@ -141,144 +205,134 @@ $conn->close();
         </div>
     </header>
 
-    <main class="main-content">
-        <!-- Property Hero Section -->
-        <section class="property-hero">
-            <div class="container">
-                <div class="property-gallery">
-                    <div class="main-image">
-                        <img src="<?php echo htmlspecialchars($images[0]); ?>" alt="<?php echo htmlspecialchars($property['title']); ?>">
-                        <div class="property-badges">
-                            <?php if ($property['is_featured']): ?>
-                                <span class="badge badge-featured">Featured</span>
-                            <?php endif; ?>
-                            <span class="badge badge-sale"><?php echo $property['property_type'] === 'rental' ? 'Rental' : 'Sale'; ?></span>
+    <section class="property-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 breadcrumb_container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="properties.php">Properties</a>, <a href="#">Mansion</a></li>
+                        <li class="breadcrumb-item active"><?php echo htmlspecialchars($property['title']); ?></li>
+                    </ol>
+                </div>
+
+                <div class="notice_area col-md-12">
+                    <div class="single_property_labels">
+                        <div class="property_title_label">
+                            <a href="properties.php?type=<?php echo $property['property_type'] === 'rental' ? 'rent' : 'sale'; ?>">
+                                <?php echo $property['property_type'] === 'rental' ? 'Rental' : 'For Sale'; ?>
+                            </a>
+                        </div>
+                        <?php if (!empty($property['property_category'])): ?>
+                            <div class="property_title_label actioncat">
+                                <a href="#"><?php echo htmlspecialchars($property['property_category']); ?></a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <h1 class="entry-title entry-prop"><?php echo htmlspecialchars($property['title']); ?></h1>
+
+                    <div class="property_categs">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <a href="#"><?php echo htmlspecialchars($property['location']); ?></a>
+                    </div>
+                    <div class="prop_social">
+                        <div class="share_unit" style="display: none;">
+                            <a href="#" class="social_facebook">Facebook</a>
+                            <a href="#" class="social_tweet">Twitter</a>
+                            <a href="#" class="social_pinterest">Pinterest</a>
+                            <a href="#" class="social_whatsup">WhatsApp</a>
+                            <a href="#" class="social_email">Email</a>
+                        </div>
+                        <div class="title_share share_list single_property_action">
+                            <i class="fas fa-share-alt"></i> Share
+                        </div>
+                        <div class="title_share single_property_action isnotfavorite">
+                            <i class="far fa-heart"></i> Favorite
+                        </div>
+                        <div class="title_share single_property_action">
+                            <i class="fas fa-print"></i> Print
                         </div>
                     </div>
-                    <?php if (count($images) > 1): ?>
-                        <div class="thumbnail-grid">
-                            <?php foreach (array_slice($images, 0, 4) as $index => $image): ?>
-                                <div class="thumbnail">
-                                    <img src="<?php echo htmlspecialchars($image); ?>" alt="Property Image <?php echo $index + 1; ?>">
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="gallery_wrapper">
+                        <!-- Main Gallery Image -->
+                        <div class="main-gallery-image" style="background-image:url('<?php echo htmlspecialchars($images[0] ?? 'assets/images/property-placeholder.jpg'); ?>')">
+                            <div class="img_listings_overlay"></div>
+                        </div>
+
+                        <!-- Side Images (2 images) -->
+                        <div class="side-images">
+                            <?php if (count($images) > 1): ?>
+                                <div class="gallery-item" style="background-image:url('<?php echo htmlspecialchars($images[1]); ?>')">
+                                    <div class="img_listings_overlay"></div>
                                 </div>
-                            <?php endforeach; ?>
-                            <?php if (count($images) > 4): ?>
-                                <div class="thumbnail more-images">
-                                    <div class="overlay">
-                                        <span>+<?php echo count($images) - 4; ?> more</span>
-                                    </div>
-                                    <img src="<?php echo htmlspecialchars($images[4]); ?>" alt="More Images">
+                            <?php else: ?>
+                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                    <div class="img_listings_overlay"></div>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (count($images) > 2): ?>
+                                <div class="gallery-item" style="background-image:url('<?php echo htmlspecialchars($images[2]); ?>')">
+                                    <div class="img_listings_overlay"></div>
+                                </div>
+                            <?php else: ?>
+                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                    <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
                         </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </section>
 
-        <!-- Property Details Section -->
-        <section class="property-content">
-            <div class="container">
-                <div class="row">
-                    <!-- Main Content -->
-                    <div class="col-lg-8">
-                        <div class="property-header">
-                            <div class="single_property_labels">
-                                <div class="property_title_label">
-                                    <a href="properties.php?type=<?php echo $property['property_type'] === 'rental' ? 'rent' : 'sale'; ?>">
-                                        <?php echo $property['property_type'] === 'rental' ? 'Rental' : 'For Sale'; ?>
-                                    </a>
+                        <!-- Bottom Images (3 images) -->
+                        <div class="bottom-images">
+                            <?php if (count($images) > 3): ?>
+                                <div class="gallery-item" style="background-image:url('<?php echo htmlspecialchars($images[3]); ?>')">
+                                    <div class="img_listings_overlay"></div>
                                 </div>
-                                <?php if (!empty($property['property_category'])): ?>
-                                    <div class="property_title_label actioncat">
-                                        <a href="#"><?php echo htmlspecialchars($property['property_category']); ?></a>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <h1 class="entry-title entry-prop"><?php echo htmlspecialchars($property['title']); ?></h1>
-                            
-                            <div class="property_categs">
-                                <?php if (!empty($property['area_name'])): ?>
-                                    <a href="#"><?php echo htmlspecialchars($property['area_name']); ?></a>,
-                                <?php endif; ?>
-                                <?php if (!empty($property['city_name'])): ?>
-                                    <a href="#"><?php echo htmlspecialchars($property['city_name']); ?></a>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div class="price_area">
-                                <div class="price_label">Price</div>
-                                <div class="price_label price_details">
-                                    Ugx <?php echo formatPrice($property['price']); ?>
-                                    <?php if ($property['property_type'] === 'rental'): ?>
-                                        <span class="price_label">/ month</span>
-                                    <?php endif; ?>
+                            <?php else: ?>
+                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                    <div class="img_listings_overlay"></div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="property-description card">
-                            <div class="card-header">
-                                <h2>Description</h2>
-                            </div>
-                            <div class="card-body">
-                                <?php echo nl2br(htmlspecialchars($property['description'])); ?>
-                            </div>
-                        </div>
-                        
-                        <div class="property-details card">
-                            <div class="card-header">
-                                <h2>Property Details</h2>
-                            </div>
-                            <div class="card-body">
-                                <div class="details-grid">
-                                    <div class="detail-item">
-                                        <span class="detail-label">Property ID:</span>
-                                        <span class="detail-value"><?php echo $property['id']; ?></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Property Type:</span>
-                                        <span class="detail-value"><?php echo ucfirst($property['property_type']); ?></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Property Status:</span>
-                                        <span class="detail-value"><?php echo $property['status']; ?></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Property Size:</span>
-                                        <span class="detail-value"><?php echo $property['size']; ?> sqm</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Bedrooms:</span>
-                                        <span class="detail-value"><?php echo $property['bedrooms']; ?></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Bathrooms:</span>
-                                        <span class="detail-value"><?php echo $property['bathrooms']; ?></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Year Built:</span>
-                                        <span class="detail-value"><?php echo $property['year_built'] ?: 'N/A'; ?></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Garage:</span>
-                                        <span class="detail-value"><?php echo $property['garage'] ? 'Yes' : 'No'; ?></span>
-                                    </div>
+                            <?php endif; ?>
+
+                            <?php if (count($images) > 4): ?>
+                                <div class="gallery-item" style="background-image:url('<?php echo htmlspecialchars($images[4]); ?>')">
+                                    <div class="img_listings_overlay"></div>
                                 </div>
-                            </div>
+                            <?php else: ?>
+                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                    <div class="img_listings_overlay"></div>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (count($images) > 5): ?>
+                                <div class="gallery-item" style="background-image:url('<?php echo htmlspecialchars($images[5]); ?>')">
+                                    <div class="img_listings_overlay"></div>
+                                </div>
+                            <?php else: ?>
+                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                    <div class="img_listings_overlay"></div>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                        
-                        <?php if (!empty($property['amenities'])): ?>
+                    </div>
+
+                    <div class="property-description card">
+                        <h2>Description</h2>
+                        <p><?php echo !empty($property['description']) ? nl2br(htmlspecialchars($property['description'])) : 'No description available.'; ?></p>
+                    </div>
+                    <?php if (!empty($property['amenities'])): ?>
                             <div class="property-amenities card">
                                 <div class="card-header">
                                     <h2>Amenities</h2>
                                 </div>
                                 <div class="card-body">
                                     <div class="amenities-grid">
-                                        <?php 
-                                        $amenities = explode(',', $property['amenities']);
-                                        foreach ($amenities as $amenity): 
+                                        <?php
+                                        $amenities = is_array($property['amenities']) ? $property['amenities'] : explode(',', $property['amenities']);
+                                        foreach ($amenities as $amenity):
                                             $amenity = trim($amenity);
                                             if (empty($amenity)) continue;
                                         ?>
@@ -291,7 +345,41 @@ $conn->close();
                                 </div>
                             </div>
                         <?php endif; ?>
-                        
+
+                        <?php if (!empty($property['utilities'])): ?>
+                            <div class="property-utilities card">
+                                <div class="card-header">
+                                    <h2>Utilities</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="amenities-grid">
+                                        <?php
+                                        $utilities = is_array($property['utilities']) ? $property['utilities'] : explode(',', $property['utilities']);
+                                        foreach ($utilities as $utility):
+                                            $utility = trim($utility);
+                                            if (empty($utility)) continue;
+                                        ?>
+                                            <div class="amenity-item">
+                                                <i class="fas fa-check"></i>
+                                                <span><?php echo htmlspecialchars($utility); ?></span>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($property['security'])): ?>
+                            <div class="property-security card">
+                                <div class="card-header">
+                                    <h2>Security Features</h2>
+                                </div>
+                                <div class="card-body">
+                                    <p><?php echo nl2br(htmlspecialchars($property['security'])); ?></p>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
                         <?php if (!empty($property['location'])): ?>
                             <div class="property-location card">
                                 <div class="card-header">
@@ -299,95 +387,115 @@ $conn->close();
                                 </div>
                                 <div class="card-body">
                                     <div class="location-map">
-                                        <iframe 
-                                            width="100%" 
-                                            height="400" 
-                                            frameborder="0" 
-                                            scrolling="no" 
-                                            marginheight="0" 
-                                            marginwidth="0" 
+                                        <iframe
+                                            width="100%"
+                                            height="400"
+                                            frameborder="0"
+                                            scrolling="no"
+                                            marginheight="0"
+                                            marginwidth="0"
                                             src="https://maps.google.com/maps?q=<?php echo urlencode($property['location']); ?>&output=embed">
                                         </iframe>
                                     </div>
                                 </div>
                             </div>
                         <?php endif; ?>
-                    </div>
-                    
-                    <!-- Sidebar -->
-                    <div class="col-lg-4">
-                        <div class="agent-info card">
-                            <div class="card-header">
-                                <h2>Contact Information</h2>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="property-sidebar">
+                        <div class="widget contact-agent-widget">
+                            <div class="agent-info">
+                                <div class="agent-image">
+                                    <img src="<?php echo htmlspecialchars($property['profile_picture']); ?>" alt="<?php echo htmlspecialchars($property['manager_name']); ?>">
+                                </div>
+                                <div class="agent-details">
+                                    <h4><?php echo htmlspecialchars($property['manager_name']); ?></h4>
+                                    <p>Professional Real Estate Agent</p>
+                                    <div class="agent-stats">
+                                        <div class="stat">
+                                            <span class="number"><?php echo htmlspecialchars($property['experience']); ?>+</span>
+                                            <span class="label">Properties</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="number"><?php echo htmlspecialchars($property['experience']); ?>+</span>
+                                            <span class="label">Years Exp.</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <?php if (!empty($property['manager_name'])): ?>
-                                    <div class="agent-details">
-                                        <h3>Property Manager</h3>
-                                        <p><i class="fas fa-user"></i> <?php echo htmlspecialchars($property['manager_name']); ?></p>
-                                        <?php if (!empty($property['manager_phone'])): ?>
-                                            <p><i class="fas fa-phone"></i> <?php echo htmlspecialchars($property['manager_phone']); ?></p>
-                                        <?php endif; ?>
-                                        <?php if (!empty($property['manager_email'])): ?>
-                                            <p><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($property['manager_email']); ?></p>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <?php if (!empty($property['owner_name'])): ?>
-                                    <div class="agent-details mt-4">
-                                        <h3>Property Owner</h3>
-                                        <p><i class="fas fa-user"></i> <?php echo htmlspecialchars($property['owner_name']); ?></p>
-                                        <?php if (!empty($property['owner_phone'])): ?>
-                                            <p><i class="fas fa-phone"></i> <?php echo htmlspecialchars($property['owner_phone']); ?></p>
-                                        <?php endif; ?>
-                                        <?php if (!empty($property['owner_email'])): ?>
-                                            <p><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($property['owner_email']); ?></p>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-form card">
-                            <div class="card-header">
-                                <h2>Inquire About This Property</h2>
-                            </div>
-                            <div class="card-body">
-                                <form id="property-inquiry-form" action="#" method="POST">
-                                    <input type="hidden" name="property_id" value="<?php echo $property['id']; ?>">
-                                    <input type="hidden" name="property_title" value="<?php echo htmlspecialchars($property['title']); ?>">
-                                    
+                            <div class="contact-form">
+                                <form>
                                     <div class="form-group">
-                                        <label for="name">Your Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <input type="text" class="form-control" placeholder="Your Name">
                                     </div>
-                                    
                                     <div class="form-group">
-                                        <label for="email">Your Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
+                                        <input type="email" class="form-control" placeholder="Your Email">
                                     </div>
-                                    
                                     <div class="form-group">
-                                        <label for="phone">Your Phone</label>
-                                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                                        <input type="tel" class="form-control" placeholder="Your Phone">
                                     </div>
-                                    
                                     <div class="form-group">
-                                        <label for="message">Your Message</label>
-                                        <textarea class="form-control" id="message" name="message" rows="4" required>I am interested in <?php echo htmlspecialchars($property['title']); ?>. Please provide more information.</textarea>
+                                        <textarea class="form-control" rows="4" placeholder="Your Message">I am interested in <?php echo htmlspecialchars($property['title']); ?>. Please provide more information.</textarea>
                                     </div>
-                                    
                                     <button type="submit" class="btn btn-primary btn-block">Send Message</button>
                                 </form>
                             </div>
+                            <div class="quick-contacts">
+                                <a href="tel:+256751925403" class="quick-contact-btn phone">
+                                    <i class="fas fa-phone"></i>
+                                    <span>Call Agent</span>
+                                </a>
+                                <a href="https://wa.me/256751925403" class="quick-contact-btn whatsapp">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="widget property-details-widget">
+                            <h3>Property Details</h3>
+                            <ul class="details-list">
+                                <li>
+                                    <span class="label">Property ID:</span>
+                                    <span class="value"><?php echo $property['id']; ?></span>
+                                </li>
+                                <li>
+                                    <span class="label">Property Type:</span>
+                                    <span class="value"><?php echo ucfirst($property['property_type']); ?></span>
+                                </li>
+                                <li>
+                                    <span class="label">Property Status:</span>
+                                    <span class="value"><?php echo ucfirst($property['status']); ?></span>
+                                </li>
+                                <li>
+                                    <span class="label">Property Size:</span>
+                                    <span class="value"><?php echo $property['size']; ?> sq ft</span>
+                                </li>
+                                <li>
+                                    <span class="label">Bedrooms:</span>
+                                    <span class="value">4</span>
+                                </li>
+                                <li>
+                                    <span class="label">Bathrooms:</span>
+                                    <span class="value">4</span>
+                                </li>
+                                <li>
+                                    <span class="label">Garage:</span>
+                                    <span class="value"><?php echo $property['garage'] ? 'Yes' : 'No'; ?></span>
+                                </li>
+                                <li>
+                                    <span class="label">Year Built:</span>
+                                    <span class="value"><?php echo $property['year_built'] ?: 'N/A'; ?></span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
-    
+        </div>
+    </section>
+
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top" title="Back to Top">
         <i class="fas fa-arrow-up"></i>
@@ -395,10 +503,34 @@ $conn->close();
 
     <!-- Footer -->
     <footer class="footer">
+        <!-- Newsletter Section -->
+        <div class="newsletter-section">
+            <div class="container mx-auto px-4">
+                <div class="newsletter-content text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Subscribe to Our Newsletter</h2>
+                    <p class="text-gray-300 mb-6">Stay updated with our latest properties and real estate news</p>
+                    <form id="newsletter-form" class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                        <div class="flex flex-col md:flex-row gap-4 justify-center items-center max-w-xl mx-auto">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Enter your email address"
+                                class="w-full md:w-2/3 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                            <button
+                                type="submit"
+                                class="w-full md:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                Subscribe Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="footer-content">
             <div class="footer-section">
                 <h3>About Us</h3>
-                <p>East African Land and Rentals is a premier real estate company specializing in property sales and rentals across East Africa.</p>
+                <p>REAL ESTATE is a premier real estate company specializing in property sales and rentals across Rwanda.</p>
                 <div class="social-links mt-4">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -420,19 +552,19 @@ $conn->close();
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Main Street, Kampala, Uganda</li>
-                    <li><i class="fas fa-phone"></i> +256 123 456 789</li>
-                    <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Kigali, Rwanda</li>
+                    <li><i class="fas fa-phone"></i> +250 123 456 789</li>
+                    <li><i class="fas fa-envelope"></i> info@realestate.rw</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 East African Land and Rentals. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> REAL ESTATE. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/256123456789" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/250123456789" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -440,5 +572,6 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/properties-php.js"></script>
+    <script src="assets/js/property-gallery.js"></script>
 </body>
 </html>
