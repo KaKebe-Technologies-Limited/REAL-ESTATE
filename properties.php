@@ -20,6 +20,7 @@ function formatPrice($price) {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/properties.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -29,13 +30,13 @@ function formatPrice($price) {
         <div class="header_wrapper">
             <div class="header_wrapper_inside">
                 <div class="logo">
-                    <a href="index.html">
+                    <a href="index.php">
                         <img src="assets/images/logo1.png" alt="Logo" class="img-responsive">
                     </a>
                 </div>
                 <nav class="main_menu">
                     <ul class="menu">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.php">Home</a></li>
                         <li class="active"><a href="properties.php">Properties</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                     </ul>
@@ -58,7 +59,7 @@ function formatPrice($price) {
         <div class="mobile-menu-wrapper">
             <nav>
                 <ul class="menu">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li class="active"><a href="properties.php">Properties</a></li>
                     <li><a href="contact.html">Contact Us</a></li>
                 </ul>
@@ -176,7 +177,7 @@ function formatPrice($price) {
                                     <div class="featured_gradient"></div>
                                 </div>
                                 <a href="property-detail.php?id=<?php echo $property['property_id']; ?>&type=<?php echo $property['property_type']; ?>" target="_self">
-                                    <img fetchpriority="high" decoding="async" width="525" height="328" src="<?php echo htmlspecialchars($property['image']); ?>" class="lazyload img-responsive wp-post-image image" alt="<?php echo htmlspecialchars($property['property_name']); ?>" onerror="this.src='assets/images/property-placeholder.jpg'">
+                                    <img fetchpriority="high" decoding="async" width="525" height="328" src="<?php echo htmlspecialchars($property['image']); ?>" class="lazyload img-responsive wp-post-image image" alt="<?php echo htmlspecialchars($property['property_name']); ?>" onerror="this.src='uploads/contact.jpeg'">
                                 </a>
                                 <div class="tag-wrapper">
                                     <?php if (isset($property['is_featured']) && $property['is_featured']): ?>
@@ -248,7 +249,6 @@ function formatPrice($price) {
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Footer -->
     <footer class="footer">
         <!-- Newsletter Section -->
         <div class="newsletter-section bg-gray-900 text-white py-16">
@@ -271,7 +271,7 @@ function formatPrice($price) {
                 <h3>About Us</h3>
                 <p>East African Land and Rentals is a premier real estate company specializing in property sales and rentals across East Africa.</p>
                 <div class="social-links mt-4">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -280,9 +280,8 @@ function formatPrice($price) {
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="properties.php">Properties</a></li>
-                    <li><a href="#">About Us</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="#">Privacy Policy</a></li>
                     <li><a href="#">Terms of Service</a></li>
@@ -291,14 +290,14 @@ function formatPrice($price) {
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Main Street, Kampala, Uganda</li>
-                    <li><i class="fas fa-phone"></i> +256 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
+                    <li><i class="fas fa-phone"></i> +256 764502805 </li>
                     <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 East African Land and Rentals. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> East African Land and Rentals. All rights reserved.</p>
         </div>
     </footer>
 

@@ -28,7 +28,7 @@ if (!isset($_SESSION['user_id'])) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html"> 
+                        <a class="nav-link" href="index.php"> 
                             <i class="fas fa-globe"></i>
                         </a>
                     </li>

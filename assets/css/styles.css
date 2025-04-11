@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html {
@@ -14,7 +13,6 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     background-color: #f7f7f7;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 a:hover {
@@ -331,7 +329,7 @@ a:hover {
         height: 60px;
     }
 
-    .main_menu, 
+    .main_menu,
     .header_wrapper .user_menu {
         display: none;
     }
@@ -352,19 +350,19 @@ a:hover {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .main_menu {
         display: none;
     }
-    
+
     .header_wrapper_inside {
         padding: 10px 15px;
     }
-    
+
     .user_menu {
         gap: 10px;
     }
-    
+
     .submit-listing-btn {
         display: none;
     }
@@ -611,7 +609,7 @@ a:hover {
     .property-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
-        padding: 0 0.5rem;   
+        padding: 0 0.5rem;
     }
 
     .property_listing {
@@ -715,15 +713,15 @@ a:hover {
     transition: all 0.3s ease;
     overflow: hidden;  /* Add this to contain the image */
 }
-    
+
 .card a {
     text-decoration: none
 }
-    
+
 .content {
     padding: 1.1rem;
 }
-    
+
 .image {
     object-fit: cover;
     width: 100%;
@@ -735,25 +733,25 @@ a:hover {
     transition: transform 0.3s ease;
     transform-origin: center;
 }
-    
+
 .image:hover {
     transform: scale(1.05);
 }
-    
+
 .title {
     color: #111827;
     font-size: 1.125rem;
     line-height: 1.75rem;
     font-weight: 600;
 }
-    
+
 .desc {
     margin-top: 0.5rem;
     color: #6B7280;
     font-size: 0.875rem;
     line-height: 1.25rem;
 }
-    
+
 .action {
     display: inline-flex;
     margin-top: 1rem;
@@ -767,11 +765,11 @@ a:hover {
     padding: 4px 8px;
     border-radius: 4px;
 }
-    
+
 .action span {
     transition: .3s ease;
 }
-    
+
 .action:hover span {
     transform: translateX(4px);
 }
@@ -1026,14 +1024,14 @@ a:hover {
     .footer {
         padding: 3rem 1rem 1rem;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
         padding: 0 1rem;
         text-align: center;
     }
-    
+
     .footer-content .footer-section:nth-child(2) {
         grid-column: 1 / -1;
         grid-row: 1;
@@ -1286,13 +1284,13 @@ a:hover {
     .stat-item::after {
         display: none;
     }
-    
+
     .stat-item {
         border-bottom: 1px solid #e5e7eb;
         padding-bottom: 1rem;
         margin-bottom: 1rem;
     }
-    
+
     .stat-item:last-child {
         border-bottom: none;
         margin-bottom: 0;
@@ -1392,7 +1390,7 @@ a:hover {
     .newsletter-section {
         padding: 3rem 1rem;
     }
-    
+
     .newsletter-content h2 {
         font-size: 1.75rem;
     }

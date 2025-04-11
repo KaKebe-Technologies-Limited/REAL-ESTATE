@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,7 +21,7 @@
         <div class="top_bar">
             <div class="left-top-widet">
                 <div class="social_sidebar_internal">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     <a href="#"><i class="fab fa-youtube"></i></a>
@@ -29,8 +30,8 @@
             </div>
             <div class="right-top-widet">
                 <div class="contact_info">
-                    <span><i class="far fa-envelope"></i> <a href="mailto:info@example.com">info@example.com</a></span>
-                    <span><i class="fas fa-phone-square-alt"></i> <a href="tel:+256751925403">+256 751 925403</a></span>
+                    <span><i class="far fa-envelope"></i> <a href="mailto:info@example.com">info@eastafricanlandandrentals.net</a></span>
+                    <span><i class="fas fa-phone-square-alt"></i> <a href="tel:+256751925403">+256 764502805</a></span>
                 </div>
             </div>
         </div>
@@ -40,13 +41,13 @@
     <div class="header_wrapper">
         <div class="header_wrapper_inside">
             <div class="logo">
-                <a href="index.html">
+                <a href="index.php">
                     <img src="assets/images/logo1.png" alt="Logo" class="img-responsive">
                 </a>
             </div>
             <nav class="main_menu">
                 <ul class="menu">
-                    <li class="active"><a href="index.html">Home</a></li>
+                    <li class="active"><a href="index.php">Home</a></li>
                     <li><a href="properties.php">Properties</a></li>
                     <li><a href="contact.html">Contact Us</a></li>
                 </ul>
@@ -66,7 +67,7 @@
     <div class="mobile-menu-wrapper">
         <nav>
             <ul class="menu">
-                <li class="active"><a href="index.html">Home</a></li>
+                <li class="active"><a href="index.php">Home</a></li>
                 <li><a href="properties.html">Properties</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
@@ -83,9 +84,9 @@
                 <img src="assets/images/property10.png" alt="APARTMENTS & LAND LINKS">
                 <div class="carousel-caption">
                     <div class="caption-content">
-                        <h1 class="text-3xl md:text-4xl font-bold mb-4">APARTMENTS & LAND LINKS - EAST AFRICA LTD</h1>
+                        <h1 class="text-3xl md:text-4xl font-bold mb-4">Welcome to ALLEA PROPERTIES !!</h1>
                         <p class="text-lg md:text-xl leading-relaxed mb-6">
-                            An innovative online property marketplace designed to bridge the gap between property owners and seekers across East Africa. With a mission to foster direct relationships in real estate transactions, we offer a cost-effective platform that empowers users to connect, negotiate, and close deals without intermediary costs. Our expansive coverage spans major urban areas and remote villages, ensuring that everyone has access to the property market.
+                            Here We connect you from City to City, Town to Town, Village to Village for properties and take no Commission from your transactions.
                         </p>
                         <div class="cta-buttons">
                             <a href="properties.html" class="btn btn-primary">Browse Properties</a>
@@ -390,59 +391,58 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
 
+<!-- Footer -->
 <footer class="footer">
     <!-- Newsletter Section -->
-    <div class="newsletter-section">
+    <div class="newsletter-section bg-gray-900 text-white py-16">
         <div class="container mx-auto px-4">
             <div class="newsletter-content text-center">
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Subscribe to Our Newsletter</h2>
-                <p class="text-gray-300 mb-6">Stay updated with our latest properties and real estate news</p>
-                <form id="newsletter-form" class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center max-w-xl mx-auto">
-                        <input 
-                            type="email" 
-                            name="email" 
-                            placeholder="Enter your email address" 
-                            class="w-full md:w-2/3 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                            required>
-                        <button 
-                            type="submit" 
-                            class="w-full md:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                            Subscribe Now
-                        </button>
-                    </div>
+                <h2 class="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto">Stay updated with our latest property listings, market trends, and exclusive offers.</p>
+                <form id="newsletter-form" class="newsletter-form flex flex-col md:flex-row gap-4 max-w-lg mx-auto" action="https://formspree.io/f/your-formspree-id" method="POST">
+                    <input type="email" name="email" placeholder="Your email address" required class="flex-grow py-3 px-4 rounded-lg">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition duration-300">
+                        Subscribe <span>&rarr;</span>
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 
     <div class="footer-content">
-        <div class="footer-section" data-aos="fade-right">
-            <h3>Contact Info</h3>
-            <ul class="contact-info">
-                <li><i class="fas fa-map-marker-alt"></i> Kira, Wakiso, Uganda</li>
-                <li><i class="fas fa-phone"></i> +256 700 000000</li>
-                <li><i class="fas fa-envelope"></i> info@rental.com</li>
-            </ul>
-        </div>
-        <div class="footer-section" data-aos="fade-up">
+        <div class="footer-section">
             <h3>About Us</h3>
-            <p>Your trusted partner in finding the perfect property. We specialize in both sales and rentals across premium locations.</p>
-        </div>
-        <div class="footer-section" data-aos="fade-left">
-            <h3>Follow Us</h3>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
+            <p>East African Land and Rentals is a premier real estate company specializing in property sales and rentals across East Africa.</p>
+            <div class="social-links mt-4">
+                <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
             </div>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="properties.php">Properties</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <ul class="contact-info">
+                <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
+                <li><i class="fas fa-phone"></i> +256 764502805 </li>
+                <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
+            </ul>
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; <span id="currentYear"></span> Rental Company. All rights reserved.</p>
+        <p>&copy; <?php echo date('Y'); ?> East African Land and Rentals. All rights reserved.</p>
     </div>
 </footer>
 <!-- Add WhatsApp Float Button -->
@@ -473,10 +473,10 @@
 
     // Remove the toggleDropdown function and dropdown click handler
     document.getElementById('currentYear').textContent = new Date().getFullYear();
-    
+
     let currentSlide = 0;
     const items = document.querySelectorAll('.carousel-item');
-    
+
     function nextSlide() {
         items[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % items.length;
@@ -520,7 +520,7 @@
 
     // Back to top button functionality
     const backToTopButton = document.getElementById('backToTop');
-    
+
     window.onscroll = function() {
         if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
             backToTopButton.style.display = "block";
@@ -540,10 +540,10 @@
     document.getElementById('advanced-search-btn').addEventListener('click', function() {
         const searchWrapper = document.getElementById('search-wrapper');
         const contentSection = document.getElementById('content-section');
-        
+
         searchWrapper.classList.toggle('show');
         this.classList.toggle('active');
-        
+
         // Ensure content section is always visible
         contentSection.style.display = 'block';
         contentSection.style.visibility = 'visible';
@@ -560,12 +560,12 @@
 
     // Add header scroll effect
     let lastScrollPosition = 0;
-    
+
     window.addEventListener('scroll', function() {
         const headerWrapper = document.querySelector('.header_wrapper');
         const topBarWrapper = document.querySelector('.top_bar_wrapper');
         const currentScroll = window.pageYOffset;
-        
+
         // Add scrolled class to header wrapper
         if (currentScroll > 50) {
             headerWrapper.classList.add('scrolled');
@@ -574,7 +574,7 @@
             headerWrapper.classList.remove('scrolled');
             topBarWrapper.classList.remove('hidden');
         }
-        
+
         lastScrollPosition = currentScroll;
     });
 

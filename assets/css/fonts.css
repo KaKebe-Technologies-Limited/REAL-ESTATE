@@ -1,0 +1,173 @@
+/* Modern Real Estate Website Fonts */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+
+/* Base Font Settings */
+:root {
+    --body-font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --heading-font: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --alt-font: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --base-font-size: 16px;
+    --base-line-height: 1.6;
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+}
+
+/* Global Font Styles */
+html, body {
+    font-family: var(--body-font);
+    font-size: var(--base-font-size);
+    line-height: var(--base-line-height);
+    color: #333;
+}
+
+/* Heading Styles */
+h1, h2, h3, h4, h5, h6,
+.entry-title,
+.section-title,
+.property-title,
+#adv-search-header-1,
+.wpresidence_button,
+.advanced_search_submit_button,
+.submit_action {
+    font-family: var(--heading-font);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+/* Specific Element Overrides */
+.logo-text,
+.menu > li > a,
+.property_title_label,
+.property_categs,
+.property-meta span,
+.property-features-list li,
+.agent-details h4,
+.contact-form label,
+.wpresidence_button,
+.nav-link,
+.btn,
+.filter_menu_trigger {
+    font-family: var(--body-font);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* Price and Important Numbers */
+.property-price,
+.price-badge,
+.preview_listing_price,
+.stat .number,
+.property_price,
+.listing_unit_price_wrapper,
+.price_label {
+    font-family: var(--alt-font);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--primary-color);
+}
+
+/* Modern Title Elements */
+.entry-title.entry-prop,
+.section-title,
+.property-title h1,
+.agent-title h2,
+.page-title,
+.property_title_label,
+.property-name,
+.property_categs,
+.adv-search-header-1,
+.property-heading {
+    font-family: var(--heading-font);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--primary-color);
+}
+
+/* Font Weights */
+.light-text {
+    font-weight: 300;
+}
+
+.regular-text {
+    font-weight: 400;
+}
+
+.medium-text {
+    font-weight: 500;
+}
+
+.bold-text {
+    font-weight: 600;
+}
+
+.extra-bold-text {
+    font-weight: 700;
+}
+
+/* Buttons and Interactive Elements */
+.btn,
+.wpresidence_button,
+.advanced_submit_4,
+.submit_action,
+.contact-form button,
+.search-button {
+    font-family: var(--body-font);
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 0.9rem;
+}
+
+/* Navigation */
+.navbar-nav .nav-link,
+.menu > li > a,
+.top_menu .menu > li > a {
+    font-family: var(--body-font);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+/* Property Features */
+.property-features-list li,
+.amenities-list li,
+.utilities-list li {
+    font-family: var(--body-font);
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+/* Location and Address */
+.property-location,
+.property-address,
+.location-details {
+    font-family: var(--alt-font);
+    font-weight: 400;
+    font-style: normal;
+    color: #666;
+}
+
+/* Font Sizes - Responsive */
+@media (max-width: 768px) {
+    :root {
+        --base-font-size: 15px;
+    }
+
+    h1, .entry-title.entry-prop {
+        font-size: 1.8rem;
+    }
+
+    h2, .section-title {
+        font-size: 1.5rem;
+    }
+
+    .property-price {
+        font-size: 1.3rem;
+    }
+}

@@ -30,35 +30,47 @@ function getProperties($conn, $type = null, $searchParams = []) {
     $whereConditions = [];
     $params = [];
     $types = '';
-
+    $hasSearchParams = false;
+    
     // Process search parameters
     if (!empty($searchParams)) {
+        $orConditions = [];
+        
         // City filter
         if (!empty($searchParams['city']) && $searchParams['city'] !== 'all') {
-            $whereConditions[] = 'country = ?';
+            $orConditions[] = 'country = ?';
             $params[] = $searchParams['city'];
             $types .= 's';
+            $hasSearchParams = true;
         }
-
+        
         // Area filter
         if (!empty($searchParams['area']) && $searchParams['area'] !== 'all') {
-            $whereConditions[] = 'parish = ?';
+            $orConditions[] = 'parish = ?';
             $params[] = $searchParams['area'];
             $types .= 's';
+            $hasSearchParams = true;
         }
-
+        
         // Property Size filter
         if (!empty($searchParams['property_size'])) {
-            $whereConditions[] = 'property_size >= ?';
+            $orConditions[] = 'property_size >= ?';
             $params[] = intval($searchParams['property_size']);
             $types .= 'i';
+            $hasSearchParams = true;
         }
-
+        
         // Utilities filter
         if (!empty($searchParams['utilities'])) {
-            $whereConditions[] = 'utilities LIKE ?';
+            $orConditions[] = 'utilities LIKE ?';
             $params[] = '%' . $searchParams['utilities'] . '%';
             $types .= 's';
+            $hasSearchParams = true;
+        }
+        
+        // If we have search conditions, add them to the WHERE clause
+        if ($hasSearchParams) {
+            $whereConditions[] = '(' . implode(' OR ', $orConditions) . ')';
         }
     }
 
@@ -68,7 +80,7 @@ function getProperties($conn, $type = null, $searchParams = []) {
             r.property_id,
             r.property_name,
             r.price,
-            r.property_class as property_class,
+            r.property_class,
             r.property_size,
             r.utilities,
             r.amenities,
@@ -86,14 +98,14 @@ function getProperties($conn, $type = null, $searchParams = []) {
             FROM rental_property r
             LEFT JOIN property_owner o ON r.owner_id = o.owner_id
             LEFT JOIN property_manager m ON r.manager_id = m.manager_id";
-
+        
         // Add WHERE clause if we have conditions
         if (!empty($whereConditions)) {
             $rentalSql .= " WHERE " . implode(' AND ', $whereConditions);
         }
-
+        
         $rentalSql .= " ORDER BY r.property_id DESC";
-
+        
         if (!empty($params)) {
             $stmt = $conn->prepare($rentalSql);
             $stmt->bind_param($types, ...$params);
@@ -102,26 +114,26 @@ function getProperties($conn, $type = null, $searchParams = []) {
         } else {
             $result = $conn->query($rentalSql);
         }
-
+        
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $row['formatted_price'] = formatPropertyPrice($row['price']);
                 $row['utilities'] = $row['utilities'] ? explode(',', $row['utilities']) : [];
                 $row['amenities'] = $row['amenities'] ? explode(',', $row['amenities']) : [];
-
+                
                 // Process images
                 if (!empty($row['images'])) {
                     $imageArray = explode(',', $row['images']);
-                    $row['image'] = !empty($imageArray[0]) ? trim($imageArray[0]) : 'assets/images/property-placeholder.jpg';
+                    $row['image'] = !empty($imageArray[0]) ? trim($imageArray[0]) : 'uploads/contact.jpeg';
                     $row['all_images'] = $imageArray;
                 } else {
-                    $row['image'] = 'assets/images/property-placeholder.jpg';
+                    $row['image'] = 'uploads/contact.jpeg';
                     $row['all_images'] = [];
                 }
-
+                
                 $properties[] = $row;
             }
-
+            
             if (!empty($stmt)) {
                 $stmt->close();
             }
@@ -154,14 +166,14 @@ function getProperties($conn, $type = null, $searchParams = []) {
             FROM sales_property s
             LEFT JOIN property_owner o ON s.owner_id = o.owner_id
             LEFT JOIN property_manager m ON s.manager_id = m.manager_id";
-
+        
         // Add WHERE clause if we have conditions
         if (!empty($whereConditions)) {
             $saleSql .= " WHERE " . implode(' AND ', $whereConditions);
         }
-
+        
         $saleSql .= " ORDER BY s.property_id DESC";
-
+        
         if (!empty($params)) {
             $stmt = $conn->prepare($saleSql);
             $stmt->bind_param($types, ...$params);
@@ -170,26 +182,26 @@ function getProperties($conn, $type = null, $searchParams = []) {
         } else {
             $result = $conn->query($saleSql);
         }
-
+        
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $row['formatted_price'] = formatPropertyPrice($row['price']);
                 $row['utilities'] = $row['utilities'] ? explode(',', $row['utilities']) : [];
                 $row['amenities'] = $row['amenities'] ? explode(',', $row['amenities']) : [];
-
+                
                 // Process images
                 if (!empty($row['images'])) {
                     $imageArray = explode(',', $row['images']);
-                    $row['image'] = !empty($imageArray[0]) ? trim($imageArray[0]) : 'assets/images/property-placeholder.jpg';
+                    $row['image'] = !empty($imageArray[0]) ? trim($imageArray[0]) : 'uploads/contact.jpeg';
                     $row['all_images'] = $imageArray;
                 } else {
-                    $row['image'] = 'assets/images/property-placeholder.jpg';
+                    $row['image'] = 'uploads/contact.jpeg';
                     $row['all_images'] = [];
                 }
-
+                
                 $properties[] = $row;
             }
-
+            
             if (!empty($stmt)) {
                 $stmt->close();
             }

@@ -185,7 +185,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="index.php">
                             <i class="fas fa-globe"></i>
                         </a>
                     </li>

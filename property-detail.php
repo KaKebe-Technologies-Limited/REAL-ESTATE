@@ -150,6 +150,7 @@ $conn->close();
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/properties.css">
     <link rel="stylesheet" href="assets/css/property-detail.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -160,13 +161,13 @@ $conn->close();
         <div class="header_wrapper">
             <div class="header_wrapper_inside">
                 <div class="logo">
-                    <a href="index.html">
+                    <a href="index.php">
                         <img src="assets/images/logo1.png" alt="Logo" class="img-responsive">
                     </a>
                 </div>
                 <nav class="main_menu">
                     <ul class="menu">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.php">Home</a></li>
                         <li class="active"><a href="properties.php">Properties</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                     </ul>
@@ -189,7 +190,7 @@ $conn->close();
         <div class="mobile-menu-wrapper">
             <nav>
                 <ul class="menu">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li class="active"><a href="properties.php">Properties</a></li>
                     <li><a href="contact.html">Contact Us</a></li>
                 </ul>
@@ -210,7 +211,7 @@ $conn->close();
             <div class="row">
                 <div class="col-xs-12 col-md-12 breadcrumb_container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                         <li class="breadcrumb-item"><a href="properties.php">Properties</a>, <a href="#">Mansion</a></li>
                         <li class="breadcrumb-item active"><?php echo htmlspecialchars($property['title']); ?></li>
                     </ol>
@@ -258,7 +259,7 @@ $conn->close();
                 <div class="col-lg-8">
                     <div class="gallery_wrapper">
                         <!-- Main Gallery Image -->
-                        <div class="main-gallery-image" style="background-image:url('<?php echo htmlspecialchars($images[0] ?? 'assets/images/property-placeholder.jpg'); ?>')">
+                        <div class="main-gallery-image" style="background-image:url('<?php echo htmlspecialchars($images[0] ?? 'uploads/contact.jpeg'); ?>')">
                             <div class="img_listings_overlay"></div>
                         </div>
 
@@ -269,7 +270,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -279,7 +280,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -292,7 +293,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -302,7 +303,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -312,7 +313,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('assets/images/property-placeholder.jpg')">
+                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -501,38 +502,29 @@ $conn->close();
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Footer -->
     <footer class="footer">
         <!-- Newsletter Section -->
-        <div class="newsletter-section">
+        <div class="newsletter-section bg-gray-900 text-white py-16">
             <div class="container mx-auto px-4">
                 <div class="newsletter-content text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Subscribe to Our Newsletter</h2>
-                    <p class="text-gray-300 mb-6">Stay updated with our latest properties and real estate news</p>
-                    <form id="newsletter-form" class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                        <div class="flex flex-col md:flex-row gap-4 justify-center items-center max-w-xl mx-auto">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Enter your email address"
-                                class="w-full md:w-2/3 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                            <button
-                                type="submit"
-                                class="w-full md:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                                Subscribe Now
-                            </button>
-                        </div>
+                    <h2 class="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+                    <p class="text-lg mb-8 max-w-2xl mx-auto">Stay updated with our latest property listings, market trends, and exclusive offers.</p>
+                    <form id="newsletter-form" class="newsletter-form flex flex-col md:flex-row gap-4 max-w-lg mx-auto" action="https://formspree.io/f/your-formspree-id" method="POST">
+                        <input type="email" name="email" placeholder="Your email address" required class="flex-grow py-3 px-4 rounded-lg">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition duration-300">
+                            Subscribe <span>&rarr;</span>
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
+
         <div class="footer-content">
             <div class="footer-section">
                 <h3>About Us</h3>
-                <p>REAL ESTATE is a premier real estate company specializing in property sales and rentals across Rwanda.</p>
+                <p>East African Land and Rentals is a premier real estate company specializing in property sales and rentals across East Africa.</p>
                 <div class="social-links mt-4">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -541,9 +533,8 @@ $conn->close();
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="properties.php">Properties</a></li>
-                    <li><a href="#">About Us</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="#">Privacy Policy</a></li>
                     <li><a href="#">Terms of Service</a></li>
@@ -552,14 +543,14 @@ $conn->close();
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> Kigali, Rwanda</li>
-                    <li><i class="fas fa-phone"></i> +250 123 456 789</li>
-                    <li><i class="fas fa-envelope"></i> info@realestate.rw</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
+                    <li><i class="fas fa-phone"></i> +256 764502805 </li>
+                    <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <?php echo date('Y'); ?> REAL ESTATE. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> East African Land and Rentals. All rights reserved.</p>
         </div>
     </footer>
 
