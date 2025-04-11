@@ -17,6 +17,21 @@ RewriteRule .* - [R=404,L]
 RewriteCond %{REQUEST_URI} ^/REAL-ESTATE/REAL-ESTATE
 RewriteRule ^REAL-ESTATE/REAL-ESTATE(.*)$ /REAL-ESTATE$1 [R=301,L]
 
+# Handle image paths for both localhost and live site
+# If on localhost and the file doesn't exist in /REAL-ESTATE/uploads, try /uploads directly
+RewriteCond %{HTTP_HOST} localhost [OR]
+RewriteCond %{HTTP_HOST} 127.0.0.1
+RewriteCond %{REQUEST_URI} ^/REAL-ESTATE/uploads/
+RewriteCond %{DOCUMENT_ROOT}/REAL-ESTATE%{REQUEST_URI} !-f
+RewriteRule ^REAL-ESTATE/uploads/(.*)$ /uploads/$1 [L]
+
+# If on live site and the file doesn't exist in /uploads, try /REAL-ESTATE/uploads
+RewriteCond %{HTTP_HOST} !localhost
+RewriteCond %{HTTP_HOST} !127.0.0.1
+RewriteCond %{REQUEST_URI} ^/uploads/
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+RewriteRule ^uploads/(.*)$ /REAL-ESTATE/uploads/$1 [L]
+
 # Set proper MIME types for images
 AddType image/jpeg .jpg .jpeg
 AddType image/png .png

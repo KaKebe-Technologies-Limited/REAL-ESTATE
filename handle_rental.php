@@ -46,13 +46,24 @@ try {
             if ($rental) {
                 // Convert image paths to URLs
                 if (!empty($rental['images'])) {
-                    $rental['image_urls'] = array_map(function($img) {
-                        // Make sure the path starts with 'uploads/'
+                    // Get the base URL for the current environment
+                    $baseUrl = '';
+
+                    // Check if we're on localhost or live site
+                    $serverName = strtolower($_SERVER['SERVER_NAME']);
+                    $isLocalhost = (strpos($serverName, 'localhost') !== false || $serverName === '127.0.0.1');
+
+                    // Log server information for debugging
+                    error_log("Server name: {$serverName}, Is localhost: " . ($isLocalhost ? 'true' : 'false'));
+
+                    $rental['image_urls'] = array_map(function($img) use ($isLocalhost) {
+                        // Clean up the image path
                         $img = trim($img);
 
-                        // First, remove any existing /REAL-ESTATE prefixes to prevent duplication
+                        // Remove any existing /REAL-ESTATE prefixes
                         $img = preg_replace('#^(/REAL-ESTATE)+/?#i', '/', $img);
 
+                        // Normalize the path to ensure it starts with uploads/
                         if (strpos($img, 'uploads/') !== 0 && strpos($img, '/uploads/') !== 0) {
                             // If it's an old path (just 'rentals/'), update it
                             if (strpos($img, 'rentals/') === 0) {
@@ -62,15 +73,20 @@ try {
                             }
                         }
 
-                        // Use absolute paths with domain name to prevent path issues
-                        // First ensure the path starts with a slash
-                        if (strpos($img, '/') !== 0) {
-                            $img = '/' . $img;
-                        }
+                        // Remove any leading slash for consistency
+                        $img = ltrim($img, '/');
 
-                        // Return the path with a single /REAL-ESTATE prefix
-                        return '/REAL-ESTATE' . $img;
+                        // For localhost, we need to add the /REAL-ESTATE prefix
+                        // For live site, we use the path as is
+                        if ($isLocalhost) {
+                            return '/REAL-ESTATE/' . $img;
+                        } else {
+                            return '/' . $img;
+                        }
                     }, explode(',', $rental['images']));
+
+                    // Log the image URLs for debugging
+                    error_log("Image URLs: " . print_r($rental['image_urls'], true));
                 }
 
                 $response['success'] = true;

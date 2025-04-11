@@ -1,18 +1,7 @@
 <?php
-// Log request method for debugging
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-file_put_contents('owner_login_debug.log', date('Y-m-d H:i:s') . " - Request Method: {$requestMethod} - URI: {$_SERVER['REQUEST_URI']}\n", FILE_APPEND);
-
-// If this is a GET request, redirect to the login page
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    header('Location: login.html');
-    exit;
-}
-
-// For POST requests, proceed with login processing
 header('Content-Type: application/json'); // Ensure JSON response
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_startup_errors', 1); 
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 
