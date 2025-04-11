@@ -1,0 +1,18 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Ensure login.html is properly served
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^login$ login.html [L]
+
+# Prevent direct access to PHP files except through POST
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{REQUEST_URI} ^/login\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/owner_login\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/manager_login\.php$
+RewriteRule .* - [R=404,L]
+
+# PHP error handling
+php_flag display_errors on
+php_value error_reporting E_ALL

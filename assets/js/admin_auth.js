@@ -3,7 +3,7 @@ document.getElementById('adminLogin').addEventListener('submit', function (e) {
 
     const formData = new FormData(this);
 
-    fetch('login.php', { 
+    fetch('login.php', {
         method: 'POST',
         body: formData
     })
