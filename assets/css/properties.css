@@ -1603,3 +1603,153 @@ a:hover {
         gap: 0.3rem;
     }
 }
+
+/* Search Form Styles */
+.search_wrapper {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#adv-search-header-1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+.adv4-holder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.adv4-holder > div {
+    flex: 1 0 200px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 30px;
+}
+
+.wpresidence_button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.wpresidence_button:hover {
+    background: #0069d9;
+}
+
+/* Results section */
+#results {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 5px;
+    border: 1px solid #d1e7ff;
+}
+
+.results_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+#preview_view_all {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#results_wrapper {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.preview_listing {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.preview_listing:last-child {
+    border-bottom: none;
+}
+
+.preview_listing_image {
+    width: 80px;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+    margin-right: 15px;
+    border-radius: 3px;
+}
+
+.preview_listing_details {
+    flex: 1;
+}
+
+.preview_listing_title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.preview_listing_price {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.preview_listing_location {
+    font-size: 0.9em;
+    color: #666;
+}

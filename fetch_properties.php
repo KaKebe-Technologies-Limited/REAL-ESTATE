@@ -25,8 +25,42 @@ function formatPropertyPrice($price) {
     return $price;
 }
 
-function getProperties($conn, $type = null) {
+function getProperties($conn, $type = null, $searchParams = []) {
     $properties = [];
+    $whereConditions = [];
+    $params = [];
+    $types = '';
+
+    // Process search parameters
+    if (!empty($searchParams)) {
+        // City filter
+        if (!empty($searchParams['city']) && $searchParams['city'] !== 'all') {
+            $whereConditions[] = 'country = ?';
+            $params[] = $searchParams['city'];
+            $types .= 's';
+        }
+
+        // Area filter
+        if (!empty($searchParams['area']) && $searchParams['area'] !== 'all') {
+            $whereConditions[] = 'parish = ?';
+            $params[] = $searchParams['area'];
+            $types .= 's';
+        }
+
+        // Property Size filter
+        if (!empty($searchParams['property_size'])) {
+            $whereConditions[] = 'property_size >= ?';
+            $params[] = intval($searchParams['property_size']);
+            $types .= 'i';
+        }
+
+        // Utilities filter
+        if (!empty($searchParams['utilities'])) {
+            $whereConditions[] = 'utilities LIKE ?';
+            $params[] = '%' . $searchParams['utilities'] . '%';
+            $types .= 's';
+        }
+    }
 
     if ($type === null || $type === 'rent') {
         // Fetch rental properties
@@ -34,11 +68,13 @@ function getProperties($conn, $type = null) {
             r.property_id,
             r.property_name,
             r.price,
-            r.property_class,
+            r.property_class as property_class,
             r.property_size,
             r.utilities,
             r.amenities,
             r.images,
+            r.country,
+            r.parish,
             CONCAT(r.parish, ', ', r.ward) as location,
             CONCAT(o.first_name, ' ', o.last_name) as owner_name,
             o.phone as owner_phone,
@@ -49,10 +85,23 @@ function getProperties($conn, $type = null) {
             'rental' as property_type
             FROM rental_property r
             LEFT JOIN property_owner o ON r.owner_id = o.owner_id
-            LEFT JOIN property_manager m ON r.manager_id = m.manager_id
-            ORDER BY r.property_id DESC";
+            LEFT JOIN property_manager m ON r.manager_id = m.manager_id";
 
-        $result = $conn->query($rentalSql);
+        // Add WHERE clause if we have conditions
+        if (!empty($whereConditions)) {
+            $rentalSql .= " WHERE " . implode(' AND ', $whereConditions);
+        }
+
+        $rentalSql .= " ORDER BY r.property_id DESC";
+
+        if (!empty($params)) {
+            $stmt = $conn->prepare($rentalSql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        } else {
+            $result = $conn->query($rentalSql);
+        }
 
         if ($result) {
             while ($row = $result->fetch_assoc()) {
@@ -71,6 +120,10 @@ function getProperties($conn, $type = null) {
                 }
 
                 $properties[] = $row;
+            }
+
+            if (!empty($stmt)) {
+                $stmt->close();
             }
         } else {
             error_log("Rental query error: {$conn->error}");
@@ -88,6 +141,8 @@ function getProperties($conn, $type = null) {
             s.utilities,
             s.amenities,
             s.images,
+            s.country,
+            s.parish,
             CONCAT(s.parish, ', ', s.ward) as location,
             CONCAT(o.first_name, ' ', o.last_name) as owner_name,
             o.phone as owner_phone,
@@ -98,10 +153,23 @@ function getProperties($conn, $type = null) {
             'sale' as property_type
             FROM sales_property s
             LEFT JOIN property_owner o ON s.owner_id = o.owner_id
-            LEFT JOIN property_manager m ON s.manager_id = m.manager_id
-            ORDER BY s.property_id DESC";
+            LEFT JOIN property_manager m ON s.manager_id = m.manager_id";
 
-        $result = $conn->query($saleSql);
+        // Add WHERE clause if we have conditions
+        if (!empty($whereConditions)) {
+            $saleSql .= " WHERE " . implode(' AND ', $whereConditions);
+        }
+
+        $saleSql .= " ORDER BY s.property_id DESC";
+
+        if (!empty($params)) {
+            $stmt = $conn->prepare($saleSql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        } else {
+            $result = $conn->query($saleSql);
+        }
 
         if ($result) {
             while ($row = $result->fetch_assoc()) {
@@ -121,6 +189,10 @@ function getProperties($conn, $type = null) {
 
                 $properties[] = $row;
             }
+
+            if (!empty($stmt)) {
+                $stmt->close();
+            }
         } else {
             error_log("Sale query error: {$conn->error}");
         }
@@ -129,10 +201,39 @@ function getProperties($conn, $type = null) {
     return $properties;
 }
 
-// Get all properties, rentals, and sales
-$allProperties = getProperties($conn);
-$rentalProperties = getProperties($conn, 'rent');
-$saleProperties = getProperties($conn, 'sale');
+// Get search parameters
+$searchParams = [];
+
+if (isset($_GET['city']) && !empty($_GET['city'])) {
+    $searchParams['city'] = $_GET['city'];
+}
+
+if (isset($_GET['area']) && !empty($_GET['area'])) {
+    $searchParams['area'] = $_GET['area'];
+}
+
+if (isset($_GET['property_size']) && !empty($_GET['property_size'])) {
+    $searchParams['property_size'] = $_GET['property_size'];
+}
+
+if (isset($_GET['utilities']) && !empty($_GET['utilities'])) {
+    $searchParams['utilities'] = $_GET['utilities'];
+}
+
+// Get property type filter
+$propertyType = null;
+if (isset($_GET['type']) && !empty($_GET['type'])) {
+    if ($_GET['type'] === 'rent') {
+        $propertyType = 'rent';
+    } elseif ($_GET['type'] === 'sale') {
+        $propertyType = 'sale';
+    }
+}
+
+// Get all properties, rentals, and sales with search filters
+$allProperties = getProperties($conn, null, $searchParams);
+$rentalProperties = getProperties($conn, 'rent', $searchParams);
+$saleProperties = getProperties($conn, 'sale', $searchParams);
 
 // Close connection
 $conn->close();

@@ -80,94 +80,58 @@ function formatPrice($price) {
             <div id="search_wrapper_color"></div>
             <div class="adv-search-1" id="adv-search-1">
                 <div id="adv-search-header-1">Advanced Search</div>
-                <form role="search" method="get" action="properties.php">
+                <form id="property-search-form" role="search" method="get" action="properties.php">
                     <div class="adv4-holder">
                         <!-- Cities -->
-                        <div class="col-md-3 cities" style="width: 100%;">
-                            <div class="dropdown form-control">
-                                <div data-toggle="dropdown" id="advanced_city" class="filter_menu_trigger" data-value="all">
-                                    Cities<span class="caret caret_filter"></span>
-                                </div>
-                                <input type="hidden" name="city" value="">
-                                <ul id="adv-search-city" class="dropdown-menu filter_menu" role="menu">
-                                    <li role="presentation" data-value="all">Cities</li>
-                                    <li role="presentation" data-value="bugolobi">Bugolobi</li>
-                                    <li role="presentation" data-value="bujuko">Bujuko</li>
-                                    <!-- Add other cities -->
-                                </ul>
+                        <div class="col-md-3 cities">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" class="form-control" placeholder="Enter city name">
                             </div>
                         </div>
 
                         <!-- Areas -->
                         <div class="col-md-3 areas">
-                            <div class="dropdown form-control">
-                                <div data-toggle="dropdown" id="advanced_area" class="filter_menu_trigger" data-value="all">
-                                    Areas<span class="caret caret_filter"></span>
-                                </div>
-                                <input type="hidden" name="area" value="">
-                                <ul id="adv-search-area" class="dropdown-menu filter_menu">
-                                    <li role="presentation" data-value="all">Areas</li>
-                                    <li role="presentation" data-value="bakuli">Bakuli</li>
-                                    <li role="presentation" data-value="bugolobi">Bugolobi</li>
-                                    <!-- Add other areas -->
-                                </ul>
+                            <div class="form-group">
+                                <label for="area">Area</label>
+                                <input type="text" id="area" name="area" class="form-control" placeholder="Enter area name">
                             </div>
                         </div>
 
                         <!-- Types -->
                         <div class="col-md-3 types">
-                            <div class="dropdown form-control">
-                                <div data-toggle="dropdown" id="adv_actions" class="filter_menu_trigger" data-value="all">
-                                    Types<span class="caret caret_filter"></span>
-                                </div>
-                                <input type="hidden" name="type" value="">
-                                <ul id="actionslist" class="dropdown-menu filter_menu">
-                                    <li role="presentation" data-value="all">Types</li>
-                                    <li role="presentation" data-value="rent">Rentals</li>
-                                    <li role="presentation" data-value="sale">Sales</li>
-                                </ul>
+                            <div class="form-group">
+                                <label for="type">Property Type</label>
+                                <select id="type" name="type" class="form-control">
+                                    <option value="all">All Types</option>
+                                    <option value="rent">Rentals</option>
+                                    <option value="sale">Sales</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Bedrooms -->
-                        <div class="col-md-3 property_bedrooms">
-                            <div class="dropdown form-control">
-                                <div data-toggle="dropdown" id="bedrooms" class="filter_menu_trigger" data-value="all">
-                                    Bedrooms<span class="caret caret_filter"></span>
-                                </div>
-                                <input type="hidden" name="bedrooms" value="">
-                                <ul id="search-bedrooms" class="dropdown-menu filter_menu">
-                                    <li role="presentation" data-value="all">Bedrooms</li>
-                                    <li data-value="1">1</li>
-                                    <li data-value="2">2</li>
-                                    <li data-value="3">3</li>
-                                    <li data-value="4">4</li>
-                                    <li data-value="5">5+</li>
-                                </ul>
+                        <!-- Property Size -->
+                        <div class="col-md-3 property_size">
+                            <div class="form-group">
+                                <label for="property_size">Property Size (sqm)</label>
+                                <input type="number" id="property_size" name="property_size" class="form-control" placeholder="Min size in sqm">
                             </div>
                         </div>
 
-                        <!-- Bathrooms -->
-                        <div class="col-md-3 property_bathrooms">
-                            <div class="dropdown form-control">
-                                <div data-toggle="dropdown" id="bathrooms" class="filter_menu_trigger" data-value="all">
-                                    Bathrooms<span class="caret caret_filter"></span>
-                                </div>
-                                <input type="hidden" name="bathrooms" value="">
-                                <ul id="search-bathrooms" class="dropdown-menu filter_menu">
-                                    <li role="presentation" data-value="all">Bathrooms</li>
-                                    <li data-value="1">1</li>
-                                    <li data-value="2">2</li>
-                                    <li data-value="3">3</li>
-                                    <li data-value="4">4</li>
-                                    <li data-value="5">5+</li>
-                                </ul>
+                        <!-- Utilities -->
+                        <div class="col-md-3 property_utilities">
+                            <div class="form-group">
+                                <label for="utilities">Utilities</label>
+                                <input type="text" id="utilities" name="utilities" class="form-control" placeholder="e.g. Water, Electricity">
                             </div>
                         </div>
 
                         <!-- Search Button -->
-                        <div class="col-md-3 property_bathrooms">
-                            <input name="submit" type="submit" class="wpresidence_button advanced_submit_4" value="Search Properties">
+                        <div class="col-md-3 search_button">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input name="submit" type="submit" class="wpresidence_button advanced_submit_4" value="Search Properties">
+                            </div>
                         </div>
                     </div>
 
@@ -347,6 +311,7 @@ function formatPrice($price) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/properties-php.js"></script>
+    <script src="assets/js/property-search.js"></script>
 </body>
 </html>
 
