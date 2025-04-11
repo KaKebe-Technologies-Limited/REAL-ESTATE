@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .result {
+            margin-top: 15px;
+        }
+    </style>
+    <script src="assets/js/path-utils.js"></script>
+</head>
+<body>
+    <h1>API Test</h1>
+    <p>This page tests the API endpoints used by the application.</p>
+    
+    <div class="test-section">
+        <h2>Base URL Detection</h2>
+        <button id="test-base-url">Test Base URL</button>
+        <div id="base-url-result" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>API Test Endpoint</h2>
+        <button id="test-api">Test API</button>
+        <div id="api-result" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>User Profile</h2>
+        <button id="test-user-profile">Test User Profile</button>
+        <div id="user-profile-result" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Owners and Managers</h2>
+        <button id="test-owners-managers">Test Owners and Managers</button>
+        <div id="owners-managers-result" class="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+    
+    <script>
+        // Test Base URL
+        document.getElementById('test-base-url').addEventListener('click', function() {
+            const baseUrl = getBaseUrl();
+            const result = {
+                baseUrl: baseUrl,
+                hostname: window.location.hostname,
+                isLocalhost: window.location.hostname === 'localhost' || 
+                             window.location.hostname === '127.0.0.1' ||
+                             window.location.hostname.includes('192.168.'),
+                fullUrl: window.location.href
+            };
+            document.getElementById('base-url-result').querySelector('pre').textContent = JSON.stringify(result, null, 2);
+        });
+        
+        // Test API
+        document.getElementById('test-api').addEventListener('click', function() {
+            fetch(getApiUrl('api_test.php'))
+                .then(response => response.text())
+                .then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        throw new Error('Server returned invalid JSON: ' + text);
+                    }
+                })
+                .then(data => {
+                    document.getElementById('api-result').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('api-result').querySelector('pre').textContent = 'Error: ' + error.message;
+                });
+        });
+        
+        // Test User Profile
+        document.getElementById('test-user-profile').addEventListener('click', function() {
+            fetch(getApiUrl('get_user_profile.php'))
+                .then(response => response.text())
+                .then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        throw new Error('Server returned invalid JSON: ' + text);
+                    }
+                })
+                .then(data => {
+                    document.getElementById('user-profile-result').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('user-profile-result').querySelector('pre').textContent = 'Error: ' + error.message;
+                });
+        });
+        
+        // Test Owners and Managers
+        document.getElementById('test-owners-managers').addEventListener('click', function() {
+            fetch(getApiUrl('get_owners_managers.php'))
+                .then(response => response.text())
+                .then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                        throw new Error('Server returned invalid JSON: ' + text);
+                    }
+                })
+                .then(data => {
+                    document.getElementById('owners-managers-result').querySelector('pre').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('owners-managers-result').querySelector('pre').textContent = 'Error: ' + error.message;
+                });
+        });
+    </script>
+</body>
+</html>

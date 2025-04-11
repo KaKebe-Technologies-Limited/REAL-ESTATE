@@ -292,12 +292,12 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn(`Select element with id '${selectId}' not found`);
             return false;
         }
-        
+
         try {
             options.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.value = option[valueKey];
-                optionElement.textContent = option[textKey]; 
+                optionElement.textContent = option[textKey];
                 selectElement.appendChild(optionElement);
             });
             return true;
@@ -308,7 +308,10 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Fetch and populate owners and managers
-    fetch('get_owners_managers.php')
+    // Get the base URL to handle both localhost and live site
+    const baseUrl = window.location.href.includes('localhost') ? '' : '/REAL-ESTATE/';
+
+    fetch(baseUrl + 'get_owners_managers.php')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -358,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Error fetching owners and managers:', error); 
+            console.error('Error fetching owners and managers:', error);
             // Optionally show user-friendly error message
             const errorMessage = document.createElement('div');
             errorMessage.className = 'alert alert-danger';
@@ -397,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function submitPropertyForm(form, endpoint, imageHandler) {
     const formData = new FormData(form);
-    
+
     // Add files to FormData
     imageHandler.getFiles().forEach((file, index) => {
         formData.append(`images[]`, file);

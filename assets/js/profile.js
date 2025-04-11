@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission
     document.getElementById('profile-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         // Validate password if being changed
         if (document.getElementById('new_password').value) {
             if (document.getElementById('new_password').value !== document.getElementById('confirm_password').value) {
@@ -57,8 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const formData = new FormData(this);
-        
-        fetch('update_user_profile.php', {
+
+        // Get the base URL to handle both localhost and live site
+        const baseUrl = window.location.href.includes('localhost') ? '' : '/REAL-ESTATE/';
+
+        fetch(baseUrl + 'update_user_profile.php', {
             method: 'POST',
             body: formData
         })
@@ -87,12 +90,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadUserProfile() {
-    fetch('get_user_profile.php')
+    // Get the base URL to handle both localhost and live site
+    const baseUrl = window.location.href.includes('localhost') ? '' : '/REAL-ESTATE/';
+
+    fetch(baseUrl + 'get_user_profile.php')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 const user = data.user;
-                
+
                 // Helper function to safely update elements
                 const updateElement = (selector, value) => {
                     const element = document.querySelector(selector);
