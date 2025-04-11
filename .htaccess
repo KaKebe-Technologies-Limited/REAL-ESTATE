@@ -6,6 +6,26 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^login$ login.html [L]
 
+# Handle case-insensitive dashboard URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^adminDashboard$ adminDashboard.php [L,NC]
+RewriteRule ^admindashboard$ adminDashboard.php [L,NC]
+RewriteRule ^AdminDashboard$ adminDashboard.php [L,NC]
+
+# Handle case-insensitive dashboard URLs for other user types
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ownerDashboard$ ownerDashboard.php [L,NC]
+RewriteRule ^ownerdashboard$ ownerDashboard.php [L,NC]
+RewriteRule ^OwnerDashboard$ ownerDashboard.php [L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^managerDashboard$ managerDashboard.php [L,NC]
+RewriteRule ^managerdashboard$ managerDashboard.php [L,NC]
+RewriteRule ^ManagerDashboard$ managerDashboard.php [L,NC]
+
 # Prevent direct access to PHP files except through POST
 RewriteCond %{REQUEST_METHOD} !POST
 RewriteCond %{REQUEST_URI} ^/login\.php$ [OR]
