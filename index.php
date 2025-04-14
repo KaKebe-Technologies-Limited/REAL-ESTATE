@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    
     <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -31,7 +32,7 @@
             <div class="right-top-widet">
                 <div class="contact_info">
                     <span><i class="far fa-envelope"></i> <a href="mailto:info@example.com">info@eastafricanlandandrentals.net</a></span>
-                    <span><i class="fas fa-phone-square-alt"></i> <a href="tel:+256751925403">+256 764502805</a></span>
+                    <span><i class="fas fa-phone-square-alt"></i> <a href="tel:+256751925403">+256764502805</a></span>
                 </div>
             </div>
         </div>
