@@ -1,0 +1,131 @@
+/* Modern Loader for Real Estate Website */
+
+/* Loader Container */
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loader-container.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Loader Animation */
+.loader {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    perspective: 800px;
+}
+
+/* House Loader Animation */
+.house-loader {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.house-loader .roof {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 60px;
+    height: 30px;
+    background-color: var(--accent-color, #e74c3c);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    animation: roof-pulse 1.5s infinite ease-in-out;
+}
+
+.house-loader .building {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color, #2c3e50);
+    animation: building-pulse 1.5s infinite ease-in-out;
+}
+
+.house-loader .door {
+    position: absolute;
+    bottom: 0;
+    left: 32px;
+    width: 16px;
+    height: 20px;
+    background-color: var(--secondary-color, #3498db);
+    animation: door-pulse 1.5s infinite ease-in-out;
+}
+
+.house-loader .window {
+    position: absolute;
+    top: 38px;
+    left: 28px;
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    animation: window-pulse 1.5s infinite ease-in-out;
+}
+
+.house-loader .window:nth-child(4) {
+    left: 42px;
+}
+
+/* Loading Text */
+.loading-text {
+    position: absolute;
+    bottom: 20px;
+    font-family: var(--body-font, 'Inter', sans-serif);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary-color, #2c3e50);
+    letter-spacing: 2px;
+    animation: text-pulse 1.5s infinite ease-in-out;
+}
+
+/* Animations */
+@keyframes roof-pulse {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes building-pulse {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+}
+
+@keyframes door-pulse {
+    0%, 100% { background-color: var(--secondary-color, #3498db); }
+    50% { background-color: #2980b9; }
+}
+
+@keyframes window-pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+@keyframes text-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .house-loader {
+        transform: scale(0.8);
+    }
+    
+    .loading-text {
+        font-size: 12px;
+    }
+}

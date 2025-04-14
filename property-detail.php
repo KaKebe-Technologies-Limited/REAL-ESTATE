@@ -153,6 +153,7 @@ $conn->close();
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/properties.css">
     <link rel="stylesheet" href="assets/css/property-detail.css">
+    <link rel="stylesheet" href="assets/css/loader.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -564,5 +565,6 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/properties-php.js"></script>
     <script src="assets/js/property-gallery.js"></script>
+    <script src="assets/js/loader.js"></script>
 </body>
 </html>

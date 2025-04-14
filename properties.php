@@ -22,6 +22,7 @@ function formatPrice($price) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/properties.css">
+    <link rel="stylesheet" href="assets/css/loader.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -311,6 +312,7 @@ function formatPrice($price) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/properties-php.js"></script>
     <script src="assets/js/property-search.js"></script>
+    <script src="assets/js/loader.js"></script>
 </body>
 </html>
 
