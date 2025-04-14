@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>East African Land and Rentals</title>
+    <title>ALLEA - East African Land and Rentals</title>
     <link rel="icon" href="logo1.ico" sizes="any">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-    
+
     <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -22,7 +22,7 @@
         <div class="top_bar">
             <div class="left-top-widet">
                 <div class="social_sidebar_internal">
-                    <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573780542915"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     <a href="#"><i class="fab fa-youtube"></i></a>
@@ -417,7 +417,7 @@
             <h3>About Us</h3>
             <p>East African Land and Rentals is a premier real estate company specializing in property sales and rentals across East Africa.</p>
             <div class="social-links mt-4">
-                <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61573780542915"><i class="fab fa-facebook-f"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -436,8 +436,8 @@
         <div class="footer-section">
             <h3>Contact Us</h3>
             <ul class="contact-info">
-                <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
-                <li><i class="fas fa-phone"></i> +256 764502805 </li>
+                <li><i class="fas fa-map-marker-alt"></i> PO. Box 331679 Jinja Camp-A, Jinja Camp Ward, Lira City West, Uganda</li>
+                <li><i class="fas fa-phone"></i> +256764502805</li>
                 <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
             </ul>
         </div>

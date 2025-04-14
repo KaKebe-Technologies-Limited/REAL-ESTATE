@@ -271,7 +271,7 @@ function formatPrice($price) {
                 <h3>About Us</h3>
                 <p>East African Land and Rentals is a premier real estate company specializing in property sales and rentals across East Africa.</p>
                 <div class="social-links mt-4">
-                    <a href="https://fb.me/a6fCZzsAQ"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61573780542915"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -290,8 +290,8 @@ function formatPrice($price) {
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
-                    <li><i class="fas fa-phone"></i> +256 764502805 </li>
+                    <li><i class="fas fa-map-marker-alt"></i> PO. Box 331679 Jinja Camp-A, Jinja Camp Ward, Lira City West, Uganda</li>
+                    <li><i class="fas fa-phone"></i> +256764502805</li>
                     <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
                 </ul>
             </div>
