@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json'); // Ensure JSON response
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1); 
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 
@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             $_SESSION['user_id'] = $user['owner_id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['user_type'] = 'owner';
             echo json_encode(['success' => true, 'message' => 'Login successful']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid password']);

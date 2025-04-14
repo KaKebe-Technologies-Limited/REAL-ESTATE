@@ -1,0 +1,77 @@
+/* Custom Logo Loader for Real Estate Website */
+
+/* Loader Container */
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loader-container.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Logo Animation */
+.logo-loader {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.logo-loader img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Loading Text */
+.loading-text {
+    font-family: var(--body-font, 'Inter', sans-serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary-color, #2c3e50);
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.loading-text:after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: ''; }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .logo-loader {
+        width: 80px;
+        height: 80px;
+    }
+
+    .loading-text {
+        font-size: 14px;
+    }
+}

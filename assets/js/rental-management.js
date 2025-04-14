@@ -66,12 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM Content Loaded - Initializing dropdowns');
     populateDropdowns();
 
-    // Initialize Select2 if it exists
-    if (typeof $.fn.select2 !== 'undefined') {
-        $('.select2-multiple').select2({
+    // Initialize Select2 if jQuery and Select2 exist
+    if (typeof jQuery !== 'undefined' && typeof jQuery.fn.select2 !== 'undefined') {
+        jQuery('.select2-multiple').select2({
             theme: 'bootstrap-5',
             width: '100%'
         });
+    } else {
+        console.log('jQuery or Select2 is not loaded. Skipping Select2 initialization.');
     }
 });
 

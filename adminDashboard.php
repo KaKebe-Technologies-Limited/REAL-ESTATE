@@ -168,10 +168,12 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Add to the <head> section -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/custom-loader.css">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/custom-loader.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -2651,12 +2653,12 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <div class="modal fade" id="editSaleModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header"> 
+                <div class="modal-header">
                     <h5 class="modal-title">Edit Sale Property</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>     
+                </div>
                 <div class="modal-body">
-                    <form id="editSaleForm" enctype="multipart/form-data"> 
+                    <form id="editSaleForm" enctype="multipart/form-data">
                         <input type="hidden" name="sale_id" id="edit-sale-id">
 
                         <!-- Property Images -->

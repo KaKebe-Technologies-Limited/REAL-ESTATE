@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleSidebar(e) {
         if (e) e.preventDefault();
         sidebar.classList.toggle('collapsed');
-        
+
         // Only adjust main content on desktop
         if (window.innerWidth > 768) {
             mainContent.classList.toggle('expanded');
@@ -95,13 +95,13 @@ let tempTheme = '';
 function setTheme(theme, isPermanent = false) {
     document.body.className = ''; // Remove existing theme classes
     document.body.classList.add(`theme-${theme}`);
-    
+
     if (isPermanent) {
         localStorage.setItem('preferred-theme', theme);
     } else {
         tempTheme = theme;
     }
-    
+
     // Update active state of theme options
     document.querySelectorAll('.theme-option').forEach(option => {
         option.classList.remove('active');
@@ -114,12 +114,12 @@ function setTheme(theme, isPermanent = false) {
 // Save settings including theme
 function saveSettings(event) {
     event.preventDefault();
-    
+
     // Make the temporary theme permanent if one was selected
     if (tempTheme) {
         setTheme(tempTheme, true);
     }
-    
+
     // Show success message
     const alertDiv = document.createElement('div');
     alertDiv.className = 'alert alert-success alert-dismissible fade show';
@@ -127,11 +127,11 @@ function saveSettings(event) {
         <strong>Success!</strong> Settings have been saved. Theme: ${tempTheme || localStorage.getItem('preferred-theme') || 'light'}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     // Insert alert at the top of settings form
     const form = document.querySelector('.settings-form');
     form.insertBefore(alertDiv, form.firstChild);
-    
+
     // Auto dismiss after 3 seconds
     setTimeout(() => {
         alertDiv.remove();
@@ -150,12 +150,13 @@ document.querySelector('.nav-link i.fa-tachometer-alt').parentElement.addEventLi
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('preferred-theme') || 'light';
     setTheme(savedTheme, true);
-    
-    // Add click handlers for form links
-    document.querySelector('[data-form="create-manager"]').addEventListener('click', showCreateManager);
-    document.querySelector('[data-form="create-owner"]').addEventListener('click', showCreateOwner);
-    document.querySelector('[data-form="add-sale"]').addEventListener('click', showAddSale);
-    document.querySelector('[data-form="add-rental"]').addEventListener('click', showAddRental);
+
+    // These event listeners are now handled by onclick attributes and dashboard-functions.js
+    // // Add click handlers for form links
+    // document.querySelector('[data-form="create-manager"]').addEventListener('click', showCreateManager);
+    // document.querySelector('[data-form="create-owner"]').addEventListener('click', showCreateOwner);
+    // document.querySelector('[data-form="add-sale"]').addEventListener('click', showAddSale);
+    // document.querySelector('[data-form="add-rental"]').addEventListener('click', showAddRental);
 });
 
 function togglePropertySubmenu(el) {
@@ -165,37 +166,39 @@ function togglePropertySubmenu(el) {
     event.stopPropagation();
 }
 
-function hideAllForms() {
-    const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form', 'rental-listing', 'sales-listing', 'owners-listing', 'managers-listing', 'profile-content'];
-    forms.forEach(form => {
-        document.getElementById(form).style.display = 'none';
-    });
-}
+// This function is now defined in dashboard-functions.js
+// function hideAllForms() {
+//     const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form', 'rental-listing', 'sales-listing', 'owners-listing', 'managers-listing', 'profile-content'];
+//     forms.forEach(form => {
+//         document.getElementById(form).style.display = 'none';
+//     });
+// }
 
-// Form display handlers
-function showCreateManager() {
-    hideAllForms();
-    document.getElementById('create-manager-form').style.display = 'block';
-    updateActiveNav('create-manager');
-}
+// These functions are now defined in dashboard-functions.js
+// // Form display handlers
+// function showCreateManager() {
+//     hideAllForms();
+//     document.getElementById('create-manager-form').style.display = 'block';
+//     updateActiveNav('create-manager');
+// }
 
-function showCreateOwner() {
-    hideAllForms();
-    document.getElementById('create-owner-form').style.display = 'block';
-    updateActiveNav('create-owner');
-}
+// function showCreateOwner() {
+//     hideAllForms();
+//     document.getElementById('create-owner-form').style.display = 'block';
+//     updateActiveNav('create-owner');
+// }
 
-function showAddSale() {
-    hideAllForms();
-    document.getElementById('add-sale-form').style.display = 'block';
-    updateActiveNav('add-sale');
-}
+// function showAddSale() {
+//     hideAllForms();
+//     document.getElementById('add-sale-form').style.display = 'block';
+//     updateActiveNav('add-sale');
+// }
 
-function showAddRental() {
-    hideAllForms();
-    document.getElementById('add-rental-form').style.display = 'block';
-    updateActiveNav('add-rental');
-}
+// function showAddRental() {
+//     hideAllForms();
+//     document.getElementById('add-rental-form').style.display = 'block';
+//     updateActiveNav('add-rental');
+// }
 
 function updateActiveNav(formId) {
     document.querySelectorAll('.submenu-link').forEach(link => {
@@ -208,25 +211,25 @@ function updateActiveNav(formId) {
 
 function togglePropertySubmenu(element) {
     event.preventDefault();
-    
+
     // Toggle submenu visibility
     const submenu = element.nextElementSibling;
     submenu.classList.toggle('show');
-    
+
     // Toggle arrow rotation
     const arrow = element.querySelector('.property-submenu-arrow');
     arrow.classList.toggle('rotate');
-    
+
     // Close other property submenus if open
     const allPropertySubmenus = document.querySelectorAll('.property-submenu');
     const allPropertyArrows = document.querySelectorAll('.property-submenu-arrow');
-    
+
     allPropertySubmenus.forEach(menu => {
         if (menu !== submenu && menu.classList.contains('show')) {
             menu.classList.remove('show');
         }
     });
-    
+
     allPropertyArrows.forEach(arr => {
         if (arr !== arrow && arr.classList.contains('rotate')) {
             arr.classList.remove('rotate');
@@ -239,7 +242,7 @@ document.addEventListener('click', function(event) {
     if (!event.target.closest('.has-submenu')) {
         const propertySubmenus = document.querySelectorAll('.property-submenu');
         const propertyArrows = document.querySelectorAll('.property-submenu-arrow');
-        
+
         propertySubmenus.forEach(menu => menu.classList.remove('show'));
         propertyArrows.forEach(arrow => arrow.classList.remove('rotate'));
     }
@@ -248,7 +251,7 @@ document.addEventListener('click', function(event) {
 function showRentalListing() {
     // Hide all other content
     hideAllForms();
-    
+
     // Show rental listing
     document.getElementById('rental-listing').style.display = 'block';
     updateActiveNav('rental-listing');

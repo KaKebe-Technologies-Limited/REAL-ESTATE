@@ -153,8 +153,9 @@ $conn->close();
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/properties.css">
     <link rel="stylesheet" href="assets/css/property-detail.css">
-    <link rel="stylesheet" href="assets/css/loader.css">
+    <link rel="stylesheet" href="assets/css/custom-loader.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/custom-loader.js" defer></script>
 </head>
 <body>
     <header class="master_header">

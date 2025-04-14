@@ -5,6 +5,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 
+// Log all incoming requests for debugging
+error_log('handle_manager.php called with: ' . print_r($_REQUEST, true));
+error_log('POST data: ' . print_r($_POST, true));
+error_log('GET data: ' . print_r($_GET, true));
+error_log('FILES data: ' . print_r($_FILES, true));
+
 $response = ['success' => false, 'message' => ''];
 $upload_dir = 'uploads/managers/'; // Create this directory and ensure it's writable
 
@@ -25,6 +31,19 @@ try {
     switch($action) {
         case 'view':
             $manager_id = $_POST['manager_id'] ?? 0;
+            error_log("View manager with ID: $manager_id");
+
+            // Count properties managed by this manager
+            $count_query = "SELECT
+                (SELECT COUNT(*) FROM rental_property WHERE manager_id = ?) +
+                (SELECT COUNT(*) FROM sales_property WHERE manager_id = ?) as property_count";
+            $count_stmt = $conn->prepare($count_query);
+            $count_stmt->bind_param("ii", $manager_id, $manager_id);
+            $count_stmt->execute();
+            $count_result = $count_stmt->get_result();
+            $property_count = $count_result->fetch_assoc()['property_count'] ?? 0;
+
+            // Get manager details
             $stmt = $conn->prepare("SELECT *, CONCAT(?, profile_picture) as image_url FROM property_manager WHERE manager_id = ?");
             $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/";
             $stmt->bind_param("si", $base_url, $manager_id);
@@ -33,10 +52,15 @@ try {
             $manager = $result->fetch_assoc();
 
             if ($manager) {
+                // Add property count to manager data
+                $manager['property_count'] = $property_count;
+
                 $response['success'] = true;
                 $response['data'] = $manager;
+                error_log("Manager found: " . print_r($manager, true));
             } else {
                 $response['message'] = 'Manager not found';
+                error_log("Manager not found with ID: $manager_id");
             }
             break;
 

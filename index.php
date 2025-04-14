@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-
-    <link rel="stylesheet" href="assets/css/loader.css">
+    <link rel="stylesheet" href="assets/css/custom-loader.css">
     <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/custom-loader.js" defer></script>
 </head>
 <body>
 <header class="master_header wide header_transparent">
