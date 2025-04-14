@@ -32,6 +32,9 @@ class ImageHandler {
         // Ensure upload directory exists
         $this->ensureDirectoryExists();
 
+        // Debug log the files array structure
+        error_log('Files array structure: ' . print_r($files, true));
+
         // Check if files is a valid array with the expected structure
         if (!is_array($files) || empty($files)) {
             // No files uploaded, return success with empty images
@@ -43,10 +46,19 @@ class ImageHandler {
             ];
         }
 
+        // Handle different file upload structures
+        if (isset($files['images']) && is_array($files['images'])) {
+            // This is the structure from the form with name="images[]"
+            error_log('Found images[] in files array');
+            $files = $files['images'];
+        } else if (isset($files['new_images']) && is_array($files['new_images'])) {
+            // This is a file upload with 'new_images' key
+            error_log('Found new_images in files array');
+            $files = $files['new_images'];
+        }
+
         // Check if the file input is empty (no files selected)
-        if (isset($files['new_images']) &&
-            isset($files['new_images']['error']) &&
-            $files['new_images']['error'][0] === UPLOAD_ERR_NO_FILE) {
+        if (isset($files['error']) && $files['error'][0] === UPLOAD_ERR_NO_FILE) {
             // No files selected, return success with empty images
             error_log('No files selected (UPLOAD_ERR_NO_FILE)');
             return [
@@ -58,37 +70,13 @@ class ImageHandler {
 
         // Check if we have the expected structure for multiple file uploads
         if (!isset($files['name']) || !is_array($files['name'])) {
-            // Check if this is a file upload with 'new_images' key
-            if (isset($files['new_images']) && is_array($files['new_images'])) {
-                // This is a file upload with a different structure
-                error_log('Found new_images in files array');
-
-                // Check if it's a single file or multiple files
-                if (isset($files['new_images']['name']) && is_array($files['new_images']['name'])) {
-                    // Multiple files
-                    error_log('Processing multiple files in new_images');
-                    $files = $files['new_images'];
-                } else if (isset($files['new_images']['name'])) {
-                    // Single file
-                    error_log('Processing single file in new_images');
-                    $files = $files['new_images'];
-                } else {
-                    error_log('Invalid structure in new_images: ' . print_r($files['new_images'], true));
-                    return [
-                        'success' => true,
-                        'images' => [],
-                        'errors' => ['Invalid file structure in new_images']
-                    ];
-                }
-            } else {
-                // Log the structure for debugging
-                error_log('Invalid file structure: ' . print_r($files, true));
-                return [
-                    'success' => true, // Don't fail the whole operation just because of image issues
-                    'images' => [],
-                    'errors' => ['Invalid file upload structure']
-                ];
-            }
+            // Log the structure for debugging
+            error_log('Invalid file structure: ' . print_r($files, true));
+            return [
+                'success' => true, // Don't fail the whole operation just because of image issues
+                'images' => [],
+                'errors' => ['Invalid file upload structure']
+            ];
         }
 
         foreach ($files['name'] as $key => $name) {

@@ -311,6 +311,8 @@ function formatPrice($price) {
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom alerts must be loaded before other scripts -->
+    <script src="assets/js/custom-alerts.js"></script>
     <script src="assets/js/properties-php.js"></script>
     <script src="assets/js/property-search.js"></script>
     <script src="assets/js/loader.js"></script>

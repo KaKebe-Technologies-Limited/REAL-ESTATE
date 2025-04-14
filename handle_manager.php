@@ -206,10 +206,8 @@ try {
                 $result = $stmt->get_result();
                 $manager = $result->fetch_assoc();
 
-                // Update properties to remove manager reference
-                $stmt = $conn->prepare("UPDATE rental_property SET manager_id = NULL WHERE manager_id = ?");
-                $stmt->bind_param("i", $manager_id);
-                $stmt->execute();
+                // With ON DELETE CASCADE, we don't need to update rental_property
+                // The database will automatically handle the cascading deletes
 
                 // Delete the manager
                 $stmt = $conn->prepare("DELETE FROM property_manager WHERE manager_id = ?");

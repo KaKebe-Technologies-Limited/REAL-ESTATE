@@ -398,10 +398,21 @@ document.addEventListener('DOMContentLoaded', function() {
 function submitPropertyForm(form, endpoint, imageHandler) {
     const formData = new FormData(form);
 
+    // Clear any existing files from the form data
+    if (formData.has('images[]')) {
+        formData.delete('images[]');
+    }
+
     // Add files to FormData
     imageHandler.getFiles().forEach((file, index) => {
         formData.append(`images[]`, file);
     });
+
+    // Debug log the form data
+    console.log('Form data being sent:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value instanceof File ? value.name : value}`);
+    }
 
     fetch(`${endpoint}`, {
         method: 'POST',

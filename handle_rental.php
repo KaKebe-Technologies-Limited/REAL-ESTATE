@@ -219,7 +219,7 @@ try {
             break;
 
         case 'delete':
-            $rental_id = $_POST['property_id'] ?? 0;
+            $rental_id = $_POST['rental_id'] ?? $_POST['property_id'] ?? 0;
 
             $conn->begin_transaction();
 
@@ -230,6 +230,10 @@ try {
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $rental = $result->fetch_assoc();
+
+                if (!$rental) {
+                    throw new Exception("Rental property with ID $rental_id not found");
+                }
 
                 // Delete the property
                 $stmt = $conn->prepare("DELETE FROM rental_property WHERE property_id = ?");

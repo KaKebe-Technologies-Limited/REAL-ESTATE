@@ -186,10 +186,8 @@ try {
                 $result = $stmt->get_result();
                 $owner = $result->fetch_assoc();
 
-                // Update properties to remove owner reference
-                $stmt = $conn->prepare("UPDATE rental_property SET owner_id = NULL WHERE owner_id = ?");
-                $stmt->bind_param("i", $owner_id);
-                $stmt->execute();
+                // With ON DELETE CASCADE, we don't need to update rental_property
+                // The database will automatically handle the cascading deletes
 
                 // Delete the owner
                 $stmt = $conn->prepare("DELETE FROM property_owner WHERE owner_id = ?");

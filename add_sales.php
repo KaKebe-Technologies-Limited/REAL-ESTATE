@@ -4,7 +4,7 @@ require_once 'log_activity.php';
 
 header('Content-Type: application/json'); // Ensure JSON response
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1); 
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 
@@ -15,10 +15,16 @@ try {
         throw new Exception('Database connection failed');
     }
 
+    // Debug log the FILES array
+    error_log('FILES array in add_sales.php: ' . print_r($_FILES, true));
+
     // Handle image uploads
     $imageHandler = new ImageHandler('sales');
     $uploadResult = $imageHandler->handleImageUploads($_FILES);
-    
+
+    // Debug log the upload result
+    error_log('Upload result: ' . print_r($uploadResult, true));
+
     if (!$uploadResult['success']) {
         throw new Exception('Failed to upload images: ' . implode(', ', $uploadResult['errors']));
     }
@@ -44,9 +50,9 @@ try {
     ];
 
     // Insert into database
-    $query = "INSERT INTO sales_property (property_name, title, utilities, price, property_type, 
-                property_size, amenities, country, region, subregion, 
-                parish, ward, cell, owner_id, manager_id, images) 
+    $query = "INSERT INTO sales_property (property_name, title, utilities, price, property_type,
+                property_size, amenities, country, region, subregion,
+                parish, ward, cell, owner_id, manager_id, images)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);

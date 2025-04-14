@@ -161,11 +161,14 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     <script src="assets/js/custom-loader.js" defer></script>
+    <!-- Custom alerts must be loaded first to override alert() function -->
+    <script src="assets/js/custom-alerts.js" defer></script>
     <script src="assets/js/dashboard-functions.js" defer></script>
     <script src="assets/js/owner-dashboard-new.js" defer></script>
     <script src="assets/js/register.js" defer></script>
     <script src="assets/js/dashboard-search.js" defer></script>
     <script src="assets/js/profile.js" defer></script>
+    <script src="assets/js/property-images.js"></script>
     <script src="assets/js/rental-management.js" defer></script>
     <script src="assets/js/sales-management.js" defer></script>
     <script src="assets/js/owner-manager-handlers.js" defer></script>

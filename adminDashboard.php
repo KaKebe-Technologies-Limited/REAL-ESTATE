@@ -2900,12 +2900,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
         </div>
     </div>
 
-    <!-- Add this near the end of your body tag -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+    <!-- Custom alerts must be loaded first to override alert() function -->
+    <script src="assets/js/custom-alerts.js"></script>
     <script src="assets/js/admin-dashboard.js"></script>
     <script src="assets/js/register.js"></script>
     <script src="assets/js/search.js"></script>
