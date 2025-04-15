@@ -162,7 +162,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - East African Land and Rentals</title>
+    <title>Property Admin Dashboard - ALLEA Properties</title>
     <link rel="icon" href="logo1.ico" sizes="any">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -170,19 +170,28 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/admin-dashboard.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
+    <link rel="stylesheet" href="assets/css/dashboard-responsive.css">
+    <link rel="stylesheet" href="assets/css/sidebar-fix.css">
+    <link rel="stylesheet" href="assets/css/responsive-tables.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/custom-loader.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="assets/js/responsive-dashboard.js" defer></script>
+    <script src="assets/js/responsive-tables.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <button class="btn btn-light" id="sidebar-toggle">
+            <button type="button" class="btn btn-light" id="sidebar-toggle">
                 <i class="fas fa-bars"></i>
             </button>
             <a class="navbar-brand ms-3" href="#">ALL-EA</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
@@ -225,9 +234,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle img-thumbnai profile-picture">
+                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -241,10 +250,24 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
         </div>
     </nav>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Mobile Logout Button -->
+    <a href="login.html" class="mobile-logout" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+    </a>
+
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <img src="assets/images/logo1.png" alt="Logo" class="logo">
+        </div>
+        <!-- Profile section in sidebar for mobile -->
+        <div class="sidebar-profile d-none d-lg-none">
+            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="profile-picture">
+            <div class="profile-name">Admin User</div>
+            <div class="profile-role">Administrator</div>
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item active">
@@ -254,14 +277,14 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                 </a>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -282,7 +305,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -305,7 +328,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                 </ul>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
                     <i class="fas fa-user-tie"></i>
                     <span>Manage Owners</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
@@ -326,7 +349,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                 </ul>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
                     <i class="fas fa-user-cog"></i>
                     <span>Manage Managers</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
@@ -825,8 +848,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="price" class="form-control" required>
                                                         <option value="">Select Method</option>
-                                                        <option value="cash">Cash</option>
-                                                        <option value="installments">Installments</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Installments">Installments</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -841,9 +864,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="utilities" class="form-control" required>
                                                         <option value="">Select Utilities</option>
-                                                        <option value="included">Included</option>
-                                                        <option value="not_included">Not Included</option>
-                                                        <option value="partial">Partially Included</option>
+                                                        <option value="Included">Included</option>
+                                                        <option value="Not Included">Not Included</option>
+                                                        <option value="Partial">Partially Included</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -854,11 +877,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="property_type" class="form-control" required>
                                                         <option value="">Select Property Type</option>
-                                                        <option value="land">Only Land</option>
-                                                        <option value="flat">Flat</option>
-                                                        <option value="permanent">Permanent</option>
-                                                        <option value="semi_permanent">Semi-permanent</option>
-                                                        <option value="ground">Grounds</option>
+                                                        <option value="Land">Only Land</option>
+                                                        <option value="Flat">Flat</option>
+                                                        <option value="Permanent">Permanent</option>
+                                                        <option value="Semi Permanent">Semi-permanent</option>
+                                                        <option value="Ground">Grounds</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -872,8 +895,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="title" class="form-control" required>
                                                         <option value="">Select Title</option>
-                                                        <option value="yes">Yes</option>
-                                                        <option value="no">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                        <option value="No">No</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -883,11 +906,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <label class="col-sm-3 col-form-label">Close Amenities</label>
                                                 <div class="col-sm-9">
                                                     <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
-                                                        <option value="market">Market</option>
-                                                        <option value="school">School</option>
-                                                        <option value="church">Church / Mosque</option>
-                                                        <option value="institution">Institution</option>
-                                                        <option value="hospital">Hospital</option>
+                                                        <option value="Market">Market</option>
+                                                        <option value="School">School</option>
+                                                        <option value="Church">Church / Mosque</option>
+                                                        <option value="Institution">Institution</option>
+                                                        <option value="Hospital">Hospital</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -939,13 +962,13 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="country" id="country" class="form-control" required>
                                                         <option value="">Select Country</option>
-                                                        <option value="uganda">Uganda</option>
-                                                        <option value="kenya">Kenya</option>
-                                                        <option value="tanzania">Tanzania</option>
-                                                        <option value="rwanda">Rwanda</option>
-                                                        <option value="burundi">Burundi</option>
-                                                        <option value="south_sudan">South Sudan</option>
-                                                        <option value="drc">DR Congo</option>
+                                                        <option value="Uganda">Uganda</option>
+                                                        <option value="Kenya">Kenya</option>
+                                                        <option value="Tanzania">Tanzania</option>
+                                                        <option value="Rwanda">Rwanda</option>
+                                                        <option value="Burundi">Burundi</option>
+                                                        <option value="South Sudan">South Sudan</option>
+                                                        <option value="DR Congo">DR Congo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1061,8 +1084,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="landlord" class="form-control" required>
                                                         <option value="">Select Landlord</option>
-                                                        <option value="resident">Resident</option>
-                                                        <option value="non_resident">Non resident</option>
+                                                        <option value="Resident">Resident</option>
+                                                        <option value="Non Resident">Non resident</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1072,11 +1095,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <label class="col-sm-3 col-form-label">Security</label>
                                                 <div class="col-sm-9">
                                                     <select name="security[]" class="form-control select2-multiple" multiple="multiple">
-                                                        <option value="cctv">CCTV</option>
-                                                        <option value="guards">Security Guards</option>
-                                                        <option value="electric_fence">Electric Fence</option>
-                                                        <option value="alarm">Alarm System</option>
-                                                        <option value="security_lights">Security Lights</option>
+                                                        <option value="CCTV">CCTV</option>
+                                                        <option value="Guards">Security Guards</option>
+                                                        <option value="Electric Fence">Electric Fence</option>
+                                                        <option value="Alarm">Alarm System</option>
+                                                        <option value="Security Lights">Security Lights</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1090,9 +1113,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="utilities" class="form-control" required>
                                                         <option value="">Select Utilities</option>
-                                                        <option value="included">Included</option>
-                                                        <option value="not_included">Not Included</option>
-                                                        <option value="partial">Partially Included</option>
+                                                        <option value="Included">Included</option>
+                                                        <option value="Not Included">Not Included</option>
+                                                        <option value="Partially Included">Partially Included</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1103,10 +1126,10 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="property_type" class="form-control" required>
                                                         <option value="">Select Property Type</option>
-                                                        <option value="flat">Flat</option>
-                                                        <option value="permanent">Permanent</option>
-                                                        <option value="semi_permanent">Semi-permanent</option>
-                                                        <option value="ground">Grounds</option>
+                                                        <option value="Flat">Flat</option>
+                                                        <option value="Permanent">Permanent</option>
+                                                        <option value="Semi-permanent">Semi-permanent</option>
+                                                        <option value="Grounds">Grounds</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1120,10 +1143,10 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="convenience" class="form-control" required>
                                                         <option value="">Select Convenience Level</option>
-                                                        <option value="crowded">Crowded</option>
-                                                        <option value="private">Private</option>
-                                                        <option value="self_contained">Self contained</option>
-                                                        <option value="non_self_contained">Non self contained</option>
+                                                        <option value="Crowded">Crowded</option>
+                                                        <option value="Private">Private</option>
+                                                        <option value="Self contained">Self contained</option>
+                                                        <option value="Non self contained">Non self contained</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1134,13 +1157,13 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="property_class" class="form-control" required>
                                                         <option value="">Select Property Class</option>
-                                                        <option value="hall">Hall</option>
-                                                        <option value="commercial">Commercial</option>
-                                                        <option value="residential">Residential</option>
-                                                        <option value="hostel">Hostel</option>
-                                                        <option value="hotel">Hotel</option>
-                                                        <option value="lodge">Lodge</option>
-                                                        <option value="event_space">Event space</option>
+                                                        <option value="Hall">Hall</option>
+                                                        <option value="Commercial">Commercial</option>
+                                                        <option value="Residential">Residential</option>
+                                                        <option value="Hostel">Hostel</option>
+                                                        <option value="Hotel">Hotel</option>
+                                                        <option value="Lodge">Lodge</option>
+                                                        <option value="Event space">Event space</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1162,8 +1185,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="parking" class="form-control" required>
                                                         <option value="">Select Parking Type</option>
-                                                        <option value="yes">Yes</option>
-                                                        <option value="no">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                        <option value="No">No</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1175,11 +1198,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <label class="col-sm-3 col-form-label">Close Amenities</label>
                                                 <div class="col-sm-9">
                                                     <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
-                                                        <option value="market">Market</option>
-                                                        <option value="school">School</option>
-                                                        <option value="church">Church / Mosque</option>
-                                                        <option value="institution">Institution</option>
-                                                        <option value="hospital">Hospital</option>
+                                                        <option value="Market">Market</option>
+                                                        <option value="School">School</option>
+                                                        <option value="Church / Mosque">Church / Mosque</option>
+                                                        <option value="Institution">Institution</option>
+                                                        <option value="Hospital">Hospital</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1220,13 +1243,13 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <div class="col-sm-9">
                                                     <select name="country" id="country" class="form-control" required>
                                                         <option value="">Select Country</option>
-                                                        <option value="uganda">Uganda</option>
-                                                        <option value="kenya">Kenya</option>
-                                                        <option value="tanzania">Tanzania</option>
-                                                        <option value="rwanda">Rwanda</option>
-                                                        <option value="burundi">Burundi</option>
-                                                        <option value="south_sudan">South Sudan</option>
-                                                        <option value="drc">DR Congo</option>
+                                                        <option value="Uganda">Uganda</option>
+                                                        <option value="Kenya">Kenya</option>
+                                                        <option value="Tanzania">Tanzania</option>
+                                                        <option value="Rwanda">Rwanda</option>
+                                                        <option value="Burundi">Burundi</option>
+                                                        <option value="South Sudan">South Sudan</option>
+                                                        <option value="DR Congo">DR Congo</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1728,9 +1751,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="form-group mb-3">
                                         <label>Subscription Status</label>
                                         <select class="form-control" id="edit-subscription-status" name="subscription_status">
-                                            <option value="active">Active</option>
-                                            <option value="inactive">Inactive</option>
-                                            <option value="pending">Pending</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Pending">Pending</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2015,9 +2038,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="form-group mb-3">
                                         <label>Subscription Status</label>
                                         <select class="form-control" id="manager-edit-subscription-status" name="subscription_status">
-                                            <option value="active">Active</option>
-                                            <option value="inactive">Inactive</option>
-                                            <option value="pending">Pending</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Pending">Pending</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2100,7 +2123,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                         <div class="col-md-4 text-center">
                                             <div class="profile-picture-wrapper">
                                                 <img id="profile-picture-preview"
-                                                    src="<?php echo isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : 'uploads/profile_picture/default-profile.jpg'; ?>"
+                                                    src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>"
                                                     alt="Profile Picture"
                                                     class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
                                                 <input type="file" id="profile-picture-input" name="profile_picture" accept="image/*" style="display: none;">
@@ -2205,7 +2228,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                 <div id="profile-view">
                                     <div class="row mb-4">
                                     <div class="col-md-4 text-center">
-                                        <img src="<?php echo isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : 'uploads/profile_picture/default-profile.jpg'; ?>"
+                                        <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>"
                                             alt="Profile Picture"
                                             class="rounded-circle img-thumbnail profile-picture"
                                             style="width: 150px; height: 150px;">
@@ -2344,8 +2367,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="landlord" class="form-control" required>
                                             <option value="">Select Landlord</option>
-                                            <option value="resident">Resident</option>
-                                            <option value="non_resident">Non resident</option>
+                                            <option value="Resident">Resident</option>
+                                            <option value="Non resident">Non resident</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2355,11 +2378,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <label class="col-sm-3 col-form-label">Security</label>
                                     <div class="col-sm-9">
                                         <select name="security[]" class="form-control select2-multiple" multiple="multiple">
-                                            <option value="cctv">CCTV</option>
-                                            <option value="guards">Security Guards</option>
-                                            <option value="electric_fence">Electric Fence</option>
-                                            <option value="alarm">Alarm System</option>
-                                            <option value="security_lights">Security Lights</option>
+                                            <option value="CCTV">CCTV</option>
+                                            <option value="Security Guards">Security Guards</option>
+                                            <option value="Electric Fence">Electric Fence</option>
+                                            <option value="Alarm System">Alarm System</option>
+                                            <option value="Security Lights">Security Lights</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2374,9 +2397,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="utilities" class="form-control" required>
                                             <option value="">Select Utilities</option>
-                                            <option value="included">Included</option>
-                                            <option value="not_included">Not Included</option>
-                                            <option value="partial">Partially Included</option>
+                                            <option value="Included">Included</option>
+                                            <option value="Not Included">Not Included</option>
+                                            <option value="Partially Included">Partially Included</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2387,10 +2410,10 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="property_type" class="form-control" required>
                                             <option value="">Select Property Type</option>
-                                            <option value="flat">Flat</option>
-                                            <option value="permanent">Permanent</option>
-                                            <option value="semi_permanent">Semi-permanent</option>
-                                            <option value="ground">Grounds</option>
+                                            <option value="Flat">Flat</option>
+                                            <option value="Permanent">Permanent</option>
+                                            <option value="Semi-permanent">Semi-permanent</option>
+                                            <option value="Grounds">Grounds</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2413,8 +2436,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="parking" class="form-control" required>
                                             <option value="">Select Parking Type</option>
-                                            <option value="yes">Yes</option>
-                                            <option value="no">No</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2429,10 +2452,10 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="convenience" class="form-control" required>
                                             <option value="">Select Convenience Level</option>
-                                            <option value="crowded">Crowded</option>
-                                            <option value="private">Private</option>
-                                            <option value="self_contained">Self contained</option>
-                                            <option value="non_self_contained">Non self contained</option>
+                                            <option value="Crowded">Crowded</option>
+                                            <option value="Private">Private</option>
+                                            <option value="Self contained">Self contained</option>
+                                            <option value="Non self contained">Non self contained</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2443,13 +2466,13 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="property_class" class="form-control" required>
                                             <option value="">Select Property Class</option>
-                                            <option value="hall">Hall</option>
-                                            <option value="commercial">Commercial</option>
-                                            <option value="residential">Residential</option>
-                                            <option value="hostel">Hostel</option>
-                                            <option value="hotel">Hotel</option>
-                                            <option value="lodge">Lodge</option>
-                                            <option value="event_space">Event space</option>
+                                            <option value="Hall">Hall</option>
+                                            <option value="Commercial">Commercial</option>
+                                            <option value="Residential">Residential</option>
+                                            <option value="Hostel">Hostel</option>
+                                            <option value="Hotel">Hotel</option>
+                                            <option value="Lodge">Lodge</option>
+                                            <option value="Event space">Event space</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2463,11 +2486,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <label class="col-sm-3 col-form-label">Close Amenities</label>
                                     <div class="col-sm-9">
                                         <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
-                                            <option value="market">Market</option>
-                                            <option value="school">School</option>
-                                            <option value="church">Church / Mosque</option>
-                                            <option value="institution">Institution</option>
-                                            <option value="hospital">Hospital</option>
+                                            <option value="Market">Market</option>
+                                            <option value="School">School</option>
+                                            <option value="Church">Church / Mosque</option>
+                                            <option value="Institution">Institution</option>
+                                            <option value="Hospital">Hospital</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2509,13 +2532,13 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="country" class="form-control" required>
                                             <option value="">Select Country</option>
-                                            <option value="uganda">Uganda</option>
-                                            <option value="kenya">Kenya</option>
-                                            <option value="tanzania">Tanzania</option>
-                                            <option value="rwanda">Rwanda</option>
-                                            <option value="burundi">Burundi</option>
-                                            <option value="south_sudan">South Sudan</option>
-                                            <option value="drc">DR Congo</option>
+                                            <option value="Uganda">Uganda</option>
+                                            <option value="Kenya">Kenya</option>
+                                            <option value="Tanzania">Tanzania</option>
+                                            <option value="Rwanda">Rwanda</option>
+                                            <option value="Burundi">Burundi</option>
+                                            <option value="South Sudan">South Sudan</option>
+                                            <option value="DR Congo">DR Congo</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2693,8 +2716,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="price" class="form-control" required>
                                             <option value="">Select Option</option>
-                                            <option value="cash">Cash</option>
-                                            <option value="installments">Insatllments</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Installments">Insatllments</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2709,8 +2732,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="title" class="form-control" required>
                                             <option value="">Select Option</option>
-                                            <option value="yes">Yes</option>
-                                            <option value="no">No</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2721,9 +2744,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="utilities" class="form-control" required>
                                             <option value="">Select Utilities</option>
-                                            <option value="included">Included</option>
-                                            <option value="not_included">Not Included</option>
-                                            <option value="partial">Partially Included</option>
+                                            <option value="Included">Included</option>
+                                            <option value="Not Included">Not Included</option>
+                                            <option value="Partially Included">Partially Included</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2737,10 +2760,10 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="property_type" class="form-control" required>
                                             <option value="">Select Property Type</option>
-                                            <option value="flat">Flat</option>
-                                            <option value="permanent">Permanent</option>
-                                            <option value="semi_permanent">Semi-permanent</option>
-                                            <option value="ground">Grounds</option>
+                                            <option value="Flat">Flat</option>
+                                            <option value="Permanent">Permanent</option>
+                                            <option value="Semi-permanent">Semi-permanent</option>
+                                            <option value="Grounds">Grounds</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2763,11 +2786,11 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <label class="col-sm-3 col-form-label">Close Amenities</label>
                                     <div class="col-sm-9">
                                         <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
-                                            <option value="market">Market</option>
-                                            <option value="school">School</option>
-                                            <option value="church">Church / Mosque</option>
-                                            <option value="institution">Institution</option>
-                                            <option value="hospital">Hospital</option>
+                                            <option value="Market">Market</option>
+                                            <option value="School">School</option>
+                                            <option value="Church">Church / Mosque</option>
+                                            <option value="Institution">Institution</option>
+                                            <option value="Hospital">Hospital</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2810,13 +2833,13 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <div class="col-sm-9">
                                         <select name="country" class="form-control" required>
                                             <option value="">Select Country</option>
-                                            <option value="uganda">Uganda</option>
-                                            <option value="kenya">Kenya</option>
-                                            <option value="tanzania">Tanzania</option>
-                                            <option value="rwanda">Rwanda</option>
-                                            <option value="burundi">Burundi</option>
-                                            <option value="south_sudan">South Sudan</option>
-                                            <option value="drc">DR Congo</option>
+                                            <option value="Uganda">Uganda</option>
+                                            <option value="Kenya">Kenya</option>
+                                            <option value="Tanzania">Tanzania</option>
+                                            <option value="Rwanda">Rwanda</option>
+                                            <option value="Burundi">Burundi</option>
+                                            <option value="South Sudan">South Sudan</option>
+                                            <option value="DR Congo">DR Congo</option>
                                         </select>
                                     </div>
                                 </div>

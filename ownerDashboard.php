@@ -154,6 +154,9 @@ try {
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/owner-dashboard.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
+    <link rel="stylesheet" href="assets/css/dashboard-responsive.css">
+    <link rel="stylesheet" href="assets/css/sidebar-fix.css">
+    <link rel="stylesheet" href="assets/css/responsive-tables.css">
 
     <!-- JavaScript files with defer attribute -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -166,12 +169,16 @@ try {
     <script src="assets/js/dashboard-functions.js" defer></script>
     <script src="assets/js/owner-dashboard-new.js" defer></script>
     <script src="assets/js/register.js" defer></script>
+    <script src="assets/js/imageupload.js" defer></script>
     <script src="assets/js/dashboard-search.js" defer></script>
     <script src="assets/js/profile.js" defer></script>
+    <script src="assets/js/search.js" defer></script>
     <script src="assets/js/property-images.js"></script>
     <script src="assets/js/rental-management.js" defer></script>
     <script src="assets/js/sales-management.js" defer></script>
     <script src="assets/js/owner-manager-handlers.js" defer></script>
+    <script src="assets/js/responsive-dashboard.js" defer></script>
+    <script src="assets/js/responsive-tables.js" defer></script>
 
     <!-- Ensure critical sections are loaded -->
     <script>
@@ -222,10 +229,14 @@ try {
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <button class="btn btn-light" id="sidebar-toggle">
+            <button type="button" class="btn btn-light" id="sidebar-toggle">
                 <i class="fas fa-bars"></i>
             </button>
             <a class="navbar-brand ms-3" href="#">ALL-EA</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
@@ -268,9 +279,9 @@ try {
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle">
+                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#" id="profile-link"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -284,10 +295,24 @@ try {
         </div>
     </nav>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Mobile Logout Button -->
+    <a href="login.html" class="mobile-logout" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+    </a>
+
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <img src="assets/images/logo1.png" alt="Logo" class="logo">
+        </div>
+        <!-- Profile section in sidebar for mobile -->
+        <div class="sidebar-profile d-none d-lg-none">
+            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
+            <div class="profile-name"><?php echo $owner_data['first_name'] . ' ' . $owner_data['last_name']; ?></div>
+            <div class="profile-role">Property Owner</div>
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item active">
@@ -297,14 +322,14 @@ try {
                 </a>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -325,7 +350,7 @@ try {
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -348,7 +373,7 @@ try {
                 </ul>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
                     <i class="fas fa-user-cog"></i>
                     <span>Manage Managers</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
@@ -874,13 +899,14 @@ try {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Add Property for Sale</h4>
-                                <form class="form-sample">
+                                <form id="addSales" class="form-sample">
+                                    <!-- Basic Information -->
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <label class="col-sm-3 col-form-label">Property Name</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="property_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -888,67 +914,195 @@ try {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Price</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" class="form-control" required />
+                                                    <select name="price" class="form-control" required>
+                                                        <option value="">Select Method</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Installments">Installments</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Property Details -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Utilities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="utilities" class="form-control" required>
+                                                        <option value="">Select Utilities</option>
+                                                        <option value="Included">Included</option>
+                                                        <option value="Not Included">Not Included</option>
+                                                        <option value="Partial">Partially Included</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Type</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_type" class="form-control" required>
+                                                        <option value="">Select Property Type</option>
+                                                        <option value="Land">Only Land</option>
+                                                        <option value="Flat">Flat</option>
+                                                        <option value="Permanent">Permanent</option>
+                                                        <option value="Semi Permanent">Semi-permanent</option>
+                                                        <option value="Ground">Grounds</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <div class="col-sm-9">
+                                                    <select name="title" class="form-control" required>
+                                                        <option value="">Select Title</option>
+                                                        <option value="Yes">Yes</option>
+                                                        <option value="No">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                                        <option value="Market">Market</option>
+                                                        <option value="School">School</option>
+                                                        <option value="Church">Church / Mosque</option>
+                                                        <option value="Institution">Institution</option>
+                                                        <option value="Hospital">Hospital</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Size</label>
+                                                <div class="col-sm-9">
+                                                    <input name="property_size" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Owner</label>
+                                                <div class="col-sm-9">
+                                                    <select name="owner_id" id="sale_owner_id" class="form-control" required>
+                                                        <option value="">Select Owner</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Manager</label>
+                                                <div class="col-sm-9">
+                                                    <select name="manager_id" id="sale_manager_id" class="form-control">
+                                                        <option value="">Select Manager</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location Information -->
+                                    <h5 class="mb-4">Location Details</h5>
                                     <div class="row mb-4">
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bedrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label">Country</label>
+                                                <div class="col-sm-9">
+                                                    <select name="country" id="country" class="form-control" required>
+                                                        <option value="">Select Country</option>
+                                                        <option value="Uganda">Uganda</option>
+                                                        <option value="Kenya">Kenya</option>
+                                                        <option value="Tanzania">Tanzania</option>
+                                                        <option value="Rwanda">Rwanda</option>
+                                                        <option value="Burundi">Burundi</option>
+                                                        <option value="South Sudan">South Sudan</option>
+                                                        <option value="DR Congo">DR Congo</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bathrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label" id="region-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="region" id="region" class="form-control" required placeholder="Enter region" >
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Area (sq ft)</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label" id="subregion-label">Sub-Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="subregion" id="subregion" class="form-control" required placeholder="Enter sub-region" >
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row mb-4">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Address</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                <label class="col-sm-3 col-form-label" id="parish-label">Parish</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="parish" id="parish" class="form-control" required placeholder="Enter parish" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="ward-label">Ward</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="ward" id="ward" class="form-control" required placeholder="Enter ward" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="cell-label">Cell</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="cell" id="cell" class="form-control" required placeholder="Enter cell" >
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Description</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
+
+                                    <!-- Images -->
+                                        <div class="row mb-4">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Property Images</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="file" name="images[]" id="sale-images" class="form-control" multiple accept="image/*" required />
+                                                        <div id="sale-preview-container" class="mt-3 d-flex flex-wrap gap-3">
+                                                            <!-- Image previews will be inserted here -->
+                                                        </div>
+                                                        <small class="text-muted mt-2">You can upload up to 5 images. Maximum size per image: 5MB</small>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Images</label>
-                                                <div class="col-sm-10">
-                                                    <input type="file" class="form-control" multiple required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    <!-- Submit Buttons -->
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-3">Submit</button>
                                         <button type="button" class="btn btn-light">Cancel</button>
@@ -969,89 +1123,266 @@ try {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Add Rental Property</h4>
-                                <form class="form-sample">
+                                <form id="addRental" class="form-sample">
+                                    <!-- Basic Information -->
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Title</label>
+                                                <label class="col-sm-3 col-form-label">Property Name</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" required />
+                                                    <input name="property_name" type="text" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Monthly Rent</label>
+                                                <label class="col-sm-3 col-form-label">Price</label>
                                                 <div class="col-sm-9">
-                                                    <input type="number" class="form-control" required />
+                                                    <input name="price" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Property Details -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Landlord</label>
+                                                <div class="col-sm-9">
+                                                    <select name="landlord" class="form-control" required>
+                                                        <option value="">Select Landlord</option>
+                                                        <option value="Resident">Resident</option>
+                                                        <option value="Non Resident">Non resident</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Security</label>
+                                                <div class="col-sm-9">
+                                                    <select name="security[]" class="form-control select2-multiple" multiple="multiple">
+                                                        <option value="CCTV">CCTV</option>
+                                                        <option value="Guards">Security Guards</option>
+                                                        <option value="Electric Fence">Electric Fence</option>
+                                                        <option value="Alarm">Alarm System</option>
+                                                        <option value="Security Lights">Security Lights</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Utilities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="utilities" class="form-control" required>
+                                                        <option value="">Select Utilities</option>
+                                                        <option value="Included">Included</option>
+                                                        <option value="Not Included">Not Included</option>
+                                                        <option value="Partially Included">Partially Included</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Type</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_type" class="form-control" required>
+                                                        <option value="">Select Property Type</option>
+                                                        <option value="Flat">Flat</option>
+                                                        <option value="Permanent">Permanent</option>
+                                                        <option value="Semi-permanent">Semi-permanent</option>
+                                                        <option value="Grounds">Grounds</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Convenience</label>
+                                                <div class="col-sm-9">
+                                                    <select name="convenience" class="form-control" required>
+                                                        <option value="">Select Convenience Level</option>
+                                                        <option value="Crowded">Crowded</option>
+                                                        <option value="Private">Private</option>
+                                                        <option value="Self contained">Self contained</option>
+                                                        <option value="Non self contained">Non self contained</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Class</label>
+                                                <div class="col-sm-9">
+                                                    <select name="property_class" class="form-control" required>
+                                                        <option value="">Select Property Class</option>
+                                                        <option value="Hall">Hall</option>
+                                                        <option value="Commercial">Commercial</option>
+                                                        <option value="Residential">Residential</option>
+                                                        <option value="Hostel">Hostel</option>
+                                                        <option value="Hotel">Hotel</option>
+                                                        <option value="Lodge">Lodge</option>
+                                                        <option value="Event space">Event space</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Size</label>
+                                                <div class="col-sm-9">
+                                                    <input name="property_size" type="number" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Parking Space</label>
+                                                <div class="col-sm-9">
+                                                    <select name="parking" class="form-control" required>
+                                                        <option value="">Select Parking Type</option>
+                                                        <option value="Yes">Yes</option>
+                                                        <option value="No">No</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-4">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bedrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                                <div class="col-sm-9">
+                                                    <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                                        <option value="Market">Market</option>
+                                                        <option value="School">School</option>
+                                                        <option value="Church / Mosque">Church / Mosque</option>
+                                                        <option value="Institution">Institution</option>
+                                                        <option value="Hospital">Hospital</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Bathrooms</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Area (sq ft)</label>
-                                                <div class="col-sm-8">
-                                                    <input type="number" class="form-control" required />
+                                                <label class="col-sm-3 col-form-label">Property Owner</label>
+                                                <div class="col-sm-9">
+                                                    <select name="owner_id" id="rental_owner_id" class="form-control" required>
+                                                        <option value="">Select Owner</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Property Manager</label>
+                                                <div class="col-sm-9">
+                                                    <select name="manager_id" id="rental_manager_id" class="form-control">
+                                                        <option value="">Select Manager</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location Information -->
+                                    <h5 class="mb-4">Location Details</h5>
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Country</label>
+                                                <div class="col-sm-9">
+                                                    <select name="country" id="country" class="form-control" required>
+                                                        <option value="">Select Country</option>
+                                                        <option value="Uganda">Uganda</option>
+                                                        <option value="Kenya">Kenya</option>
+                                                        <option value="Tanzania">Tanzania</option>
+                                                        <option value="Rwanda">Rwanda</option>
+                                                        <option value="Burundi">Burundi</option>
+                                                        <option value="South Sudan">South Sudan</option>
+                                                        <option value="DR Congo">DR Congo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="region-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="region" id="region" class="form-control" required placeholder="Enter region" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="subregion-label">Sub-Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="subregion" id="subregion" class="form-control" required placeholder="Enter sub-region" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="parish-label">Parish</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="parish" id="parish" class="form-control" required placeholder="Enter parish" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="ward-label">Ward</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="ward" id="ward" class="form-control" required placeholder="Enter ward" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" id="cell-label">Cell</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" name="cell" id="cell" class="form-control" required placeholder="Enter cell" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Images -->
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Address</label>
+                                                <label class="col-sm-2 col-form-label">Property Images</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
+                                                    <input type="file" name="images[]" id="rental-images" class="form-control" multiple accept="image/*" required />
+                                                    <div id="rental-preview-container" class="mt-3 d-flex flex-wrap gap-3">
+                                                        <!-- Image previews will be inserted here -->
+                                                    </div>
+                                                    <small class="text-muted mt-2">You can upload up to 5 images. Maximum size per image: 5MB</small>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Description</label>
-                                                <div class="col-sm-10">
-                                                    <textarea class="form-control" rows="4" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Available From</label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" class="form-control" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Images</label>
-                                                <div class="col-sm-9">
-                                                    <input type="file" class="form-control" multiple required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!-- Submit Buttons -->
                                     <div class="mt-4">
                                         <button type="submit" class="btn btn-primary me-3">Submit</button>
                                         <button type="button" class="btn btn-light">Cancel</button>
@@ -1630,77 +1961,269 @@ try {
                 <div class="modal-body">
                     <form id="editRentalForm" enctype="multipart/form-data">
                         <input type="hidden" name="rental_id" value="">
-                        <div class="row mb-3">
+                        <!-- Property Images -->
+                        <div class="mb-4">
+                            <label class="form-label">Current Images</label>
+                            <div id="rental-current-images" class="d-flex gap-2 flex-wrap">
+                                <!-- Existing images will be loaded here -->
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label">Add New Images</label>
+                                <input type="file" class="form-control" name="new_images[]" multiple accept="image/*">
+                                <div id="rental-new-images-preview" class="mt-2 d-flex gap-2 flex-wrap">
+                                    <!-- New image previews will be shown here -->
+                                </div>
+                                <small class="text-muted">You can upload up to 5 images. Maximum size per image: 5MB</small>
+                            </div>
+                        </div>
+
+                        <!-- Basic Information -->
+                        <div class="row mb-4">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_name" class="form-label">Property Name</label>
-                                    <input type="text" class="form-control" id="property_name" name="property_name" required>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Name</label>
+                                    <div class="col-sm-9">
+                                        <input name="property_name" type="text" class="form-control" required />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Rent Price (USD)</label>
-                                    <input type="number" class="form-control" id="price" name="price" required>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Price</label>
+                                    <div class="col-sm-9">
+                                        <input name="price" type="number" class="form-control" required />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+
+                        <!-- Property Details -->
+                        <div class="row mb-4">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_type" class="form-label">Property Type</label>
-                                    <select class="form-select" id="property_type" name="property_type">
-                                        <option value="Apartment">Apartment</option>
-                                        <option value="House">House</option>
-                                        <option value="Condo">Condo</option>
-                                        <option value="Villa">Villa</option>
-                                        <option value="Office">Office</option>
-                                    </select>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Landlord</label>
+                                    <div class="col-sm-9">
+                                        <select name="landlord" class="form-control" required>
+                                            <option value="">Select Landlord</option>
+                                            <option value="Resident">Resident</option>
+                                            <option value="Non resident">Non resident</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_size" class="form-label">Property Size</label>
-                                    <input type="text" class="form-control" id="property_size" name="property_size">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="parish" class="form-label">Parish</label>
-                                    <input type="text" class="form-control" id="parish" name="parish">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="ward" class="form-label">Ward</label>
-                                    <input type="text" class="form-control" id="ward" name="ward">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Security</label>
+                                    <div class="col-sm-9">
+                                        <select name="security[]" class="form-control select2-multiple" multiple="multiple">
+                                            <option value="CCTV">CCTV</option>
+                                            <option value="Security Guards">Security Guards</option>
+                                            <option value="Electric Fence">Electric Fence</option>
+                                            <option value="Alarm System">Alarm System</option>
+                                            <option value="Security Lights">Security Lights</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+
+                        <!-- Additional Property Details -->
+                        <div class="row mb-4">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="utilities" class="form-label">Utilities</label>
-                                    <input type="text" class="form-control" id="utilities" name="utilities">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Utilities</label>
+                                    <div class="col-sm-9">
+                                        <select name="utilities" class="form-control" required>
+                                            <option value="">Select Utilities</option>
+                                            <option value="Included">Included</option>
+                                            <option value="Not Included">Not Included</option>
+                                            <option value="Partially Included">Partially Included</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_class" class="form-label">Availability</label>
-                                    <select class="form-select" id="property_class" name="property_class">
-                                        <option value="1">Available</option>
-                                        <option value="0">Not Available</option>
-                                    </select>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Type</label>
+                                    <div class="col-sm-9">
+                                        <select name="property_type" class="form-control" required>
+                                            <option value="">Select Property Type</option>
+                                            <option value="Flat">Flat</option>
+                                            <option value="Permanent">Permanent</option>
+                                            <option value="Semi-permanent">Semi-permanent</option>
+                                            <option value="Grounds">Grounds</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="rental_images" class="form-label">Property Images</label>
-                            <input type="file" class="form-control" id="rental_images" name="images[]" multiple accept="image/*">
+
+                        <!-- Property Features -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Size</label>
+                                    <div class="col-sm-9">
+                                        <input name="property_size" type="number" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Parking Space</label>
+                                    <div class="col-sm-9">
+                                        <select name="parking" class="form-control" required>
+                                            <option value="">Select Parking Type</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="rental-current-images" class="d-flex flex-wrap gap-2 mb-3">
-                            <!-- Existing images will be displayed here -->
+
+                        <!-- Property Classification -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Convenience</label>
+                                    <div class="col-sm-9">
+                                        <select name="convenience" class="form-control" required>
+                                            <option value="">Select Convenience Level</option>
+                                            <option value="Crowded">Crowded</option>
+                                            <option value="Private">Private</option>
+                                            <option value="Self contained">Self contained</option>
+                                            <option value="Non self contained">Non self contained</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Class</label>
+                                    <div class="col-sm-9">
+                                        <select name="property_class" class="form-control" required>
+                                            <option value="">Select Property Class</option>
+                                            <option value="Hall">Hall</option>
+                                            <option value="Commercial">Commercial</option>
+                                            <option value="Residential">Residential</option>
+                                            <option value="Hostel">Hostel</option>
+                                            <option value="Hotel">Hotel</option>
+                                            <option value="Lodge">Lodge</option>
+                                            <option value="Event space">Event space</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Property Management -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                    <div class="col-sm-9">
+                                        <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                            <option value="Market">Market</option>
+                                            <option value="School">School</option>
+                                            <option value="Church">Church / Mosque</option>
+                                            <option value="Institution">Institution</option>
+                                            <option value="Hospital">Hospital</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Owner</label>
+                                    <div class="col-sm-9">
+                                        <select name="owner_id" id="rental_owner_id" class="form-control" required>
+                                            <option value="">Select Owner</option>
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Manager</label>
+                                    <div class="col-sm-9">
+                                        <select name="manager_id" id="rental_manager_id" class="form-control">
+                                            <option value="">Select Manager</option>
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Information -->
+                        <h5 class="mb-4">Location Details</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Country</label>
+                                    <div class="col-sm-9">
+                                        <select name="country" class="form-control" required>
+                                            <option value="">Select Country</option>
+                                            <option value="Uganda">Uganda</option>
+                                            <option value="Kenya">Kenya</option>
+                                            <option value="Tanzania">Tanzania</option>
+                                            <option value="Rwanda">Rwanda</option>
+                                            <option value="Burundi">Burundi</option>
+                                            <option value="South Sudan">South Sudan</option>
+                                            <option value="DR Congo">DR Congo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Region</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="region" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Sub-Region</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="subregion" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Parish</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="parish" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Ward</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="ward" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Cell</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="cell" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -1760,65 +2283,209 @@ try {
                 <div class="modal-body">
                     <form id="editSaleForm" enctype="multipart/form-data">
                         <input type="hidden" name="sale_id" value="">
-                        <div class="row mb-3">
+                        <!-- Property Images -->
+                        <div class="mb-4">
+                            <label class="form-label">Current Images</label>
+                            <div id="sale-current-images" class="d-flex gap-2 flex-wrap">
+                                <!-- Existing images will be loaded here -->
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label">Add New Images</label>
+                                <input type="file" class="form-control" name="new_images[]" multiple accept="image/*">
+                                <div id="sale-new-images-preview" class="mt-2 d-flex gap-2 flex-wrap">
+                                    <!-- New image previews will be shown here -->
+                                </div>
+                                <small class="text-muted">You can upload up to 5 images. Maximum size per image: 5MB</small>
+                            </div>
+                        </div>
+
+                        <!-- Basic Information -->
+                        <div class="row mb-4">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_name" class="form-label">Property Name</label>
-                                    <input type="text" class="form-control" id="property_name" name="property_name" required>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Name</label>
+                                    <div class="col-sm-9">
+                                        <input name="property_name" type="text" class="form-control" required />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Price (USD)</label>
-                                    <input type="number" class="form-control" id="price" name="price" required>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Price</label>
+                                    <div class="col-sm-9">
+                                        <select name="price" class="form-control" required>
+                                            <option value="">Select Option</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Installments">Insatllments</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+
+                        <!-- Additional Property Details -->
+                        <div class="row mb-4">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_type" class="form-label">Property Type</label>
-                                    <select class="form-select" id="property_type" name="property_type">
-                                        <option value="Available">Available</option>
-                                        <option value="Not Available">Not Available</option>
-                                    </select>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Title</label>
+                                    <div class="col-sm-9">
+                                        <select name="title" class="form-control" required>
+                                            <option value="">Select Option</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="property_size" class="form-label">Property Size</label>
-                                    <input type="text" class="form-control" id="property_size" name="property_size">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="parish" class="form-label">Parish</label>
-                                    <input type="text" class="form-control" id="parish" name="parish">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="ward" class="form-label">Ward</label>
-                                    <input type="text" class="form-control" id="ward" name="ward">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="utilities" class="form-label">Utilities</label>
-                                    <input type="text" class="form-control" id="utilities" name="utilities">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Utilities</label>
+                                    <div class="col-sm-9">
+                                        <select name="utilities" class="form-control" required>
+                                            <option value="">Select Utilities</option>
+                                            <option value="Included">Included</option>
+                                            <option value="Not Included">Not Included</option>
+                                            <option value="Partially Included">Partially Included</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="sale_images" class="form-label">Property Images</label>
-                            <input type="file" class="form-control" id="sale_images" name="images[]" multiple accept="image/*">
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Type</label>
+                                    <div class="col-sm-9">
+                                        <select name="property_type" class="form-control" required>
+                                            <option value="">Select Property Type</option>
+                                            <option value="Flat">Flat</option>
+                                            <option value="Permanent">Permanent</option>
+                                            <option value="Semi-permanent">Semi-permanent</option>
+                                            <option value="Grounds">Grounds</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Size</label>
+                                    <div class="col-sm-9">
+                                        <input name="property_size" type="number" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="sale-current-images" class="d-flex flex-wrap gap-2 mb-3">
-                            <!-- Existing images will be displayed here -->
+
+                        <!-- Property Features -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Close Amenities</label>
+                                    <div class="col-sm-9">
+                                        <select name="amenities[]" class="form-control select2-multiple" multiple="multiple" required>
+                                            <option value="Market">Market</option>
+                                            <option value="School">School</option>
+                                            <option value="Church">Church / Mosque</option>
+                                            <option value="Institution">Institution</option>
+                                            <option value="Hospital">Hospital</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Manager</label>
+                                    <div class="col-sm-9">
+                                        <select name="manager_id" id="rental_manager_id" class="form-control">
+                                            <option value="">Select Manager</option>
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Property Management -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Property Owner</label>
+                                    <div class="col-sm-9">
+                                        <select name="owner_id" id="rental_owner_id" class="form-control" required>
+                                            <option value="">Select Owner</option>
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Information -->
+                        <h5 class="mb-4">Location Details</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Country</label>
+                                    <div class="col-sm-9">
+                                        <select name="country" class="form-control" required>
+                                            <option value="">Select Country</option>
+                                            <option value="Uganda">Uganda</option>
+                                            <option value="Kenya">Kenya</option>
+                                            <option value="Tanzania">Tanzania</option>
+                                            <option value="Rwanda">Rwanda</option>
+                                            <option value="Burundi">Burundi</option>
+                                            <option value="South Sudan">South Sudan</option>
+                                            <option value="DR Congo">DR Congo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Region</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="region" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Sub-Region</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="subregion" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Parish</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="parish" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Ward</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="ward" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Cell</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="cell" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

@@ -151,12 +151,15 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Rental Company</title>
+    <title>Property Manager Dashboard - ALLEA Properties</title>
     <link rel="icon" href="logo1.ico" sizes="any">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/manager-dashboard.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
+    <link rel="stylesheet" href="assets/css/dashboard-responsive.css">
+    <link rel="stylesheet" href="assets/css/sidebar-fix.css">
+    <link rel="stylesheet" href="assets/css/responsive-tables.css">
 
     <!-- JavaScript files with defer attribute -->
     <script src="assets/js/custom-loader.js" defer></script>
@@ -172,15 +175,21 @@ $stmt->close();
     <script src="assets/js/rental-management.js" defer></script>
     <script src="assets/js/sales-management.js" defer></script>
     <script src="assets/js/manager-management.js" defer></script>
+    <script src="assets/js/responsive-dashboard.js" defer></script>
+    <script src="assets/js/responsive-tables.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <button class="btn btn-light" id="sidebar-toggle">
+            <button type="button" class="btn btn-light" id="sidebar-toggle">
                 <i class="fas fa-bars"></i>
             </button>
             <a class="navbar-brand ms-3" href="#">ALL-EA</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
@@ -223,9 +232,9 @@ $stmt->close();
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle">
+                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#" data-form="profile-content" onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -239,10 +248,24 @@ $stmt->close();
         </div>
     </nav>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Mobile Logout Button -->
+    <a href="login.html" class="mobile-logout" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+    </a>
+
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <img src="assets/images/logo1.png" alt="Logo" class="logo">
+        </div>
+        <!-- Profile section in sidebar for mobile -->
+        <div class="sidebar-profile d-none d-lg-none">
+            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
+            <div class="profile-name"><?php echo $manager_data['first_name'] . ' ' . $manager_data['last_name']; ?></div>
+            <div class="profile-role">Property Manager</div>
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item active">
@@ -252,14 +275,14 @@ $stmt->close();
                 </a>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -280,7 +303,7 @@ $stmt->close();
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this)">
+                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>

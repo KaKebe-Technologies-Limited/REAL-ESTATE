@@ -10,7 +10,6 @@ document.getElementById('managerLogin').addEventListener('submit', function (e) 
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert(data.message);
                 window.location.href = 'managerDashboard.php';
             } else {
                 alert(data.message);

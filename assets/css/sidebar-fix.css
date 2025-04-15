@@ -1,0 +1,45 @@
+/* Sidebar visibility fix for all dashboards */
+
+/* Ensure sidebar is visible on desktop */
+@media (min-width: 992px) {
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+}
+
+/* Fix submenu display */
+.submenu {
+    position: static !important;
+    width: 100% !important;
+}
+
+.property-submenu {
+    position: static !important;
+    width: 100% !important;
+}
+
+/* Fix submenu display when open */
+.has-submenu.open .submenu {
+    display: block !important;
+    max-height: 500px !important;
+}
+
+.property-submenu.show {
+    display: block !important;
+    max-height: 500px !important;
+}
+
+/* Fix sidebar toggle button */
+#sidebar-toggle {
+    cursor: pointer;
+}
+
+/* Fix sidebar overlay */
+.sidebar-overlay {
+    z-index: 1025;
+}
+
+/* Fix sidebar z-index */
+.sidebar {
+    z-index: 1026;
+}

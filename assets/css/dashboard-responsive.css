@@ -1,0 +1,370 @@
+/* Dashboard Responsive CSS - Common fixes for all dashboards */
+
+/* Mobile Navbar Adjustments */
+@media (max-width: 991.98px) {
+    .navbar .navbar-brand {
+        margin-left: 0.5rem;
+    }
+
+    .navbar .navbar-collapse {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: var(--navbar-bg, white);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 1rem;
+        z-index: 1025;
+    }
+
+    .navbar .navbar-nav {
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .navbar .nav-item {
+        margin-left: 0.5rem;
+    }
+
+    /* Add a toggle button for mobile */
+    .navbar-toggler {
+        display: block;
+        margin-left: auto;
+        margin-right: 1rem;
+    }
+}
+
+/* Base Sidebar Styles (for all screen sizes) */
+.sidebar {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    height: calc(100vh - var(--navbar-height));
+    width: var(--sidebar-width, 250px);
+    background: var(--sidebar-bg, white);
+    box-shadow: 2px 0 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 1020;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Base submenu styles */
+.submenu {
+    list-style: none;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    width: 100%;
+    position: relative;
+}
+
+.has-submenu.open .submenu {
+    max-height: 500px;
+}
+
+.property-submenu {
+    list-style: none;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    width: 100%;
+    position: relative;
+}
+
+/* Desktop Sidebar Styles */
+@media (min-width: 992px) {
+    .sidebar {
+        transform: translateX(0);
+    }
+
+    .sidebar.desktop-collapsed {
+        width: var(--sidebar-collapsed-width, 70px);
+    }
+
+    .main-content {
+        margin-left: var(--sidebar-width, 250px);
+        transition: margin-left 0.3s ease;
+    }
+
+    .main-content.expanded {
+        margin-left: var(--sidebar-collapsed-width, 70px);
+    }
+}
+
+/* Sidebar Adjustments for Mobile */
+@media (max-width: 991.98px) {
+    .sidebar {
+        width: 280px;
+        transform: translateX(-100%);
+        z-index: 1030;
+    }
+
+    .sidebar.collapsed {
+        transform: translateX(0);
+    }
+
+    /* Profile section in sidebar for mobile */
+    .sidebar-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Show profile in sidebar on mobile */
+    .sidebar-profile.d-none.d-lg-none {
+        display: flex !important;
+    }
+
+    .sidebar-profile img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 0.75rem;
+        border: 3px solid var(--bg-light);
+    }
+
+    .sidebar-profile .profile-name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .sidebar-profile .profile-role {
+        font-size: 0.875rem;
+        color: var(--secondary-color);
+    }
+
+    /* Hide profile in navbar on mobile */
+    @media (max-width: 991.98px) {
+        .navbar .profile-link {
+            display: none;
+        }
+    }
+
+    /* Main content adjustments */
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .main-content.expanded {
+        margin-left: 0;
+    }
+
+    /* Improved touch targets for mobile */
+    .sidebar-nav .nav-link,
+    .submenu-link {
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+    }
+
+    /* Submenu adjustments for mobile */
+    .submenu-link {
+        padding-left: 2.5rem;
+    }
+
+    .property-submenu .submenu-link {
+        padding-left: 3.5rem;
+    }
+
+    /* Fix submenu display on mobile */
+    .has-submenu.open .submenu {
+        max-height: 500px; /* Increased max-height to ensure all items are visible */
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: static !important;
+        width: 100% !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .property-submenu.show {
+        display: block !important;
+        max-height: 500px;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: static !important;
+        width: 100% !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure arrows rotate properly */
+    .has-submenu.open .submenu-arrow {
+        transform: rotate(180deg);
+    }
+
+    .property-submenu-arrow.rotate {
+        transform: rotate(90deg);
+    }
+}
+
+/* Card and Grid Adjustments */
+@media (max-width: 767.98px) {
+    .summary-card {
+        max-width: 100%;
+    }
+
+    .dashboard-card {
+        margin-bottom: 1rem;
+    }
+
+    .dashboard-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-card-header .card-actions {
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    /* Table adjustments */
+    .table-responsive {
+        border: 0;
+    }
+
+    .table th, .table td {
+        padding: 0.5rem;
+    }
+
+    /* Form adjustments */
+    .form-sample .col-form-label {
+        padding-top: 0;
+        text-align: left;
+        margin-bottom: 0.25rem;
+    }
+
+    .form-sample .form-group {
+        margin-bottom: 1rem;
+    }
+
+    /* Profile section adjustments */
+    .profile-picture-wrapper {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 575.98px) {
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .summary-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .summary-icon {
+        margin-bottom: 0.75rem;
+    }
+
+    .activity-item {
+        flex-direction: column;
+    }
+
+    .activity-icon {
+        margin-bottom: 0.75rem;
+        margin-right: 0;
+    }
+
+    .btn-group .btn {
+        padding: 0.375rem 0.75rem;
+    }
+
+    /* Pagination adjustments */
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Improved spacing */
+    .container-fluid {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+/* Overlay for sidebar on mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1025;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+
+/* Fix for navbar toggle button */
+#sidebar-toggle {
+    z-index: 1031;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#sidebar-toggle:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Fix for dropdown menus */
+.dropdown-menu {
+    min-width: 10rem;
+    max-width: 16rem;
+}
+
+@media (max-width: 575.98px) {
+    .dropdown-menu {
+        min-width: 8rem;
+        max-width: 12rem;
+    }
+}
+
+/* Fix for form columns on mobile */
+@media (max-width: 767.98px) {
+    .form-sample .row .col-md-6:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    .form-sample .form-group.row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .form-sample .form-group.row .col-sm-3,
+    .form-sample .form-group.row .col-sm-9 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

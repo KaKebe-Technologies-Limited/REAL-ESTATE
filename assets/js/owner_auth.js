@@ -10,7 +10,6 @@ document.getElementById('ownerLogin').addEventListener('submit', function (e) {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert(data.message);
                 window.location.href = 'ownerDashboard.php';
             } else {
                 alert(data.message);

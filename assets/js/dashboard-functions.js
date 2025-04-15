@@ -154,23 +154,38 @@ function ensureCriticalSectionsExist() {
 }
 
 // Toggle submenu visibility
-function toggleSubmenu(el) {
+function toggleSubmenu(el, e) {
+    // Prevent default action
+    if (e) e.preventDefault();
+
+    console.log('toggleSubmenu called');
     const parent = el.parentElement;
     parent.classList.toggle('open');
+
+    // Log the state for debugging
+    console.log('Submenu open state:', parent.classList.contains('open'));
+    console.log('Submenu element:', parent.querySelector('.submenu'));
 }
 
 // Toggle property submenu visibility
-function togglePropertySubmenu(element) {
+function togglePropertySubmenu(element, e) {
     // Prevent default action
-    event.preventDefault();
+    if (e) e.preventDefault();
+
+    console.log('togglePropertySubmenu called');
 
     // Toggle submenu visibility
     const submenu = element.nextElementSibling;
     submenu.classList.toggle('show');
 
+    // Log the state for debugging
+    console.log('Property submenu show state:', submenu.classList.contains('show'));
+
     // Toggle arrow rotation
     const arrow = element.querySelector('.property-submenu-arrow');
-    arrow.classList.toggle('rotate');
+    if (arrow) {
+        arrow.classList.toggle('rotate');
+    }
 
     // Close other property submenus if open
     const allPropertySubmenus = document.querySelectorAll('.property-submenu');
