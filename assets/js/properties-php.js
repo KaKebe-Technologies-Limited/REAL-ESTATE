@@ -4,9 +4,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuWrapper = document.querySelector('.mobile-menu-wrapper');
 
     if (mobileMenuButton && mobileMenuWrapper) {
-        mobileMenuButton.addEventListener('click', function() {
-            mobileMenuWrapper.classList.toggle('show');
-            this.classList.toggle('active');
+        console.log('Mobile menu elements found in properties-php.js');
+        mobileMenuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Mobile menu button clicked in properties-php.js');
+            mobileMenuWrapper.classList.toggle('active');
+
+            // Change icon based on menu state
+            const icon = this.querySelector('i');
+            if (icon) {
+                if (mobileMenuWrapper.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
         });
     }
 

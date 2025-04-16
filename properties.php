@@ -23,6 +23,7 @@ function formatPrice($price) {
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/properties.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
+    <link rel="stylesheet" href="assets/css/mobile-menu-fix.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/custom-loader.js" defer></script>
 </head>
@@ -315,7 +316,8 @@ function formatPrice($price) {
     <script src="assets/js/custom-alerts.js"></script>
     <script src="assets/js/properties-php.js"></script>
     <script src="assets/js/property-search.js"></script>
-    <script src="assets/js/loader.js"></script>
+    <!-- <script src="assets/js/mobile-menu.js"></script> -->
+    <script src="assets/js/mobile-menu-fix.js"></script>
 </body>
 </html>
 

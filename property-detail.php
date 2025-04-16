@@ -567,5 +567,6 @@ $conn->close();
     <script src="assets/js/properties-php.js"></script>
     <script src="assets/js/property-gallery.js"></script>
     <script src="assets/js/loader.js"></script>
+    <script src="assets/js/mobile-menu-fix.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
+    <link rel="stylesheet" href="assets/css/mobile-menu-fix.css">
     <!-- Add Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/custom-loader.js" defer></script>
@@ -70,7 +71,7 @@
         <nav>
             <ul class="menu">
                 <li class="active"><a href="index.php">Home</a></li>
-                <li><a href="properties.html">Properties</a></li>
+                <li><a href="properties.php">Properties</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
             <a href="login.html" class="login-btn">
@@ -91,7 +92,7 @@
                             Here We connect you from City to City, Town to Town, Village to Village for properties and take no Commission from your transactions.
                         </p>
                         <div class="cta-buttons">
-                            <a href="properties.html" class="btn btn-primary">Browse Properties</a>
+                            <a href="properties.php" class="btn btn-primary">Browse Properties</a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +104,7 @@
                         <h1>Cost-Effective Solutions</h1>
                         <p>Competitive pricing for both property listings and direct calls, minimizing transaction costs.</p>
                         <div class="cta-buttons">
-                            <a href="properties.html" class="btn btn-primary">Browse Properties</a>
+                            <a href="properties.php" class="btn btn-primary">Browse Properties</a>
                         </div>
                     </div>
                 </div>
@@ -115,7 +116,7 @@
                         <h1>Cost-Effective Solutions</h1>
                         <p>Competitive pricing for both property listings and direct calls, minimizing transaction costs.</p>
                         <div class="cta-buttons">
-                            <a href="properties.html" class="btn btn-primary">Browse Properties</a>
+                            <a href="properties.php" class="btn btn-primary">Browse Properties</a>
                         </div>
                     </div>
                 </div>
@@ -127,7 +128,7 @@
                         <h1>Cost-Effective Solutions</h1>
                         <p>Competitive pricing for both property listings and direct calls, minimizing transaction costs.</p>
                         <div class="cta-buttons">
-                            <a href="properties.html" class="btn btn-primary">Browse Properties</a>
+                            <a href="properties.php" class="btn btn-primary">Browse Properties</a>
                         </div>
                     </div>
                 </div>
@@ -465,7 +466,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Custom alerts must be loaded before other scripts -->
 <script src="assets/js/custom-alerts.js"></script>
-<script src="assets/js/main.js"></script>
+<!-- <script src="assets/js/main.js"></script> -->
+<!-- <script src="assets/js/mobile-menu.js"></script> -->
+<script src="assets/js/mobile-menu-fix.js"></script>
 <script>
     // Initialize AOS
     AOS.init({
@@ -475,8 +478,11 @@
         mirror: false
     });
 
-    // Remove the toggleDropdown function and dropdown click handler
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    // Set current year in footer if the element exists
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+    }
 
     let currentSlide = 0;
     const items = document.querySelectorAll('.carousel-item');

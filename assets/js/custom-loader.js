@@ -1,9 +1,18 @@
 // Custom Logo Loader for Real Estate Website
 
-// Wait for DOM content to be loaded before executing
-document.addEventListener('DOMContentLoaded', function() {
+// Global variable to track if loader has been created
+let loaderCreated = false;
+let loaderContainer = null;
+
+// Function to create and show loader
+function createAndShowLoader() {
+    // Only create loader if it hasn't been created yet
+    if (loaderCreated) return;
+    loaderCreated = true;
+
     // Create loader elements
-    const loaderContainer = document.createElement('div');
+    loaderContainer = document.createElement('div');
+    loaderContainer.id = 'custom-page-loader'; // Add unique ID
     loaderContainer.className = 'loader-container';
 
     // Create loader HTML directly for better performance
@@ -14,41 +23,54 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="loading-text">LOADING</div>
     `;
 
-    // Add loader to the body
-    document.body.appendChild(loaderContainer);
+    // Add loader to the body if it doesn't already exist
+    if (!document.getElementById('custom-page-loader')) {
+        document.body.appendChild(loaderContainer);
+    }
 
+    // Set up removal of loader
+    setupLoaderRemoval();
+}
+
+// Function to set up loader removal
+function setupLoaderRemoval() {
     // Hide loader when page is fully loaded
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            if (loaderContainer && document.body.contains(loaderContainer)) {
-                loaderContainer.classList.add('hidden');
+    const removeLoader = function() {
+        // Get the loader by ID to ensure we're working with the correct element
+        const loader = document.getElementById('custom-page-loader');
+        if (loader) {
+            loader.classList.add('hidden');
 
-                // Remove loader from DOM after transition
-                setTimeout(function() {
-                    if (loaderContainer && document.body.contains(loaderContainer)) {
-                        document.body.removeChild(loaderContainer);
-                    }
-                }, 500);
-            }
-        }, 600); // Reduced delay for faster page display
-    });
-
-    // Fallback: Hide loader after 3 seconds in case of slow loading resources
-    setTimeout(function() {
-        if (loaderContainer && document.body.contains(loaderContainer)) {
-            loaderContainer.classList.add('hidden');
-
+            // Remove loader from DOM after transition
             setTimeout(function() {
-                if (loaderContainer && document.body.contains(loaderContainer)) {
-                    document.body.removeChild(loaderContainer);
+                if (loader && document.body.contains(loader)) {
+                    try {
+                        document.body.removeChild(loader);
+                    } catch (e) {
+                        console.log('Loader already removed');
+                    }
                 }
             }, 500);
         }
-    }, 3000); // Reduced timeout for better user experience
-});
+    };
 
-// Also create a fallback for pages where the script might be loaded after DOMContentLoaded
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    // Dispatch a custom DOMContentLoaded event to trigger our loader
-    document.dispatchEvent(new Event('DOMContentLoaded'));
+    // Set up event listener for page load
+    if (document.readyState === 'complete') {
+        setTimeout(removeLoader, 600);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(removeLoader, 600);
+        });
+    }
+
+    // Fallback: Hide loader after 3 seconds in case of slow loading resources
+    setTimeout(removeLoader, 3000);
+}
+
+// Wait for DOM content to be loaded before executing
+document.addEventListener('DOMContentLoaded', createAndShowLoader);
+
+// Fallback for pages where the script might be loaded after DOMContentLoaded
+if (document.readyState !== 'loading') {
+    createAndShowLoader();
 }

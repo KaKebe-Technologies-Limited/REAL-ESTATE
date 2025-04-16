@@ -176,6 +176,12 @@ a:hover {
     transition: color 0.3s ease;
 }
 
+@media screen and (max-width: 768px) {
+    .mobile-menu-button i {
+        color: #333; /* Ensure icon color is dark on mobile */
+    }
+}
+
 .header_wrapper.scrolled .menu a {
     color: #333 !important; /* Dark color when scrolled */
 }
@@ -246,7 +252,7 @@ a:hover {
     display: none;
     background: transparent;
     border: none;
-    color: #333;
+    color: #333; /* Dark color for better visibility on white background */
     font-size: 24px;
     cursor: pointer;
     padding: 5px;
@@ -327,6 +333,7 @@ a:hover {
 
     .header_wrapper {
         height: 60px;
+        background: white !important;
     }
 
     .main_menu,

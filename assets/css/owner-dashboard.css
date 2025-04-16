@@ -186,10 +186,10 @@ body {
     margin-right: 10px;
     text-align: center;
 }
-
+/* 
 .sidebar.collapsed .nav-link span {
     display: none;
-}
+} */
 
 .has-submenu .submenu-arrow {
     margin-left: auto;

@@ -1,0 +1,130 @@
+/* Mobile Menu Fix */
+
+/* Fix for mobile menu button */
+.mobile-menu-button {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #333; /* Changed from white to dark color for better visibility on white background */
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.header_wrapper.scrolled .mobile-menu-button {
+    color: #333;
+}
+
+/* Mobile menu wrapper */
+.mobile-menu-wrapper {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 999;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+}
+
+.mobile-menu-wrapper.active {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile menu styles */
+.mobile-menu-wrapper .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-menu-wrapper .menu li {
+    width: 100%;
+}
+
+.mobile-menu-wrapper .menu a {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    color: #333 !important;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-wrapper .menu a:hover {
+    background-color: #f8f9fa;
+    color: #007bff !important;
+}
+
+.mobile-menu-wrapper .login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white !important;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-wrapper .login-btn:hover {
+    background: #0056b3;
+}
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .main_menu,
+    .header_wrapper .user_menu {
+        display: none;
+    }
+
+    .header_wrapper {
+        background: white !important;
+    }
+
+    .header_wrapper.scrolled {
+        background: white !important;
+    }
+}
+
+/* Fix for properties.php and other pages */
+.header_wrapper_inside {
+    position: relative;
+}
+
+.mobile-menu-button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
