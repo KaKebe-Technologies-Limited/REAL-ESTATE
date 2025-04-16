@@ -1382,6 +1382,24 @@ $stmt->close();
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="bedrooms" class="form-label">Bedrooms</label>
+                                    <input type="number" min="0" class="form-control" id="bedrooms" name="bedrooms" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bathrooms" class="form-label">Bathrooms</label>
+                                    <input type="number" min="0" step="0.5" class="form-control" id="bathrooms" name="bathrooms" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="parish" class="form-label">Parish</label>
                                     <input type="text" class="form-control" id="parish" name="parish">
                                 </div>
@@ -1521,6 +1539,24 @@ $stmt->close();
                                     <input type="text" class="form-control" id="property_size" name="property_size">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bedrooms" class="form-label">Bedrooms</label>
+                                    <input type="number" min="0" class="form-control" id="bedrooms" name="bedrooms" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bathrooms" class="form-label">Bathrooms</label>
+                                    <input type="number" min="0" step="0.5" class="form-control" id="bathrooms" name="bathrooms" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">

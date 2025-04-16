@@ -39,7 +39,7 @@ if ($property_type === 'rental') {
     // Fetch rental property details
     $sql = "SELECT
         r.property_id as id,
-        r.property_name as title,
+        r.property_name,
         r.price,
         r.property_class,
         r.property_size as size,
@@ -65,7 +65,10 @@ if ($property_type === 'rental') {
         r.ward,
         r.cell,
         r.security,
-        r.convenience as description
+        r.convenience,
+        r.description,
+        r.bedrooms,
+        r.bathrooms
         FROM rental_property r
         LEFT JOIN property_owner o ON r.owner_id = o.owner_id
         LEFT JOIN property_manager m ON r.manager_id = m.manager_id
@@ -74,7 +77,7 @@ if ($property_type === 'rental') {
     // Fetch sales property details
     $sql = "SELECT
         s.property_id as id,
-        s.property_name as title,
+        s.property_name,
         s.price,
         s.property_type as property_class,
         s.property_size as size,
@@ -100,7 +103,10 @@ if ($property_type === 'rental') {
         s.ward,
         s.cell,
         '' as security,
-        s.title as description
+        s.title,
+        s.description,
+        s.bedrooms,
+        s.bathrooms
         FROM sales_property s
         LEFT JOIN property_owner o ON s.owner_id = o.owner_id
         LEFT JOIN property_manager m ON s.manager_id = m.manager_id
@@ -214,8 +220,8 @@ $conn->close();
                 <div class="col-xs-12 col-md-12 breadcrumb_container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item"><a href="properties.php">Properties</a>, <a href="#">Mansion</a></li>
-                        <li class="breadcrumb-item active"><?php echo htmlspecialchars($property['title']); ?></li>
+                        <li class="breadcrumb-item"><a href="properties.php">Properties</a>, <a href="#"><?php echo htmlspecialchars($property['property_type']); ?></a></li>
+                        <li class="breadcrumb-item active"><?php echo htmlspecialchars($property['property_name']); ?></li>
                     </ol>
                 </div>
 
@@ -232,7 +238,7 @@ $conn->close();
                             </div>
                         <?php endif; ?>
                     </div>
-                    <h1 class="entry-title entry-prop"><?php echo htmlspecialchars($property['title']); ?></h1>
+                    <h1 class="entry-title entry-prop"><?php echo htmlspecialchars($property['property_name']); ?></h1>
 
                     <div class="property_categs">
                         <i class="fas fa-map-marker-alt"></i>
@@ -477,11 +483,11 @@ $conn->close();
                                 </li>
                                 <li>
                                     <span class="label">Bedrooms:</span>
-                                    <span class="value">4</span>
+                                    <span class="value"><?php echo $property['bedrooms']; ?></span>
                                 </li>
                                 <li>
                                     <span class="label">Bathrooms:</span>
-                                    <span class="value">4</span>
+                                    <span class="value"><?php echo $property['bathrooms']; ?></span>
                                 </li>
                                 <li>
                                     <span class="label">Garage:</span>

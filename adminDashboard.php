@@ -864,6 +864,18 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                         </div>
                                     </div>
 
+                                    <!-- Property Description -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <textarea name="description" class="form-control" rows="4" placeholder="Detailed description of the property" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- Property Details -->
                                     <div class="row mb-4">
                                         <div class="col-md-6">
@@ -942,6 +954,25 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                         <option value="">Select Owner</option>
                                                         <!-- Options will be populated dynamically -->
                                                     </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Bedrooms</label>
+                                                <div class="col-sm-9">
+                                                    <input name="bedrooms" type="number" min="0" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Bathrooms</label>
+                                                <div class="col-sm-9">
+                                                    <input name="bathrooms" type="number" min="0" step="0.5" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -1084,6 +1115,18 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                         </div>
                                     </div>
 
+                                    <!-- Property Description -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <textarea name="description" class="form-control" rows="4" placeholder="Detailed description of the property" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- Property Details -->
                                     <div class="row mb-4">
                                         <div class="col-md-6">
@@ -1196,6 +1239,25 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                         <option value="Yes">Yes</option>
                                                         <option value="No">No</option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Bedrooms</label>
+                                                <div class="col-sm-9">
+                                                    <input name="bedrooms" type="number" min="0" class="form-control" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Bathrooms</label>
+                                                <div class="col-sm-9">
+                                                    <input name="bathrooms" type="number" min="0" step="0.5" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -2452,6 +2514,38 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                             </div>
                         </div>
 
+                        <!-- Bedrooms and Bathrooms -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Bedrooms</label>
+                                    <div class="col-sm-9">
+                                        <input name="bedrooms" type="number" min="0" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Bathrooms</label>
+                                    <div class="col-sm-9">
+                                        <input name="bathrooms" type="number" min="0" step="0.5" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Description</label>
+                                    <div class="col-sm-10">
+                                        <textarea name="description" class="form-control" rows="4" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Property Classification -->
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -2782,6 +2876,38 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                     <label class="col-sm-3 col-form-label">Property Size</label>
                                     <div class="col-sm-9">
                                         <input name="property_size" type="number" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bedrooms and Bathrooms -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Bedrooms</label>
+                                    <div class="col-sm-9">
+                                        <input name="bedrooms" type="number" min="0" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Bathrooms</label>
+                                    <div class="col-sm-9">
+                                        <input name="bathrooms" type="number" min="0" step="0.5" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Description</label>
+                                    <div class="col-sm-10">
+                                        <textarea name="description" class="form-control" rows="4" required></textarea>
                                     </div>
                                 </div>
                             </div>

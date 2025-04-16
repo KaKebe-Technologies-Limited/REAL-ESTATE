@@ -32,6 +32,7 @@ try {
     // Prepare property data
     $propertyData = [
         'property_name' => $_POST['property_name'] ?? '',
+        'description' => $_POST['description'] ?? '',
         'price' => $_POST['price'] ?? '',
         'landlord' => $_POST['landlord'] ?? '',
         'security' => isset($_POST['security']) ? implode(',', $_POST['security']) : '',
@@ -40,6 +41,8 @@ try {
         'convenience' => $_POST['convenience'] ?? '',
         'property_class' => $_POST['property_class'] ?? '',
         'property_size' => $_POST['property_size'] ?? '',
+        'bedrooms' => $_POST['bedrooms'] ?? 0,
+        'bathrooms' => $_POST['bathrooms'] ?? 0,
         'parking' => $_POST['parking'] ?? '',
         'amenities' => isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '',
         'country' => $_POST['country'] ?? '',
@@ -54,15 +57,16 @@ try {
     ];
 
     // Insert into database
-    $query = "INSERT INTO rental_property (property_name, price, landlord, security, utilities,
-                    property_type, convenience, property_class, property_size, parking, amenities,
+    $query = "INSERT INTO rental_property (property_name, description, price, landlord, security, utilities,
+                    property_type, convenience, property_class, property_size, bedrooms, bathrooms, parking, amenities,
                     country, region, subregion, parish, ward, cell, owner_id, manager_id, images)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param(
-        'sdssssssissssssssiis',
+        'ssdssssssiisssssssssiis',
         $propertyData['property_name'],
+        $propertyData['description'],
         $propertyData['price'],
         $propertyData['landlord'],
         $propertyData['security'],
@@ -71,6 +75,8 @@ try {
         $propertyData['convenience'],
         $propertyData['property_class'],
         $propertyData['property_size'],
+        $propertyData['bedrooms'],
+        $propertyData['bathrooms'],
         $propertyData['parking'],
         $propertyData['amenities'],
         $propertyData['country'],

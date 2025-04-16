@@ -32,11 +32,14 @@ try {
     // Prepare property data
     $propertyData = [
         'property_name' => $_POST['property_name'] ?? '',
+        'description' => $_POST['description'] ?? '',
         'price' => $_POST['price'] ?? '',
         'property_type' => $_POST['property_type'] ?? '',
         'title' => $_POST['title'] ?? '',
         'utilities' => $_POST['utilities'] ?? '',
         'property_size' => $_POST['property_size'] ?? '',
+        'bedrooms' => $_POST['bedrooms'] ?? 0,
+        'bathrooms' => $_POST['bathrooms'] ?? 0,
         'amenities' => isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '',
         'country' => $_POST['country'] ?? '',
         'region' => $_POST['region'] ?? '',
@@ -50,20 +53,23 @@ try {
     ];
 
     // Insert into database
-    $query = "INSERT INTO sales_property (property_name, title, utilities, price, property_type,
-                property_size, amenities, country, region, subregion,
+    $query = "INSERT INTO sales_property (property_name, description, title, utilities, price, property_type,
+                property_size, bedrooms, bathrooms, amenities, country, region, subregion,
                 parish, ward, cell, owner_id, manager_id, images)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param(
-        'sssssisssssssiis',
+        'ssssssiiisssssssiis',
         $propertyData['property_name'],
+        $propertyData['description'],
         $propertyData['title'],
         $propertyData['utilities'],
         $propertyData['price'],
         $propertyData['property_type'],
         $propertyData['property_size'],
+        $propertyData['bedrooms'],
+        $propertyData['bathrooms'],
         $propertyData['amenities'],
         $propertyData['country'],
         $propertyData['region'],

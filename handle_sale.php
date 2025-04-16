@@ -110,6 +110,9 @@ try {
                 'title' => $_POST['title'] ?? '',
                 'utilities' => $_POST['utilities'] ?? '',
                 'property_size' => $_POST['property_size'] ?? '',
+                'bedrooms' => isset($_POST['bedrooms']) ? intval($_POST['bedrooms']) : 0,
+                'bathrooms' => isset($_POST['bathrooms']) ? floatval($_POST['bathrooms']) : 0,
+                'description' => $_POST['description'] ?? '',
                 'amenities' => isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '',
                 'country' => $_POST['country'] ?? '',
                 'region' => $_POST['region'] ?? '',
@@ -124,19 +127,23 @@ try {
 
             $query = "UPDATE sales_property SET
                         property_name=?, title=?, utilities=?, price=?, property_type=?,
-                        property_size=?, amenities=?, country=?, region=?, subregion=?,
-                        parish=?, ward=?, cell=?, owner_id=?, manager_id=?, images=?
+                        property_size=?, bedrooms=?, bathrooms=?, description=?, amenities=?,
+                        country=?, region=?, subregion=?, parish=?, ward=?, cell=?,
+                        owner_id=?, manager_id=?, images=?
                         WHERE property_id=?";
 
             $stmt = $conn->prepare($query);
             $stmt->bind_param(
-                'sssssisssssssiisi',
+                'sssssiiissssssssiisi',
                 $propertyData['property_name'],
-                $propertyData['title'],
+                $propertyData['title'], 
                 $propertyData['utilities'],
                 $propertyData['price'],
                 $propertyData['property_type'],
                 $propertyData['property_size'],
+                $propertyData['bedrooms'],
+                $propertyData['bathrooms'],
+                $propertyData['description'],
                 $propertyData['amenities'],
                 $propertyData['country'],
                 $propertyData['region'],

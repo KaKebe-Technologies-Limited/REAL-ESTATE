@@ -481,6 +481,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <p><strong>Price:</strong> $${escapeHtml(data.data.price)}</p>
                                                         <p><strong>Property Type:</strong> ${escapeHtml(data.data.property_type || 'N/A')}</p>
                                                         <p><strong>Property Size:</strong> ${escapeHtml(data.data.property_size || 'N/A')}</p>
+                                                        <p><strong>Bedrooms:</strong> ${escapeHtml(data.data.bedrooms || '0')}</p>
+                                                        <p><strong>Bathrooms:</strong> ${escapeHtml(data.data.bathrooms || '0')}</p>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <p><strong>Owner:</strong> ${escapeHtml(data.data.owner_name || 'Not Assigned')}</p>
@@ -488,6 +490,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <p><strong>Availability:</strong> ${data.data.property_class === '1' ? '<span class="badge bg-success">Available</span>' : '<span class="badge bg-danger">Not Available</span>'}</p>
                                                         <p><strong>Utilities:</strong> ${escapeHtml(data.data.utilities || 'N/A')}</p>
                                                     </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <h5>Description</h5>
+                                                    <p>${escapeHtml(data.data.description || 'No description available')}</p>
                                                 </div>
                                             `;
 
@@ -707,6 +713,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <p><strong>Price:</strong> $${escapeHtml(data.data.price)}</p>
                                                         <p><strong>Property Type:</strong> ${escapeHtml(data.data.property_type || 'N/A')}</p>
                                                         <p><strong>Property Size:</strong> ${escapeHtml(data.data.property_size || 'N/A')}</p>
+                                                        <p><strong>Bedrooms:</strong> ${escapeHtml(data.data.bedrooms || '0')}</p>
+                                                        <p><strong>Bathrooms:</strong> ${escapeHtml(data.data.bathrooms || '0')}</p>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <p><strong>Owner:</strong> ${escapeHtml(data.data.owner_name || 'Not Assigned')}</p>
@@ -714,6 +722,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <p><strong>Availability:</strong> ${data.data.property_type === 'Available' ? '<span class="badge bg-success">Available</span>' : '<span class="badge bg-danger">Not Available</span>'}</p>
                                                         <p><strong>Utilities:</strong> ${escapeHtml(data.data.utilities || 'N/A')}</p>
                                                     </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <h5>Description</h5>
+                                                    <p>${escapeHtml(data.data.description || 'No description available')}</p>
                                                 </div>
                                             `;
 
@@ -804,6 +816,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                     if (form.querySelector('[name="property_size"]')) {
                                         form.querySelector('[name="property_size"]').value = data.data.property_size || '';
+                                    }
+
+                                    // Set bedrooms, bathrooms, and description fields
+                                    if (form.querySelector('[name="bedrooms"]')) {
+                                        form.querySelector('[name="bedrooms"]').value = data.data.bedrooms || '0';
+                                    }
+
+                                    if (form.querySelector('[name="bathrooms"]')) {
+                                        form.querySelector('[name="bathrooms"]').value = data.data.bathrooms || '0';
+                                    }
+
+                                    if (form.querySelector('[name="description"]')) {
+                                        form.querySelector('[name="description"]').value = data.data.description || '';
                                     }
 
                                     if (form.querySelector('[name="utilities"]')) {

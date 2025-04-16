@@ -689,6 +689,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     form.querySelector('[name="property_size"]').value = data.data.property_size;
                     form.querySelector('[name="utilities"]').value = data.data.utilities;
                     form.querySelector('[name="country"]').value = data.data.country;
+                    form.querySelector('[name="description"]').value = data.data.description;
+                    form.querySelector('[name="bedrooms"]').value = data.data.bedrooms;
+                    form.querySelector('[name="bathrooms"]').value = data.data.bathrooms;
                     form.querySelector('[name="region"]').value = data.data.region;
                     form.querySelector('[name="subregion"]').value = data.data.subregion;
                     form.querySelector('[name="parish"]').value = data.data.parish;
@@ -875,6 +878,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         setFieldValue('price', data.data.price);
                         setFieldValue('property_type', data.data.property_type);
                         setFieldValue('property_size', data.data.property_size);
+                        setFieldValue('description', data.data.description);
+                        setFieldValue('bedrooms', data.data.bedrooms);
+                        setFieldValue('bathrooms', data.data.bathrooms);
                         setFieldValue('utilities', data.data.utilities);
                         setFieldValue('country', data.data.country);
                         setFieldValue('region', data.data.region);

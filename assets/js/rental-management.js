@@ -116,6 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <p><strong>Price:</strong> $${data.data.price}</p>
                                         <p><strong>Property Type:</strong> ${data.data.property_type}</p>
                                         <p><strong>Property Size:</strong> ${data.data.property_size}</p>
+                                        <p><strong>Bedrooms:</strong> ${data.data.bedrooms || 0}</p>
+                                        <p><strong>Bathrooms:</strong> ${data.data.bathrooms || 0}</p>
                                         <p><strong>Location:</strong> ${data.data.region}, ${data.data.country}</p>
                                     </div>
                                     <div class="col-md-6">
@@ -124,6 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <p><strong>Utilities:</strong> ${data.data.utilities}</p>
                                         <p><strong>Amenities:</strong> ${data.data.amenities}</p>
                                     </div>
+                                </div>
+                                <div class="mt-3">
+                                    <h5>Description</h5>
+                                    <p>${data.data.description || 'No description available'}</p>
                                 </div>
                                 <div class="property-images mt-3">
                                     ${data.data.image_urls ? data.data.image_urls.map(url =>
@@ -164,6 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         form.querySelector('[name="price"]').value = data.data.price;
                         form.querySelector('[name="property_type"]').value = data.data.property_type;
                         form.querySelector('[name="property_size"]').value = data.data.property_size;
+                        form.querySelector('[name="bedrooms"]').value = data.data.bedrooms || 0;
+                        form.querySelector('[name="bathrooms"]').value = data.data.bathrooms || 0;
+                        form.querySelector('[name="description"]').value = data.data.description || '';
                         form.querySelector('[name="utilities"]').value = data.data.utilities;
                         form.querySelector('[name="country"]').value = data.data.country;
                         form.querySelector('[name="region"]').value = data.data.region;

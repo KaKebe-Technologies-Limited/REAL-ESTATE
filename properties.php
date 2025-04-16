@@ -208,16 +208,16 @@ function formatPrice($price) {
                                     <span class="price_label"></span>
                                 </div>
                                 <div class="listing_details the_grid_view">
-                                    <?php echo htmlspecialchars(substr($property['property_class'], 0, 100)); ?>
+                                    <?php echo htmlspecialchars(substr($property['description'], 0, 100)); ?>
                                 </div>
                                 <div class="property_listing_details">
                                     <span class="inforoom">
                                         <i class="fas fa-bed" style="width: 25px;"></i>
-                                        3
+                                        <?php echo htmlspecialchars($property['bedrooms']); ?>
                                     </span>
                                     <span class="infobath">
                                         <i class="fas fa-bath" style="width: 25px;"></i>
-                                        5
+                                        <?php echo htmlspecialchars($property['bathrooms']); ?>
                                     </span>
                                     <span class="infosize">
                                         <i class="fas fa-ruler-combined" style="width: 25px;"></i>
