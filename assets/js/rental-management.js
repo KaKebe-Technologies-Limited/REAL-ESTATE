@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         form.querySelector('[name="bathrooms"]').value = data.data.bathrooms || 0;
                         form.querySelector('[name="description"]').value = data.data.description || '';
                         form.querySelector('[name="utilities"]').value = data.data.utilities;
+                        form.querySelector('[name="status"]').value = data.data.status;
                         form.querySelector('[name="country"]').value = data.data.country;
                         form.querySelector('[name="region"]').value = data.data.region;
                         form.querySelector('[name="subregion"]').value = data.data.subregion;

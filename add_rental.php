@@ -44,6 +44,7 @@ try {
         'bedrooms' => $_POST['bedrooms'] ?? 0,
         'bathrooms' => $_POST['bathrooms'] ?? 0,
         'parking' => $_POST['parking'] ?? '',
+        'status' => $_POST['status'] ?? '',
         'amenities' => isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '',
         'country' => $_POST['country'] ?? '',
         'region' => $_POST['region'] ?? '',
@@ -58,13 +59,13 @@ try {
 
     // Insert into database
     $query = "INSERT INTO rental_property (property_name, description, price, landlord, security, utilities,
-                    property_type, convenience, property_class, property_size, bedrooms, bathrooms, parking, amenities,
+                    property_type, convenience, property_class, property_size, bedrooms, bathrooms, parking, amenities, status,
                     country, region, subregion, parish, ward, cell, owner_id, manager_id, images)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param(
-        'ssdssssssiisssssssssiis',
+        'ssdssssssiissssssssssiis',
         $propertyData['property_name'],
         $propertyData['description'],
         $propertyData['price'],
@@ -77,6 +78,7 @@ try {
         $propertyData['property_size'],
         $propertyData['bedrooms'],
         $propertyData['bathrooms'],
+        $propertyData['status'],
         $propertyData['parking'],
         $propertyData['amenities'],
         $propertyData['country'],

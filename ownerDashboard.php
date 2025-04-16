@@ -187,6 +187,7 @@ try {
     <script src="assets/js/mobile-submenu-fix.js" defer></script>
     <script src="assets/js/submenu-click-fix.js" defer></script>
     <script src="assets/js/direct-submenu-fix.js" defer></script>
+    <script src="assets/js/report-generator.js" defer></script>
 
     <!-- Ensure critical sections are loaded -->
     <script>
@@ -584,7 +585,7 @@ try {
                                         <i class="fas fa-user-plus"></i>
                                         <span>Add Managers</span>
                                     </a>
-                                    <a href="#" class="quick-action-btn">
+                                    <a href="#" class="quick-action-btn generate-report-btn">
                                         <i class="fas fa-file-alt"></i>
                                         <span>Generate Report</span>
                                     </a>
@@ -1049,6 +1050,18 @@ try {
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <select name="status" class="form-control" required>
+                                                        <option value="">Select Status</option>
+                                                        <option value="Available">Available</option>
+                                                        <option value="Unavailable">Unavailable</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Manager</label>
                                                 <div class="col-sm-9">
                                                     <select name="manager_id" id="sale_manager_id" class="form-control">
@@ -1359,6 +1372,18 @@ try {
                                     </div>
 
                                     <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Status</label>
+                                                <div class="col-sm-9">
+                                                    <select name="status" class="form-control" required>
+                                                        <option value="">Select Status</option>
+                                                        <option value="Available">Available</option>
+                                                        <option value="Unavailable">Unavailable</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Manager</label>
@@ -2232,6 +2257,18 @@ try {
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <select name="status" class="form-control" required>
+                                            <option value="">Select Status</option>
+                                            <option value="Available">Available</option>
+                                            <option value="Unavailable">Unavailable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Property Manager</label>
                                     <div class="col-sm-9">
                                         <select name="manager_id" id="rental_manager_id" class="form-control">
@@ -2526,6 +2563,18 @@ try {
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <select name="status" class="form-control" required>
+                                            <option value="">Select Status</option>
+                                            <option value="Available">Available</option>
+                                            <option value="Unavailable">Unavailable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Property Owner</label>
                                     <div class="col-sm-9">
                                         <select name="owner_id" id="rental_owner_id" class="form-control" required>
@@ -2754,6 +2803,38 @@ try {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger confirm-delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Selection Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Select the type of report you want to generate:</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary report-type-btn" data-report-type="rentals">
+                            <i class="fas fa-home me-2"></i>Rental Properties Report
+                        </button>
+                        <button class="btn btn-success report-type-btn" data-report-type="sales">
+                            <i class="fas fa-dollar-sign me-2"></i>Sales Properties Report
+                        </button>
+                        <button class="btn btn-info report-type-btn" data-report-type="managers">
+                            <i class="fas fa-user-tie me-2"></i>Property Managers Report
+                        </button>
+                        <button class="btn btn-secondary report-type-btn" data-report-type="all">
+                            <i class="fas fa-file-alt me-2"></i>Comprehensive Report (All)
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

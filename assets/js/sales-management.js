@@ -208,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             form.querySelector('[name="property_type"]').value = data.data.property_type || '';
                             form.querySelector('[name="property_size"]').value = data.data.property_size || '';
+                            form.querySelector('[name="status"]').value = data.data.status || '';
 
                             // Set bedrooms, bathrooms, and description
                             const bedroomsInput = form.querySelector('[name="bedrooms"]');

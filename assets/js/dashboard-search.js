@@ -567,6 +567,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                         form.querySelector('[name="utilities"]').value = data.data.utilities || '';
                                     }
 
+                                    if (form.querySelector('[name="status"]')) {
+                                        form.querySelector('[name="status"]').value = data.data.status || '';
+                                    }
+
                                     if (form.querySelector('[name="property_class"]')) {
                                         form.querySelector('[name="property_class"]').value = data.data.property_class || '';
                                     }
@@ -833,6 +837,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                     if (form.querySelector('[name="utilities"]')) {
                                         form.querySelector('[name="utilities"]').value = data.data.utilities || '';
+                                    }
+
+                                    if (form.querySelector('[name="status"]')) {
+                                        form.querySelector('[name="status"]').value = data.data.status || '';
                                     }
 
                                     // Set location fields

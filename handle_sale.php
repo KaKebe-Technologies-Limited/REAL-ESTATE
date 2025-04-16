@@ -113,6 +113,7 @@ try {
                 'bedrooms' => isset($_POST['bedrooms']) ? intval($_POST['bedrooms']) : 0,
                 'bathrooms' => isset($_POST['bathrooms']) ? floatval($_POST['bathrooms']) : 0,
                 'description' => $_POST['description'] ?? '',
+                'status' => $_POST['status'] ?? '',
                 'amenities' => isset($_POST['amenities']) ? implode(',', $_POST['amenities']) : '',
                 'country' => $_POST['country'] ?? '',
                 'region' => $_POST['region'] ?? '',
@@ -129,12 +130,12 @@ try {
                         property_name=?, title=?, utilities=?, price=?, property_type=?,
                         property_size=?, bedrooms=?, bathrooms=?, description=?, amenities=?,
                         country=?, region=?, subregion=?, parish=?, ward=?, cell=?,
-                        owner_id=?, manager_id=?, images=?
+                        owner_id=?, manager_id=?, images=?, status=?
                         WHERE property_id=?";
 
             $stmt = $conn->prepare($query);
             $stmt->bind_param(
-                'sssssiiissssssssiisi',
+                'sssssiiisssssssssiisi',
                 $propertyData['property_name'],
                 $propertyData['title'], 
                 $propertyData['utilities'],
@@ -144,6 +145,7 @@ try {
                 $propertyData['bedrooms'],
                 $propertyData['bathrooms'],
                 $propertyData['description'],
+                $propertyData['status'],
                 $propertyData['amenities'],
                 $propertyData['country'],
                 $propertyData['region'],

@@ -688,6 +688,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     form.querySelector('[name="property_type"]').value = data.data.property_type;
                     form.querySelector('[name="property_size"]').value = data.data.property_size;
                     form.querySelector('[name="utilities"]').value = data.data.utilities;
+                    form.querySelector('[name="status"]').value = data.data.status;
                     form.querySelector('[name="country"]').value = data.data.country;
                     form.querySelector('[name="description"]').value = data.data.description;
                     form.querySelector('[name="bedrooms"]').value = data.data.bedrooms;
@@ -882,6 +883,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         setFieldValue('bedrooms', data.data.bedrooms);
                         setFieldValue('bathrooms', data.data.bathrooms);
                         setFieldValue('utilities', data.data.utilities);
+                        setFieldValue('status', data.data.status);
                         setFieldValue('country', data.data.country);
                         setFieldValue('region', data.data.region);
                         setFieldValue('subregion', data.data.subregion);

@@ -68,7 +68,8 @@ if ($property_type === 'rental') {
         r.convenience,
         r.description,
         r.bedrooms,
-        r.bathrooms
+        r.bathrooms,
+        r.status
         FROM rental_property r
         LEFT JOIN property_owner o ON r.owner_id = o.owner_id
         LEFT JOIN property_manager m ON r.manager_id = m.manager_id
@@ -106,7 +107,8 @@ if ($property_type === 'rental') {
         s.title,
         s.description,
         s.bedrooms,
-        s.bathrooms
+        s.bathrooms,
+        s.status
         FROM sales_property s
         LEFT JOIN property_owner o ON s.owner_id = o.owner_id
         LEFT JOIN property_manager m ON s.manager_id = m.manager_id
@@ -139,7 +141,6 @@ function formatPrice($price) {
 }
 
 // Status (hardcoded for now, could be added to the database tables later)
-$property['status'] = 'available';
 $property['is_featured'] = true; // Set to true for demonstration
 $property['year_built'] = 2022; // Default value
 
@@ -151,7 +152,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($property['title']); ?> - East African Land and Rentals</title>
+    <title><?php echo htmlspecialchars($property['property_name']); ?> - East African Land and Rentals</title>
     <link rel="icon" href="logo1.ico" sizes="any">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
