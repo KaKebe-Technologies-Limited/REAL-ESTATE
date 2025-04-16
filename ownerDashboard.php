@@ -156,7 +156,10 @@ try {
     <link rel="stylesheet" href="assets/css/custom-loader.css">
     <link rel="stylesheet" href="assets/css/dashboard-responsive.css">
     <link rel="stylesheet" href="assets/css/sidebar-fix.css">
+    <link rel="stylesheet" href="assets/css/mobile-sidebar-fix.css">
     <link rel="stylesheet" href="assets/css/responsive-tables.css">
+    <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
+    <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
 
     <!-- JavaScript files with defer attribute -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -179,6 +182,11 @@ try {
     <script src="assets/js/owner-manager-handlers.js" defer></script>
     <script src="assets/js/responsive-dashboard.js" defer></script>
     <script src="assets/js/responsive-tables.js" defer></script>
+    <script src="assets/js/mobile-sidebar.js" defer></script>
+    <script src="assets/js/sidebar-toggle-fix.js" defer></script>
+    <script src="assets/js/mobile-submenu-fix.js" defer></script>
+    <script src="assets/js/submenu-click-fix.js" defer></script>
+    <script src="assets/js/direct-submenu-fix.js" defer></script>
 
     <!-- Ensure critical sections are loaded -->
     <script>
@@ -322,14 +330,14 @@ try {
                 </a>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
+                <a href="#" class="nav-link" data-toggle="submenu">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
+                        <a href="#" class="submenu-link" data-toggle="property-submenu">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -350,7 +358,7 @@ try {
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
+                        <a href="#" class="submenu-link" data-toggle="property-submenu">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -373,7 +381,7 @@ try {
                 </ul>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
+                <a href="#" class="nav-link" data-toggle="submenu">
                     <i class="fas fa-user-cog"></i>
                     <span>Manage Managers</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>

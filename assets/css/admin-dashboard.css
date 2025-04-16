@@ -187,9 +187,9 @@ body {
     text-align: center;
 }
 
-.sidebar.collapsed .nav-link span {
+/* .sidebar.collapsed .nav-link span {
     display: none;
-}
+} */
 
 .has-submenu .submenu-arrow {
     margin-left: auto;
@@ -248,8 +248,24 @@ body {
     display: none;
 }
 
-.sidebar.collapsed .has-submenu:hover .submenu {
-    display: block;
+/* Show submenu on hover for desktop only */
+@media (min-width: 992px) {
+    .sidebar.collapsed .has-submenu:hover .submenu {
+        display: block;
+    }
+}
+
+/* For mobile, we'll use click instead of hover */
+@media (max-width: 991px) {
+    /* Remove hover effect for mobile */
+    .sidebar.collapsed .has-submenu:hover .submenu {
+        display: none;
+    }
+
+    /* Only show submenu when the parent has the open class */
+    .sidebar.collapsed .has-submenu.open .submenu {
+        display: block;
+    }
 }
 
 /* Property Submenu Styles */
@@ -746,7 +762,7 @@ body {
     .card-body {
         padding: 1.5rem;
     }
-    
+
     .form-sample .row {
         margin-bottom: 1rem;
     }
@@ -850,8 +866,8 @@ body {
     min-height: 400px;
 }
 
-.btn-outline-primary:hover, 
-.btn-outline-warning:hover, 
+.btn-outline-primary:hover,
+.btn-outline-warning:hover,
 .btn-outline-danger:hover {
     color: var(--text-color);
 }

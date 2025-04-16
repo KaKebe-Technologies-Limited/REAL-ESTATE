@@ -172,13 +172,21 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <link rel="stylesheet" href="assets/css/custom-loader.css">
     <link rel="stylesheet" href="assets/css/dashboard-responsive.css">
     <link rel="stylesheet" href="assets/css/sidebar-fix.css">
+    <link rel="stylesheet" href="assets/css/mobile-sidebar-fix.css">
     <link rel="stylesheet" href="assets/css/responsive-tables.css">
+    <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
+    <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/custom-loader.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="assets/js/responsive-dashboard.js" defer></script>
     <script src="assets/js/responsive-tables.js" defer></script>
+    <script src="assets/js/mobile-sidebar.js" defer></script>
+    <script src="assets/js/sidebar-toggle-fix.js" defer></script>
+    <script src="assets/js/mobile-submenu-fix.js" defer></script>
+    <script src="assets/js/submenu-click-fix.js" defer></script>
+    <script src="assets/js/direct-submenu-fix.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -277,14 +285,14 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                 </a>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
+                <a href="#" class="nav-link" data-toggle="submenu">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
+                        <a href="#" class="submenu-link" data-toggle="property-submenu">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -305,7 +313,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
+                        <a href="#" class="submenu-link" data-toggle="property-submenu">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -328,7 +336,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                 </ul>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
+                <a href="#" class="nav-link" data-toggle="submenu">
                     <i class="fas fa-user-tie"></i>
                     <span>Manage Owners</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
@@ -349,7 +357,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                 </ul>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
+                <a href="#" class="nav-link" data-toggle="submenu">
                     <i class="fas fa-user-cog"></i>
                     <span>Manage Managers</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>

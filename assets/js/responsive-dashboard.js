@@ -74,6 +74,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (arrow) {
                 arrow.classList.toggle('rotate');
             }
+
+            // Ensure sidebar stays open on mobile
+            if (window.innerWidth < 992) {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+                if (sidebar && !sidebar.classList.contains('collapsed')) {
+                    sidebar.classList.add('collapsed');
+                }
+
+                if (sidebarOverlay && !sidebarOverlay.classList.contains('active')) {
+                    sidebarOverlay.classList.add('active');
+                }
+
+                document.body.style.overflow = 'hidden';
+            }
         }
     }
 
@@ -87,6 +103,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const parentLi = this.parentElement;
         if (parentLi) {
             parentLi.classList.toggle('open');
+
+            // Ensure sidebar stays open on mobile
+            if (window.innerWidth < 992) {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+                if (sidebar && !sidebar.classList.contains('collapsed')) {
+                    sidebar.classList.add('collapsed');
+                }
+
+                if (sidebarOverlay && !sidebarOverlay.classList.contains('active')) {
+                    sidebarOverlay.classList.add('active');
+                }
+
+                document.body.style.overflow = 'hidden';
+            }
         }
     }
 

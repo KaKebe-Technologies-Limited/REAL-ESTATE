@@ -1,0 +1,86 @@
+/* Direct submenu click fix for mobile */
+
+@media (max-width: 991px) {
+    /* Main submenu styles */
+    .submenu {
+        display: none !important;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        margin: 0 10px;
+        padding: 5px 0;
+    }
+
+    .has-submenu.open > .submenu {
+        display: block !important;
+    }
+
+    /* Property submenu styles */
+    .property-submenu {
+        display: none !important;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        margin: 0 10px;
+        padding: 5px 0;
+    }
+
+    .property-submenu.show {
+        display: block !important;
+    }
+
+    /* Improved touch targets */
+    .sidebar-nav .nav-link,
+    .submenu-link {
+        padding: 12px 15px;
+        min-height: 44px;
+    }
+
+    /* Visual indicator for clickable items */
+    .has-submenu > .nav-link[data-toggle="submenu"]::after,
+    .submenu-link[data-toggle="property-submenu"]::after {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #007bff;
+        border-radius: 50%;
+        margin-left: 10px;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 5px rgba(0, 123, 255, 0);
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+        }
+    }
+
+    /* Ensure sidebar stays open when submenu is clicked */
+    .sidebar.collapsed {
+        transform: translateX(280px) !important;
+    }
+
+    /* Ensure submenu arrows rotate properly */
+    .submenu-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .has-submenu.open > .nav-link .submenu-arrow {
+        transform: rotate(180deg) !important;
+    }
+
+    .property-submenu-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .property-submenu-arrow.rotate {
+        transform: rotate(90deg) !important;
+    }
+}

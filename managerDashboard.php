@@ -159,7 +159,10 @@ $stmt->close();
     <link rel="stylesheet" href="assets/css/custom-loader.css">
     <link rel="stylesheet" href="assets/css/dashboard-responsive.css">
     <link rel="stylesheet" href="assets/css/sidebar-fix.css">
+    <link rel="stylesheet" href="assets/css/mobile-sidebar-fix.css">
     <link rel="stylesheet" href="assets/css/responsive-tables.css">
+    <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
+    <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
 
     <!-- JavaScript files with defer attribute -->
     <script src="assets/js/custom-loader.js" defer></script>
@@ -177,6 +180,11 @@ $stmt->close();
     <script src="assets/js/manager-management.js" defer></script>
     <script src="assets/js/responsive-dashboard.js" defer></script>
     <script src="assets/js/responsive-tables.js" defer></script>
+    <script src="assets/js/mobile-sidebar.js" defer></script>
+    <script src="assets/js/sidebar-toggle-fix.js" defer></script>
+    <script src="assets/js/mobile-submenu-fix.js" defer></script>
+    <script src="assets/js/submenu-click-fix.js" defer></script>
+    <script src="assets/js/direct-submenu-fix.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -275,14 +283,14 @@ $stmt->close();
                 </a>
             </li>
             <li class="nav-item has-submenu">
-                <a href="#" class="nav-link" onclick="toggleSubmenu(this, event)">
+                <a href="#" class="nav-link" data-toggle="submenu">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                     <i class="fas fa-chevron-down submenu-arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
+                        <a href="#" class="submenu-link" data-toggle="property-submenu">
                             <i class="fas fa-key"></i>
                             <span>Rentals</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -303,7 +311,7 @@ $stmt->close();
                         </ul>
                     </li>
                     <li class="has-submenu">
-                        <a href="#" class="submenu-link" onclick="togglePropertySubmenu(this, event)">
+                        <a href="#" class="submenu-link" data-toggle="property-submenu">
                             <i class="fas fa-home"></i>
                             <span>Sales</span>
                             <i class="fas fa-chevron-right property-submenu-arrow"></i>
@@ -331,18 +339,6 @@ $stmt->close();
                     <span>Settings</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-form="managers-listing" onclick="showManagersListing()">
-                    <i class="fas fa-users-cog"></i>
-                    <span>Managers</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-form="profile-content" onclick="showProfile()">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </a>
-            </li>
         </ul>
     </div>
 
@@ -367,7 +363,7 @@ $stmt->close();
                                 </div>
                                 <div class="summary-details">
                                     <h3 class="summary-title">Total Rentals</h3>
-                                    <p class="summary-number">320</p>
+                                    <p class="summary-number"><?php echo htmlspecialchars($total_rentals); ?></p>
                                     <p class="summary-trend positive">
                                         <i class="fas fa-arrow-up"></i> 15% from last month
                                     </p>
@@ -390,7 +386,7 @@ $stmt->close();
                                 </div>
                                 <div class="summary-details">
                                     <h3 class="summary-title">Total Sales</h3>
-                                    <p class="summary-number">150</p>
+                                    <p class="summary-number"><?php echo htmlspecialchars($total_sales); ?></p>
                                     <p class="summary-trend positive">
                                         <i class="fas fa-arrow-up"></i> 10% from last month
                                     </p>

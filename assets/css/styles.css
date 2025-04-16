@@ -116,10 +116,39 @@ a:hover {
     transition: all 0.3s ease;
 }
 
+@media screen and (min-width: 769px) {
+    .header_wrapper {
+        background: transparent;
+    }
+
+    .header_wrapper .menu a {
+        color: white !important;
+    }
+
+    .header_wrapper .login-btn {
+        border-color: white;
+        color: white;
+    }
+
+    /* Styles for scrolled state */
+    .header_wrapper.scrolled {
+        background: white !important;
+    }
+
+    .header_wrapper.scrolled .menu a {
+        color: #333 !important;
+    }
+
+    .header_wrapper.scrolled .login-btn {
+        border-color: #007bff;
+        color: #007bff;
+    }
+}
+
 .header_wrapper.scrolled {
     padding: 10px 0;
     background: white !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 /* Update menu link colors for better visibility */
@@ -170,11 +199,13 @@ a:hover {
 }
 
 .main_menu .menu a {
-    color: white !important; /* Override default color */
+    color: white !important; /* Default color for transparent background */
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
+
+/* Override for scrolled state is in the media query above */
 
 @media screen and (max-width: 768px) {
     .mobile-menu-button i {
@@ -229,6 +260,13 @@ a:hover {
     background: transparent;
     font-weight: 500;
     transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+    .login-btn {
+        border: 2px solid white;
+        color: white;
+    }
 }
 
 .header_wrapper.scrolled .login-btn {

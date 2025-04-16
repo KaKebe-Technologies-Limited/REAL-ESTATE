@@ -466,8 +466,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Custom alerts must be loaded before other scripts -->
 <script src="assets/js/custom-alerts.js"></script>
-<!-- <script src="assets/js/main.js"></script> -->
-<!-- <script src="assets/js/mobile-menu.js"></script> -->
+<script src="assets/js/main.js"></script>
 <script src="assets/js/mobile-menu-fix.js"></script>
 <script>
     // Initialize AOS
