@@ -82,7 +82,7 @@ if ($report_type == 'rentals' || $report_type == 'all') {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price AS rent,
-                property_class AS availability
+                status AS availability
                 FROM rental_property r
                 LEFT JOIN property_owner o ON r.owner_id = o.owner_id
                 LEFT JOIN property_manager m ON r.manager_id = m.manager_id";
@@ -101,7 +101,7 @@ if ($report_type == 'sales' || $report_type == 'all') {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price,
-                property_type AS availability
+                status AS availability
                 FROM sales_property s
                 LEFT JOIN property_owner o ON s.owner_id = o.owner_id
                 LEFT JOIN property_manager m ON s.manager_id = m.manager_id";
@@ -305,7 +305,7 @@ function formatCurrency($amount) {
                 <?php
                 $total_rent = array_sum(array_column($rentals, 'price'));
                 $available_rentals = count(array_filter($rentals, function($rental) {
-                    return $rental['property_class'] == 'Available';
+                    return $rental['status'] == 'Available';
                 }));
                 ?>
                 <div class="summary-item">
@@ -367,7 +367,7 @@ function formatCurrency($amount) {
                 <?php
                 $total_sales_value = array_sum(array_column($sales, 'price'));
                 $available_sales = count(array_filter($sales, function($sale) {
-                    return $sale['availability'] == 'Available';
+                    return $sale['status'] == 'Available';
                 }));
                 ?>
                 <div class="summary-item">

@@ -84,7 +84,7 @@ if ($report_type == 'rentals' || $report_type == 'all') {
                 CONCAT(o.first_name, ' ', o.last_name) as owner_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price AS rent,
-                property_class AS availability
+                status AS availability
                 FROM rental_property r
                 LEFT JOIN property_owner o ON r.owner_id = o.owner_id
                 WHERE r.manager_id = ?";
@@ -103,7 +103,7 @@ if ($report_type == 'sales' || $report_type == 'all') {
                 CONCAT(o.first_name, ' ', o.last_name) as owner_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price,
-                property_type AS availability
+                status AS availability
                 FROM sales_property s
                 LEFT JOIN property_owner o ON s.owner_id = o.owner_id
                 WHERE s.manager_id = ?";
@@ -276,7 +276,7 @@ function formatCurrency($amount) {
                 <?php
                 $total_rent = array_sum(array_column($rentals, 'price'));
                 $available_rentals = count(array_filter($rentals, function($rental) {
-                    return $rental['property_class'] == 'Available';
+                    return $rental['status'] == 'Available';
                 }));
                 ?>
                 <div class="summary-item">
@@ -336,7 +336,7 @@ function formatCurrency($amount) {
                 <?php
                 $total_sales_value = array_sum(array_column($sales, 'price'));
                 $available_sales = count(array_filter($sales, function($sale) {
-                    return $sale['availability'] == 'Available';
+                    return $sale['status'] == 'Available';
                 }));
                 ?>
                 <div class="summary-item">
@@ -375,7 +375,7 @@ function formatCurrency($amount) {
                         <td><?php echo htmlspecialchars($sale['bathrooms']); ?></td>
                         <td>UGX <?php echo formatCurrency($sale['price']); ?></td>
                         <td><?php echo htmlspecialchars($sale['property_type']); ?></td>
-                        <td><?php echo htmlspecialchars($sale['status']); ?></td>
+                        <td><?php echo htmlspecialchars($sale['availability']); ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

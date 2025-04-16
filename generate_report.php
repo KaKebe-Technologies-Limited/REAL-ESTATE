@@ -84,7 +84,7 @@ if ($report_type == 'rentals' || $report_type == 'all') {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price AS rent,
-                property_class AS availability
+                status AS availability
                 FROM rental_property r
                 LEFT JOIN property_manager m ON r.manager_id = m.manager_id
                 WHERE r.owner_id = ?";
@@ -103,7 +103,7 @@ if ($report_type == 'sales' || $report_type == 'all') {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price,
-                property_type AS availability
+                status AS availability
                 FROM sales_property s
                 LEFT JOIN property_manager m ON s.manager_id = m.manager_id
                 WHERE s.owner_id = ?";
@@ -119,7 +119,7 @@ if ($report_type == 'sales' || $report_type == 'all') {
 if ($report_type == 'managers' || $report_type == 'all') {
     // Fetch managers data
     $query = "SELECT m.*,
-                (SELECT COUNT(*) FROM rental_property WHERE manager_id = m.manager_id AND owner_id = ?) as property_count,
+                (SELECT COUNT(*) FROM rental_property WHERE manager_id = m.manager_id AND owner_id = ?) + (SELECT COUNT(*) FROM sales_property WHERE manager_id = m.manager_id AND owner_id = ?) as property_count,
                 m.username AS manager_name
                 FROM property_manager m
                 INNER JOIN rental_property r ON m.manager_id = r.manager_id
@@ -127,7 +127,7 @@ if ($report_type == 'managers' || $report_type == 'all') {
                 GROUP BY m.manager_id";
 
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('ii', $owner_id, $owner_id);
+    $stmt->bind_param('iii', $owner_id, $owner_id, $owner_id); // Fixed: Added third parameter
     $stmt->execute();
     $result = $stmt->get_result();
     $managers = $result->fetch_all(MYSQLI_ASSOC);
@@ -296,7 +296,7 @@ function formatCurrency($amount) {
                 <?php
                 $total_rent = array_sum(array_column($rentals, 'price'));
                 $available_rentals = count(array_filter($rentals, function($rental) {
-                    return $rental['property_class'] == 'Available';
+                    return $rental['status'] == 'Available';
                 }));
                 ?>
                 <div class="summary-item">
@@ -356,7 +356,7 @@ function formatCurrency($amount) {
                 <?php
                 $total_sales_value = array_sum(array_column($sales, 'price'));
                 $available_sales = count(array_filter($sales, function($sale) {
-                    return $sale['availability'] == 'Available';
+                    return $sale['status'] == 'Available';
                 }));
                 ?>
                 <div class="summary-item">
