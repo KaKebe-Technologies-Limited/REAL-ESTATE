@@ -59,7 +59,7 @@ try {
 
     // Insert into database
     $query = "INSERT INTO rental_property (property_name, description, price, landlord, security, utilities,
-                    property_type, convenience, property_class, property_size, bedrooms, bathrooms, parking, amenities, status,
+                    property_type, convenience, property_class, property_size, bedrooms, bathrooms, status, parking, amenities,
                     country, region, subregion, parish, ward, cell, owner_id, manager_id, images)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 

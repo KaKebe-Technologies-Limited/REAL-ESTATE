@@ -34,7 +34,7 @@
             <div class="right-top-widet">
                 <div class="contact_info">
                     <span><i class="far fa-envelope"></i> <a href="mailto:info@example.com">info@eastafricanlandandrentals.net</a></span>
-                    <span><i class="fas fa-phone-square-alt"></i> <a href="tel:+256751925403">+256764502805</a></span>
+                    <span><i class="fas fa-phone-square-alt"></i> <a href="tel:+256764502805">+256764502805</a></span>
                 </div>
             </div>
         </div>
@@ -449,7 +449,7 @@
     </div>
 </footer>
 <!-- Add WhatsApp Float Button -->
-<a href="https://wa.me/256751925403" class="whatsapp-float" target="_blank">
+<a href="https://wa.me/256764502805" class="whatsapp-float" target="_blank">
     <i class="fab fa-whatsapp"></i>
 </a>
 

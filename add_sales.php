@@ -54,8 +54,8 @@ try {
     ];
 
     // Insert into database
-    $query = "INSERT INTO sales_property (property_name, description, title, utilities, price, property_type, status,
-                property_size, bedrooms, bathrooms, amenities, country, region, subregion,
+    $query = "INSERT INTO sales_property (property_name, description, title, utilities, price, property_type,
+                property_size, bedrooms, bathrooms, status, amenities, country, region, subregion,
                 parish, ward, cell, owner_id, manager_id, images)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 

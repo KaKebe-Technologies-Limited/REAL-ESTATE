@@ -1,7 +1,8 @@
 /* Mobile Menu Fix */
 
 /* Fix for mobile menu button */
-.mobile-menu-button {
+.mobile-menu-button,
+.mobile-search-button {
     display: none;
     background: transparent;
     border: none;
@@ -12,7 +13,8 @@
     z-index: 1001;
 }
 
-.header_wrapper.scrolled .mobile-menu-button {
+.header_wrapper.scrolled .mobile-menu-button,
+.header_wrapper.scrolled .mobile-search-button {
     color: #333;
 }
 
@@ -99,7 +101,8 @@
 
 /* Media queries */
 @media screen and (max-width: 768px) {
-    .mobile-menu-button {
+    .mobile-menu-button,
+    .mobile-search-button {
         display: block;
     }
 
@@ -125,6 +128,13 @@
 .mobile-menu-button {
     position: absolute;
     right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.mobile-search-button {
+    position: absolute;
+    right: 65px;
     top: 50%;
     transform: translateY(-50%);
 }

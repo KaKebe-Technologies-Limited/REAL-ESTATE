@@ -52,9 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon.className = 'fas fa-times';
                     const span = button.querySelector('span');
                     if (span) {
-                        span.textContent = ' Close';
+                        span.textContent = 'x';
                     } else {
-                        button.textContent = ' Close';
+                        button.textContent = 'x';
                     }
                 } else {
                     icon.className = 'fas fa-search';

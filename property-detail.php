@@ -452,11 +452,11 @@ $conn->close();
                                 </form>
                             </div>
                             <div class="quick-contacts">
-                                <a href="tel:+256751925403" class="quick-contact-btn phone">
+                                <a href="tel:+256764502805" class="quick-contact-btn phone">
                                     <i class="fas fa-phone"></i>
                                     <span>Call Agent</span>
                                 </a>
-                                <a href="https://wa.me/256751925403" class="quick-contact-btn whatsapp">
+                                <a href="https://wa.me/256764502805" class="quick-contact-btn whatsapp">
                                     <i class="fab fa-whatsapp"></i>
                                     <span>WhatsApp</span>
                                 </a>

@@ -52,6 +52,9 @@ function formatPrice($price) {
                         <i class="fas fa-user"></i> Login
                     </a>
                 </div>
+                <button id="mobileSearchToggle" class="mobile-search-button">
+                    <i class="fas fa-search"></i>
+                </button>
                 <button class="mobile-menu-button">
                     <i class="fas fa-bars"></i>
                 </button>
