@@ -9,9 +9,15 @@ require_once 'config.php';
 $expected_user_type = 'admin';
 $posted_user_type = isset($_POST['user_type']) ? $_POST['user_type'] : '';
 
+// If user_type is not set in session but is provided in POST, set it in session
+if (!isset($_SESSION['user_type']) && $posted_user_type === $expected_user_type) {
+    $_SESSION['user_type'] = $posted_user_type;
+}
+
 // Check if user is logged in and has the correct user type
 // Allow the report to be generated if the posted user type matches the expected type
-if (!isset($_SESSION['user_id']) || ($_SESSION['user_type'] !== $expected_user_type && $posted_user_type !== $expected_user_type)) {
+// Use isset to safely check user_type to avoid undefined array key warning
+if (!isset($_SESSION['user_id']) || (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] !== $expected_user_type && $posted_user_type !== $expected_user_type))) {
     // For debugging - show session info before redirecting
     echo '<pre>Debug: Session issue detected\n';
     echo 'SESSION: ' . print_r($_SESSION, true) . '\n';

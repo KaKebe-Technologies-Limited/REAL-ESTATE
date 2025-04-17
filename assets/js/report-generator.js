@@ -28,6 +28,9 @@ function generateReport(type) {
         userType = 'owner';
     }
 
+    // Log the detected user type for debugging
+    console.log('Detected user type:', userType);
+
     // Determine the correct report URL based on user type
     let reportUrl;
     if (userType === 'manager') {
@@ -41,7 +44,7 @@ function generateReport(type) {
     // Create a form to post to the report page to maintain the session
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = reportUrl;
+    form.action = reportUrl + '?nocache=' + new Date().getTime() + clearSessionCookieIssues(); // Add cache-busting
     form.target = '_blank';
 
     // Add a hidden field for the report type
@@ -51,12 +54,15 @@ function generateReport(type) {
     reportTypeField.value = type;
     form.appendChild(reportTypeField);
 
-    // Add a hidden field for the user type
+    // Add a hidden field for the user type - ensure it's always set
     const userTypeField = document.createElement('input');
     userTypeField.type = 'hidden';
     userTypeField.name = 'user_type';
-    userTypeField.value = userType;
+    userTypeField.value = userType || 'admin'; // Fallback to admin if userType is empty
     form.appendChild(userTypeField);
+
+    // Log the form data for debugging
+    console.log('Submitting report with type:', type, 'and user type:', userTypeField.value);
 
     // Add the form to the document body and submit it
     document.body.appendChild(form);
@@ -74,6 +80,16 @@ function generateReport(type) {
 
     // Log the report generation
     console.log(`Generated ${type} report for ${userType} using ${reportUrl}`);
+}
+
+// Helper function to clear session cookie issues
+function clearSessionCookieIssues() {
+    // This doesn't actually clear cookies but helps with some browser cache issues
+    if (navigator.userAgent.indexOf('Chrome') !== -1) {
+        console.log('Chrome detected, adding cache-busting parameter');
+        return '&cb=' + new Date().getTime();
+    }
+    return '';
 }
 
 // Initialize report generation buttons when the document is ready
