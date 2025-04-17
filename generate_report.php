@@ -393,7 +393,7 @@ function formatCurrency($amount) {
                         <td><?php echo htmlspecialchars($sale['property_size']); ?> sq ft</td>
                         <td><?php echo htmlspecialchars($sale['bedrooms']); ?></td>
                         <td><?php echo htmlspecialchars($sale['bathrooms']); ?></td>
-                        <td>UGX <?php echo formatCurrency($sale['price']); ?></td>
+                        <td><?php echo htmlspecialchars($sale['price']); ?></td>
                         <td><?php echo htmlspecialchars($sale['property_type']); ?></td>
                         <td><?php echo htmlspecialchars($sale['status']); ?></td>
                     </tr>

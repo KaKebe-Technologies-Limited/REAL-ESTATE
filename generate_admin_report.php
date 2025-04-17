@@ -289,7 +289,7 @@ function formatCurrency($amount) {
         <div class="report-header">
             <img src="assets/images/logo1.png" alt="ALLEA Properties Logo">
             <div class="report-title"><?php echo $report_title; ?></div>
-            <div class="report-subtitle">Administrator: <?php echo $admin_data['username']; ?></div>
+            <div class="report-subtitle">Administrator: <?php echo $admin_data['first_name'] . ' ' . $admin_data['last_name']; ?></div>
             <div class="report-date">Generated on: <?php echo $report_date; ?></div>
         </div>
 
@@ -406,7 +406,7 @@ function formatCurrency($amount) {
                         <td><?php echo htmlspecialchars($sale['property_size']); ?> sq ft</td>
                         <td><?php echo htmlspecialchars($sale['bedrooms']); ?></td>
                         <td><?php echo htmlspecialchars($sale['bathrooms']); ?></td>
-                        <td>UGX <?php echo formatCurrency($sale['price']); ?></td>
+                        <td><?php echo htmlspecialchars($sale['price']); ?></td>
                         <td><?php echo htmlspecialchars($sale['property_type']); ?></td>
                         <td><?php echo htmlspecialchars($sale['status']); ?></td>
                     </tr>
