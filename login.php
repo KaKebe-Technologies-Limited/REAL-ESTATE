@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             $_SESSION['user_id'] = $user['admin_id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['user_type'] = 'admin';
             echo json_encode(['success' => true, 'message' => 'Login successful']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid password']);

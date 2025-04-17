@@ -2,8 +2,8 @@
 require_once 'config.php';
 session_start();
 
-// Make sure this matches your admin table's user_id
-if (!isset($_SESSION['user_id'])) {
+// Make sure this matches your admin table's user_id and user_type
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
     header('Location: login.html');
     exit();
 }
