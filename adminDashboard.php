@@ -716,7 +716,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Phone</label>
                                                 <div class="col-sm-9">
-                                                    <input name="phone" type="tel" class="form-control" required />
+                                                    <input name="phone" type="tel" placeholder="+code-0000000" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -2138,7 +2138,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
                                                 <label>Phone</label>
-                                                <input type="tel" class="form-control" id="manager-edit-phone" name="phone" required>
+                                                <input type="tel" class="form-control" id="manager-edit-phone" name="phone" placeholder="+code-0000000" required>
                                             </div>
                                         </div>
                                     </div>

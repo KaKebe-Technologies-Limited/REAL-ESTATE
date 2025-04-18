@@ -758,7 +758,7 @@ try {
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Phone</label>
                                                 <div class="col-sm-9">
-                                                    <input name="phone" type="tel" class="form-control" required />
+                                                    <input name="phone" type="tel" class="form-control" required placeholder="+code-0000000"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -2740,7 +2740,7 @@ try {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone">
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="+code-00000000">
                                 </div>
                             </div>
                             <div class="col-md-6">

@@ -2422,7 +2422,7 @@ $stmt->close();
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone">
+                                    <input type="text" class="form-control" id="phone" placeholder="+code-0000000" name="phone">
                                 </div>
                             </div>
                             <div class="col-md-6">
