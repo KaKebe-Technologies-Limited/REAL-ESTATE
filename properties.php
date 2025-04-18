@@ -308,7 +308,7 @@ function formatPrice($price) {
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/256123456789" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/256764502805" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 

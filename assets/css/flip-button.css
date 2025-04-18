@@ -1,0 +1,84 @@
+/* Flip Button Animation */
+.flip-container {
+    perspective: 1000px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+.flip-container.hover .flipper {
+    transform: rotateY(180deg);
+}
+
+.flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 5px;
+}
+
+.front {
+    z-index: 2;
+    transform: rotateY(0deg);
+    background: #007bff;
+    color: white;
+}
+
+.back {
+    transform: rotateY(180deg);
+    background: #007bff;
+    color: white;
+    font-weight: 500;
+}
+
+/* Ensure the quick-contact-btn styling is preserved */
+.quick-contact-btn.phone {
+    border: none;
+    background: transparent;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    outline: none;
+}
+
+.quick-contact-btn.phone .front,
+.quick-contact-btn.phone .back {
+    background: #007bff;
+    padding: 12px;
+    color: white;
+    font-weight: 500;
+}
+
+.quick-contact-btn.phone:hover .front,
+.quick-contact-btn.phone:hover .back {
+    background: #0069d9;
+}
+
+/* Remove button focus outline and add custom focus style */
+.quick-contact-btn.phone:focus {
+    outline: none;
+}
+
+.quick-contact-btn.phone:focus .front,
+.quick-contact-btn.phone:focus .back {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}

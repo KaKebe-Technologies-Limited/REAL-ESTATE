@@ -161,6 +161,8 @@ $conn->close();
     <link rel="stylesheet" href="assets/css/properties.css">
     <link rel="stylesheet" href="assets/css/property-detail.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
+    <link rel="stylesheet" href="assets/css/flip-button.css">
+    <link rel="stylesheet" href="assets/css/alerts.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/custom-loader.js" defer></script>
 </head>
@@ -347,7 +349,6 @@ $conn->close();
                                             if (empty($amenity)) continue;
                                         ?>
                                             <div class="amenity-item">
-                                                <i class="fas fa-check"></i>
                                                 <span><?php echo htmlspecialchars($amenity); ?></span>
                                             </div>
                                         <?php endforeach; ?>
@@ -370,7 +371,6 @@ $conn->close();
                                             if (empty($utility)) continue;
                                         ?>
                                             <div class="amenity-item">
-                                                <i class="fas fa-check"></i>
                                                 <span><?php echo htmlspecialchars($utility); ?></span>
                                             </div>
                                         <?php endforeach; ?>
@@ -435,28 +435,50 @@ $conn->close();
                                 </div>
                             </div>
                             <div class="contact-form">
-                                <form>
+                                <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle"></i> Your message has been sent successfully! We'll get back to you soon.
+                                </div>
+                                <?php elseif (isset($_GET['status']) && $_GET['status'] == 'error'): ?>
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle"></i> <?php echo isset($_GET['message']) ? htmlspecialchars($_GET['message']) : 'There was an error sending your message. Please try again.'; ?>
+                                </div>
+                                <?php endif; ?>
+                                <form id="property-inquiry-form" method="POST" action="send_property_inquiry.php">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Your Name">
+                                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" class="form-control" placeholder="Your Email">
+                                        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="tel" class="form-control" placeholder="Your Phone">
+                                        <input type="tel" name="phone" class="form-control" placeholder="Your Phone">
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control" rows="4" placeholder="Your Message">I am interested in <?php echo htmlspecialchars($property['title']); ?>. Please provide more information.</textarea>
+                                        <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required>I am interested in <?php echo htmlspecialchars($property['property_name']); ?>. Please provide more information.</textarea>
                                     </div>
+                                    <!-- Hidden fields to pass property information -->
+                                    <input type="hidden" name="property_name" value="<?php echo htmlspecialchars($property['property_name']); ?>">
+                                    <input type="hidden" name="property_id" value="<?php echo $property['id']; ?>">
+                                    <input type="hidden" name="property_type" value="<?php echo $property['property_type']; ?>">
+                                    <input type="hidden" name="agent_email" value="<?php echo htmlspecialchars($property['manager_email']); ?>">
                                     <button type="submit" class="btn btn-primary btn-block">Send Message</button>
                                 </form>
                             </div>
                             <div class="quick-contacts">
-                                <a href="tel:+256764502805" class="quick-contact-btn phone">
-                                    <i class="fas fa-phone"></i>
-                                    <span>Call Agent</span>
-                                </a>
-                                <a href="https://wa.me/256764502805" class="quick-contact-btn whatsapp">
+                                <button type="button" class="quick-contact-btn phone flip-container phone-flip" data-phone="tel:<?php echo htmlspecialchars($property['manager_phone']); ?>">
+                                    <div class="flipper">
+                                        <div class="front">
+                                            <i class="fas fa-phone"></i>
+                                            <span>Call Agent</span>
+                                        </div>
+                                        <div class="back">
+                                            <i class="fas fa-phone"></i>
+                                            <span><?php echo htmlspecialchars($property['manager_phone']); ?></span>
+                                        </div>
+                                    </div>
+                                </button>
+                                <a href="https://wa.me/<?php echo htmlspecialchars($property['manager_phone']); ?>" class="quick-contact-btn whatsapp">
                                     <i class="fab fa-whatsapp"></i>
                                     <span>WhatsApp</span>
                                 </a>
@@ -575,5 +597,7 @@ $conn->close();
     <script src="assets/js/property-gallery.js"></script>
     <script src="assets/js/loader.js"></script>
     <script src="assets/js/mobile-menu-fix.js"></script>
+    <script src="assets/js/flip-button.js"></script>
+    <script src="assets/js/property-inquiry.js"></script>
 </body>
 </html>
