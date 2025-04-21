@@ -24,6 +24,7 @@ function formatPrice($price) {
     <link rel="stylesheet" href="assets/css/properties.css">
     <link rel="stylesheet" href="assets/css/custom-loader.css">
     <link rel="stylesheet" href="assets/css/mobile-menu-fix.css">
+    <link rel="stylesheet" href="assets/css/rating.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/custom-loader.js" defer></script>
 </head>
@@ -213,7 +214,18 @@ function formatPrice($price) {
                                 <div class="listing_details the_grid_view">
                                     <?php echo htmlspecialchars(substr($property['description'], 0, 100)); ?>
                                 </div>
+                                <div class="property-card-rating property-rating-display" data-property-id="<?php echo $property['property_id']; ?>" data-property-type="<?php echo $property['property_type']; ?>">
+                                    <div class="rating-stars small">
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <span class="rating-text">0 (0)</span>
+                                    </div>
+                                </div>
                                 <div class="property_listing_details">
+                                    <?php if ($property['property_type'] === 'rental'): ?>
                                     <span class="inforoom">
                                         <i class="fas fa-bed" style="width: 25px;"></i>
                                         <?php echo htmlspecialchars($property['bedrooms']); ?>
@@ -222,6 +234,7 @@ function formatPrice($price) {
                                         <i class="fas fa-bath" style="width: 25px;"></i>
                                         <?php echo htmlspecialchars($property['bathrooms']); ?>
                                     </span>
+                                    <?php endif; ?>
                                     <span class="infosize">
                                         <i class="fas fa-ruler-combined" style="width: 25px;"></i>
                                         <?php echo htmlspecialchars($property['property_size']); ?> sqm
@@ -296,7 +309,7 @@ function formatPrice($price) {
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> PO. Box 331679 Jinja Camp-A, Jinja Camp Ward, Lira City West, Uganda</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
                     <li><i class="fas fa-phone"></i> +256764502805</li>
                     <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
                 </ul>
@@ -319,6 +332,7 @@ function formatPrice($price) {
     <script src="assets/js/custom-alerts.js"></script>
     <script src="assets/js/properties-php.js"></script>
     <script src="assets/js/property-search.js"></script>
+    <script src="assets/js/rating.js"></script>
     <!-- <script src="assets/js/mobile-menu.js"></script> -->
     <script src="assets/js/mobile-menu-fix.js"></script>
 </body>

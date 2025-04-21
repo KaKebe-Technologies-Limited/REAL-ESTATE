@@ -176,6 +176,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <link rel="stylesheet" href="assets/css/responsive-tables.css">
     <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
     <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
+    <link rel="stylesheet" href="assets/css/profile-styles.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/custom-loader.js" defer></script>
@@ -245,7 +246,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture">
+                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -274,7 +275,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
         </div>
         <!-- Profile section in sidebar for mobile -->
         <div class="sidebar-profile d-none d-lg-none">
-            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="profile-picture">
+            <a href="#" onclick="showProfile(); return false;">
+                <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="profile-picture">
+            </a>
             <div class="profile-name">Admin User</div>
             <div class="profile-role">Administrator</div>
         </div>
@@ -2138,7 +2141,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
                                                 <label>Phone</label>
-                                                <input type="tel" class="form-control" id="manager-edit-phone" name="phone" placeholder="+code-0000000" required>
+                                                <input type="tel" class="form-control" id="manager-edit-phone" name="phone" placeholder="+256-700000000" required>
+                                                <small class="text-muted">Format: +CountryCode-PhoneNumber (e.g., +256-700000000)</small>
                                             </div>
                                         </div>
                                     </div>
@@ -2283,7 +2287,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Phone</label>
                                                         <div class="col-sm-9">
-                                                            <input type="tel" name="phone" class="form-control" required />
+                                                            <input type="tel" name="phone" class="form-control" placeholder="+256-700000000" required />
+                                                            <small class="text-muted">Format: +CountryCode-PhoneNumber</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3141,6 +3146,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <script src="assets/js/register.js"></script>
     <script src="assets/js/search.js"></script>
     <script src="assets/js/profile.js"></script>
+    <script src="assets/js/profile-common.js"></script>
     <script src="assets/js/activity.js"></script>
     <script src="assets/js/imageupload.js"></script>
     <!-- <script src="assets/js/property-management.js"></script> -->

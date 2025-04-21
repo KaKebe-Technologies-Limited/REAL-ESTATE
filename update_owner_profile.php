@@ -1,7 +1,9 @@
 <?php
 session_start();
+header('Content-Type: application/json');
+
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'owner') {
-    header('Location: login.html');
+    echo json_encode(['success' => false, 'message' => 'User not logged in or not an owner']);
     exit();
 }
 
@@ -13,7 +15,8 @@ $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
+    exit();
 }
 
 // Get owner ID from session
@@ -35,8 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate input
     if (empty($first_name) || empty($last_name) || empty($email) || empty($phone)) {
-        $_SESSION['error'] = "All fields are required";
-        header('Location: ownerDashboard.php');
+        echo json_encode(['success' => false, 'message' => 'All fields are required']);
         exit();
     }
 
@@ -67,8 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($current_password) && !empty($new_password) && !empty($confirm_password)) {
         if ($new_password !== $confirm_password) {
-            $_SESSION['error'] = "New passwords do not match";
-            header('Location: ownerDashboard.php');
+            echo json_encode(['success' => false, 'message' => 'New passwords do not match']);
             exit();
         }
 
@@ -88,8 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $password_update = ", password = ?";
                 $password_params[] = $new_password_hash;
             } else {
-                $_SESSION['error'] = "Current password is incorrect";
-                header('Location: ownerDashboard.php');
+                echo json_encode(['success' => false, 'message' => 'Current password is incorrect']);
                 exit();
             }
         }
@@ -130,19 +130,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param($types, ...$params);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = "Profile updated successfully";
+        // If profile picture was updated, update the session variable
+        if ($profile_picture) {
+            $_SESSION['profile_picture'] = $profile_picture;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Profile updated successfully',
+            'profile_picture' => $profile_picture ?? null
+        ]);
     } else {
-        $_SESSION['error'] = "Error updating profile: " . $conn->error;
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error updating profile: ' . $conn->error
+        ]);
     }
 
     $stmt->close();
     $conn->close();
-
-    // Redirect back to dashboard
-    header('Location: ownerDashboard.php');
-    exit();
 } else {
-    // If not POST request, redirect to dashboard
-    header('Location: ownerDashboard.php');
+    // If not POST request, return error
+    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit();
 }

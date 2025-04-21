@@ -438,7 +438,7 @@
         <div class="footer-section">
             <h3>Contact Us</h3>
             <ul class="contact-info">
-                <li><i class="fas fa-map-marker-alt"></i> PO. Box 331679 Jinja Camp-A, Jinja Camp Ward, Lira City West, Uganda</li>
+                <li><i class="fas fa-map-marker-alt"></i> Jinja Camp-A, Lira City West (U)</li>
                 <li><i class="fas fa-phone"></i> +256764502805</li>
                 <li><i class="fas fa-envelope"></i> info@eastafricanlandandrentals.net</li>
             </ul>

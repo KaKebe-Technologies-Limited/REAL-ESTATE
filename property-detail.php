@@ -163,6 +163,7 @@ $conn->close();
     <link rel="stylesheet" href="assets/css/custom-loader.css">
     <link rel="stylesheet" href="assets/css/flip-button.css">
     <link rel="stylesheet" href="assets/css/alerts.css">
+    <link rel="stylesheet" href="assets/css/rating.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/custom-loader.js" defer></script>
 </head>
@@ -335,6 +336,119 @@ $conn->close();
                         <h2>Description</h2>
                         <p><?php echo !empty($property['description']) ? nl2br(htmlspecialchars($property['description'])) : 'No description available.'; ?></p>
                     </div>
+
+                    <!-- Property Ratings Section -->
+                    <div class="property-ratings card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2>Ratings & Reviews</h2>
+                            <div class="property-rating-display" data-property-id="<?php echo $property['id']; ?>" data-property-type="<?php echo $property['property_type']; ?>">
+                                <div class="rating-stars">
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span class="rating-text">0 (0)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Rating Summary -->
+                            <div id="rating-summary" class="rating-summary">
+                                <div class="average-rating">
+                                    <div class="average-score">0</div>
+                                    <div class="rating-stars">
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <div class="total-ratings">0 ratings</div>
+                                </div>
+                                <div class="rating-bars">
+                                    <div class="rating-bar">
+                                        <div class="rating-label">5</div>
+                                        <div class="rating-progress">
+                                            <div class="rating-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <div class="rating-count">0</div>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <div class="rating-label">4</div>
+                                        <div class="rating-progress">
+                                            <div class="rating-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <div class="rating-count">0</div>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <div class="rating-label">3</div>
+                                        <div class="rating-progress">
+                                            <div class="rating-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <div class="rating-count">0</div>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <div class="rating-label">2</div>
+                                        <div class="rating-progress">
+                                            <div class="rating-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <div class="rating-count">0</div>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <div class="rating-label">1</div>
+                                        <div class="rating-progress">
+                                            <div class="rating-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <div class="rating-count">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews List -->
+                            <div id="reviews-list" class="reviews-list">
+                                <p class="no-reviews">No reviews yet. Be the first to leave a review!</p>
+                            </div>
+
+                            <!-- Rating Form -->
+                            <div class="rating-form">
+                                <h3>Leave a Review</h3>
+                                <form id="rating-form" method="post">
+                                    <input type="hidden" id="property-id" name="property_id" value="<?php echo $property['id']; ?>">
+                                    <input type="hidden" id="property-type" name="property_type" value="<?php echo $property['property_type']; ?>">
+                                    <input type="hidden" id="rating-input" name="rating" value="0">
+
+                                    <div class="form-group">
+                                        <label>Your Rating</label>
+                                        <div class="rating-select">
+                                            <i class="far fa-star" data-value="1"></i>
+                                            <i class="far fa-star" data-value="2"></i>
+                                            <i class="far fa-star" data-value="3"></i>
+                                            <i class="far fa-star" data-value="4"></i>
+                                            <i class="far fa-star" data-value="5"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_name">Your Name</label>
+                                        <input type="text" id="user_name" name="user_name" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_email">Your Email</label>
+                                        <input type="email" id="user_email" name="user_email" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="review_text">Your Review</label>
+                                        <textarea id="review_text" name="review_text" class="form-control" rows="4"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn-submit">Submit Review</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <?php if (!empty($property['amenities'])): ?>
                             <div class="property-amenities card">
                                 <div class="card-header">
@@ -466,22 +580,26 @@ $conn->close();
                                 </form>
                             </div>
                             <div class="quick-contacts">
-                                <button type="button" class="quick-contact-btn phone flip-container phone-flip" data-phone="tel:<?php echo htmlspecialchars($property['manager_phone']); ?>">
-                                    <div class="flipper">
-                                        <div class="front">
-                                            <i class="fas fa-phone"></i>
-                                            <span>Call Agent</span>
+                                <div class="contact-btn-wrapper phone-wrapper">
+                                    <button type="button" class="quick-contact-btn phone flip-container phone-flip" data-phone="tel:<?php echo htmlspecialchars($property['manager_phone']); ?>">
+                                        <div class="flipper">
+                                            <div class="front">
+                                                <i class="fas fa-phone"></i>
+                                                <span>Call Agent</span>
+                                            </div>
+                                            <div class="back">
+                                                <i class="fas fa-phone"></i>
+                                                <span><?php echo htmlspecialchars($property['manager_phone']); ?></span>
+                                            </div>
                                         </div>
-                                        <div class="back">
-                                            <i class="fas fa-phone"></i>
-                                            <span><?php echo htmlspecialchars($property['manager_phone']); ?></span>
-                                        </div>
-                                    </div>
-                                </button>
-                                <a href="https://wa.me/<?php echo htmlspecialchars($property['manager_phone']); ?>" class="quick-contact-btn whatsapp">
-                                    <i class="fab fa-whatsapp"></i>
-                                    <span>WhatsApp</span>
-                                </a>
+                                    </button>
+                                </div>
+                                <div class="contact-btn-wrapper whatsapp-wrapper">
+                                    <a href="https://wa.me/<?php echo htmlspecialchars($property['manager_phone']); ?>" class="quick-contact-btn whatsapp">
+                                        <i class="fab fa-whatsapp"></i>
+                                        <span>WhatsApp</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -502,8 +620,9 @@ $conn->close();
                                 </li>
                                 <li>
                                     <span class="label">Property Size:</span>
-                                    <span class="value"><?php echo $property['size']; ?> sq ft</span>
+                                    <span class="value"><?php echo $property['size']; ?> sq meters</span>
                                 </li>
+                                <?php if ($property['property_type'] === 'rental'): ?>
                                 <li>
                                     <span class="label">Bedrooms:</span>
                                     <span class="value"><?php echo $property['bedrooms']; ?></span>
@@ -512,13 +631,10 @@ $conn->close();
                                     <span class="label">Bathrooms:</span>
                                     <span class="value"><?php echo $property['bathrooms']; ?></span>
                                 </li>
+                                <?php endif; ?>
                                 <li>
                                     <span class="label">Garage:</span>
                                     <span class="value"><?php echo $property['garage'] ? 'Yes' : 'No'; ?></span>
-                                </li>
-                                <li>
-                                    <span class="label">Year Built:</span>
-                                    <span class="value"><?php echo $property['year_built'] ?: 'N/A'; ?></span>
                                 </li>
                             </ul>
                         </div>
@@ -599,5 +715,6 @@ $conn->close();
     <script src="assets/js/mobile-menu-fix.js"></script>
     <script src="assets/js/flip-button.js"></script>
     <script src="assets/js/property-inquiry.js"></script>
+    <script src="assets/js/rating.js"></script>
 </body>
 </html>

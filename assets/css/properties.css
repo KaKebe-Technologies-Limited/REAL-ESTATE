@@ -806,6 +806,18 @@ a:hover {
     overflow: visible !important;
 }
 
+@media (max-width: 768px) {
+    .content-section {
+        padding: 1.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-section {
+        padding: 1rem 0.5rem;
+    }
+}
+
 .section-title {
     text-align: center;
     font-size: 2rem;
@@ -826,6 +838,19 @@ a:hover {
     visibility: visible !important;
     height: auto !important;
     min-height: 200px;
+}
+
+@media (max-width: 768px) {
+    .property-grid {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .property-grid {
+        padding: 0 0.5rem;
+        gap: 1rem;
+    }
 }
 
 /* No Properties Message */
@@ -1482,6 +1507,7 @@ a:hover {
 .property-filters {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .filter-btn {
@@ -1493,6 +1519,8 @@ a:hover {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
+    text-align: center;
+    min-width: 100px;
 }
 
 .filter-btn:hover {
@@ -1508,16 +1536,53 @@ a:hover {
 @media (max-width: 768px) {
     .section-header {
         flex-direction: column;
-        align-items: flex-start;
-        margin-top: 0px;
+        align-items: center;
+        margin-top: 20px;
+        margin-left: 15px;
+        margin-right: 15px;
+        text-align: center;
     }
 
     .property-filters {
         width: 100%;
-        justify-content: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 15px;
     }
+
     .section-title {
         font-size: 1.5rem;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .filter-btn {
+        padding: 6px 15px;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 15px;
+    }
+
+    .property-filters {
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        padding: 5px 12px;
+        font-size: 13px;
+        min-width: 80px;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
     }
 }
 

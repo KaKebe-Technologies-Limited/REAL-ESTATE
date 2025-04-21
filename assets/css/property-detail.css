@@ -338,6 +338,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    margin-bottom: 15px; /* Add bottom margin */
+    position: relative; /* Ensure proper stacking context */
 }
 
 .quick-contact-btn {
@@ -351,6 +353,8 @@
     color: white;
     font-weight: 500;
     transition: transform 0.3s ease;
+    height: 50px; /* Fixed height */
+    width: 100%; /* Full width */
 }
 
 .quick-contact-btn:hover {
@@ -365,6 +369,18 @@
 
 .quick-contact-btn.whatsapp {
     background: #25D366;
+}
+
+/* Mobile styles for contact buttons */
+@media (max-width: 768px) {
+    .quick-contact-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .quick-contact-btn i {
+        font-size: 16px;
+    }
 }
 
 /* Property Details Widget */

@@ -160,6 +160,7 @@ try {
     <link rel="stylesheet" href="assets/css/responsive-tables.css">
     <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
     <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
+    <link rel="stylesheet" href="assets/css/profile-styles.css">
 
     <!-- JavaScript files with defer attribute -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -175,6 +176,7 @@ try {
     <script src="assets/js/imageupload.js" defer></script>
     <script src="assets/js/dashboard-search.js" defer></script>
     <script src="assets/js/profile.js" defer></script>
+    <script src="assets/js/profile-common.js" defer></script>
     <script src="assets/js/search.js" defer></script>
     <script src="assets/js/property-images.js"></script>
     <script src="assets/js/rental-management.js" defer></script>
@@ -290,7 +292,7 @@ try {
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture">
+                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="document.getElementById('profile-link').click(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#" id="profile-link"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -319,7 +321,9 @@ try {
         </div>
         <!-- Profile section in sidebar for mobile -->
         <div class="sidebar-profile d-none d-lg-none">
-            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
+            <a href="#" onclick="document.getElementById('profile-link').click(); return false;">
+                <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
+            </a>
             <div class="profile-name"><?php echo $owner_data['first_name'] . ' ' . $owner_data['last_name']; ?></div>
             <div class="profile-role">Property Owner</div>
         </div>
@@ -1928,7 +1932,8 @@ try {
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Phone</label>
                                                         <div class="col-sm-9">
-                                                            <input type="tel" name="phone" class="form-control" value="<?php echo htmlspecialchars($owner_data['phone']); ?>" required />
+                                                            <input type="tel" name="phone" class="form-control" value="<?php echo htmlspecialchars($owner_data['phone']); ?>" placeholder="+256-700000000" required />
+                                                            <small class="text-muted">Format: +CountryCode-PhoneNumber</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2740,7 +2745,8 @@ try {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="+code-00000000">
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="+256-700000000">
+                                    <small class="text-muted">Format: +CountryCode-PhoneNumber (e.g., +256-700000000)</small>
                                 </div>
                             </div>
                             <div class="col-md-6">

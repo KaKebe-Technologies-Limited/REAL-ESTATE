@@ -109,19 +109,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 body: formData
             })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.text().then(text => {
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Error parsing JSON:', e);
+                    console.log('Raw response:', text);
+                    throw new Error('Invalid JSON response');
+                }
+            });
+        })
         .then(data => {
+            console.log('Update response:', data);
             if (data.success) {
                 alert('Profile updated successfully');
                 loadUserProfile();
                 document.getElementById('profile-form').style.display = 'none';
                 document.getElementById('profile-view').style.display = 'block';
                 document.getElementById('edit-profile-btn').style.display = 'block';
-                document.getElementById('password-change-fields').style.display = 'none';
-                // Clear password fields
-                document.getElementById('current_password').value = '';
-                document.getElementById('new_password').value = '';
-                document.getElementById('confirm_password').value = '';
+
+                // Hide password fields if they exist
+                const passwordFields = document.getElementById('password-change-fields');
+                if (passwordFields) passwordFields.style.display = 'none';
+
+                // Clear password fields if they exist
+                const currentPassword = document.getElementById('current_password');
+                const newPassword = document.getElementById('new_password');
+                const confirmPassword = document.getElementById('confirm_password');
+
+                if (currentPassword) currentPassword.value = '';
+                if (newPassword) newPassword.value = '';
+                if (confirmPassword) confirmPassword.value = '';
             } else {
                 alert('Error updating profile: ' + data.message);
             }
@@ -148,7 +168,15 @@ function loadUserProfile() {
     fetch(endpoint)
         .then(response => {
             console.log('Response status:', response.status);
-            return response.json();
+            return response.text().then(text => {
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Error parsing JSON:', e);
+                    console.log('Raw response:', text);
+                    throw new Error('Invalid JSON response');
+                }
+            });
         })
         .then(data => {
             console.log('Profile data:', data);

@@ -1,0 +1,245 @@
+/* Rating Stars */
+.rating-stars {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.25rem;
+    color: #ffc107; /* Star color */
+}
+
+.rating-stars.small {
+    font-size: 1rem;
+}
+
+.rating-stars.large {
+    font-size: 1.5rem;
+}
+
+.rating-stars i {
+    margin-right: 2px;
+}
+
+.rating-stars .rating-text {
+    margin-left: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Rating Form */
+.rating-form {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.rating-form h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.rating-form .form-group {
+    margin-bottom: 15px;
+}
+
+.rating-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.rating-form .rating-select {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.rating-form .rating-select i {
+    font-size: 1.5rem;
+    color: #ddd;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: color 0.2s;
+}
+
+.rating-form .rating-select i.active,
+.rating-form .rating-select i:hover {
+    color: #ffc107;
+}
+
+.rating-form .rating-select i:hover ~ i {
+    color: #ddd;
+}
+
+.rating-form .btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.rating-form .btn-submit:hover {
+    background-color: #0069d9;
+}
+
+.rating-form .btn-submit:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Rating Summary */
+.rating-summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.rating-summary .average-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 20px;
+    margin-right: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.rating-summary .average-score {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.rating-summary .total-ratings {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.rating-summary .rating-bars {
+    flex: 1;
+}
+
+.rating-summary .rating-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.rating-summary .rating-label {
+    width: 30px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.rating-summary .rating-progress {
+    flex: 1;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rating-summary .rating-progress-fill {
+    height: 100%;
+    background-color: #ffc107;
+}
+
+.rating-summary .rating-count {
+    width: 30px;
+    text-align: left;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Reviews List */
+.reviews-list {
+    margin-top: 30px;
+}
+
+.reviews-list h3 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.review-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.review-author {
+    font-weight: 500;
+}
+
+.review-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.review-rating {
+    margin-bottom: 10px;
+}
+
+.review-text {
+    color: #333;
+    line-height: 1.5;
+}
+
+.no-reviews {
+    color: #666;
+    font-style: italic;
+}
+
+/* Property Card Rating */
+.property-card-rating {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.property-card-rating .rating-stars {
+    font-size: 0.9rem;
+}
+
+.property-card-rating .rating-count {
+    font-size: 0.8rem;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .rating-summary {
+        flex-direction: column;
+    }
+    
+    .rating-summary .average-rating {
+        padding-right: 0;
+        margin-right: 0;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+}

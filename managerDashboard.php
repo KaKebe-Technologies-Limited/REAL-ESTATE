@@ -163,6 +163,7 @@ $stmt->close();
     <link rel="stylesheet" href="assets/css/responsive-tables.css">
     <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
     <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
+    <link rel="stylesheet" href="assets/css/profile-styles.css">
 
     <!-- JavaScript files with defer attribute -->
     <script src="assets/js/custom-loader.js" defer></script>
@@ -175,6 +176,7 @@ $stmt->close();
     <script src="assets/js/register.js" defer></script>
     <script src="assets/js/dashboard-search.js" defer></script>
     <script src="assets/js/profile.js" defer></script>
+    <script src="assets/js/profile-common.js" defer></script>
     <script src="assets/js/rental-management.js" defer></script>
     <script src="assets/js/sales-management.js" defer></script>
     <script src="assets/js/manager-management.js" defer></script>
@@ -243,7 +245,7 @@ $stmt->close();
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture">
+                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#" data-form="profile-content" onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -272,7 +274,9 @@ $stmt->close();
         </div>
         <!-- Profile section in sidebar for mobile -->
         <div class="sidebar-profile d-none d-lg-none">
-            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
+            <a href="#" onclick="showProfile(); return false;">
+                <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
+            </a>
             <div class="profile-name"><?php echo $manager_data['first_name'] . ' ' . $manager_data['last_name']; ?></div>
             <div class="profile-role">Property Manager</div>
         </div>
@@ -1641,7 +1645,8 @@ $stmt->close();
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Phone</label>
                                                         <div class="col-sm-9">
-                                                            <input type="tel" name="phone" class="form-control" value="<?php echo htmlspecialchars($manager_data['phone']); ?>" required />
+                                                            <input type="tel" name="phone" class="form-control" value="<?php echo htmlspecialchars($manager_data['phone']); ?>" placeholder="+256-700000000" required />
+                                                            <small class="text-muted">Format: +CountryCode-PhoneNumber</small>
                                                         </div>
                                                     </div>
                                                 </div>
