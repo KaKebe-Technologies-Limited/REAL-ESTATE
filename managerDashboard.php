@@ -51,7 +51,7 @@ try {
                 CONCAT(o.first_name, ' ', o.last_name) as owner_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price AS rent,
-                property_class AS availability
+                status
                 FROM rental_property r
                 LEFT JOIN property_owner o ON r.owner_id = o.owner_id
                 WHERE r.manager_id = ?
@@ -86,7 +86,7 @@ try {
                 CONCAT(o.first_name, ' ', o.last_name) as owner_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price,
-                property_type AS availability
+                status
                 FROM sales_property s
                 LEFT JOIN property_owner o ON s.owner_id = o.owner_id
                 WHERE s.manager_id = ?
@@ -177,6 +177,7 @@ $stmt->close();
     <script src="assets/js/dashboard-search.js" defer></script>
     <script src="assets/js/profile.js" defer></script>
     <script src="assets/js/profile-common.js" defer></script>
+    <script src="assets/js/manager-profile-fix.js" defer></script>
     <script src="assets/js/rental-management.js" defer></script>
     <script src="assets/js/sales-management.js" defer></script>
     <script src="assets/js/manager-management.js" defer></script>
@@ -245,10 +246,10 @@ $stmt->close();
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
+                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" data-form="profile-content" onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
                             <li><a class="dropdown-item" href="#" onclick="showSettings()"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
@@ -274,7 +275,7 @@ $stmt->close();
         </div>
         <!-- Profile section in sidebar for mobile -->
         <div class="sidebar-profile d-none d-lg-none">
-            <a href="#" onclick="showProfile(); return false;">
+            <a href="#profile">
                 <img src="<?php echo $profile_pic; ?>" alt="Profile" class="profile-picture">
             </a>
             <div class="profile-name"><?php echo $manager_data['first_name'] . ' ' . $manager_data['last_name']; ?></div>
@@ -387,7 +388,7 @@ $stmt->close();
                         <div class="summary-card">
                             <div class="summary-content">
                                 <div class="summary-icon bg-danger">
-                                    <i class="fas fa-dollar-sign"></i>
+                                    <i class="fas fa-money-bill-wave"></i>
                                 </div>
                                 <div class="summary-details">
                                     <h3 class="summary-title">Total Sales</h3>
@@ -1237,8 +1238,8 @@ $stmt->close();
                                                 <th>Property Name</th>
                                                 <th>Property Owner</th>
                                                 <th>Location</th>
-                                                <th>Rent (USD)</th>
-                                                <th>Availability</th>
+                                                <th>Rent (UGX)</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1253,11 +1254,9 @@ $stmt->close();
                                                 <td><?php echo htmlspecialchars($rental['property_name']); ?></td>
                                                 <td><?php echo htmlspecialchars($rental['owner_name'] ?? 'Not Assigned'); ?></td>
                                                 <td><?php echo htmlspecialchars($rental['location']); ?></td>
-                                                <td>$<?php echo htmlspecialchars($rental['rent']); ?></td>
+                                                <td>UGX <?php echo htmlspecialchars($rental['rent']); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $rental['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                        <?php echo htmlspecialchars($rental['availability']); ?>
-                                                    </span>
+                                                    <?php echo htmlspecialchars($rental['status']); ?>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
@@ -1338,8 +1337,8 @@ $stmt->close();
                                                 <th>Property Name</th>
                                                 <th>Property Owner</th>
                                                 <th>Location</th>
-                                                <th>Price (USD)</th>
-                                                <th>Availability</th>
+                                                <th>Price (UGX)</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1354,11 +1353,9 @@ $stmt->close();
                                                 <td><?php echo htmlspecialchars($sale['property_name']); ?></td>
                                                 <td><?php echo htmlspecialchars($sale['owner_name'] ?? 'Not Assigned'); ?></td>
                                                 <td><?php echo htmlspecialchars($sale['location']); ?></td>
-                                                <td>$<?php echo htmlspecialchars($sale['price']); ?></td>
+                                                <td>UGX <?php echo htmlspecialchars($sale['price']); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $sale['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                        <?php echo htmlspecialchars($sale['availability']); ?>
-                                                    </span>
+                                                    <?php echo htmlspecialchars($sale['status']); ?>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
@@ -1590,7 +1587,7 @@ $stmt->close();
             </div>
         </div>
 
-        <div id="profile-content" style="display: none;">
+        <div id="profile-content" style="display: none;" class="profile-section">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
@@ -1600,7 +1597,7 @@ $stmt->close();
                                     <h4 class="card-title">User Profile</h4>
                                     <button class="btn btn-primary" id="edit-profile-btn">Edit Profile</button>
                                 </div>
-                                <form id="profile-form" class="form-sample" action="update_manager_profile.php" method="post" enctype="multipart/form-data" style="display: none;">
+                                <form id="profile-form" class="form-sample" enctype="multipart/form-data" style="display: none;">
                                     <input type="hidden" name="manager_id" value="<?php echo $manager_data['manager_id']; ?>">
                                     <div class="row mb-4">
                                         <div class="col-md-4 text-center">
@@ -1656,7 +1653,7 @@ $stmt->close();
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Username</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" value="johndoe" required />
+                                                            <input type="text" name="username" class="form-control" value="<?php echo htmlspecialchars($manager_data['username']); ?>" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1664,7 +1661,7 @@ $stmt->close();
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 col-form-label">Password</label>
                                                         <div class="col-sm-9">
-                                                            <input type="password" class="form-control" value="password123" required />
+                                                            <input type="password" name="password" class="form-control" placeholder="Leave blank to keep current password" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1679,22 +1676,22 @@ $stmt->close();
                                 <div id="profile-view">
                                     <div class="row mb-4">
                                         <div class="col-md-4 text-center">
-                                            <img src="<?php echo $profile_pic; ?>" alt="Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
+                                            <img src="<?php echo $profile_pic; ?>" alt="Profile Picture" class="rounded-circle img-thumbnail profile-picture" style="width: 150px; height: 150px;">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="row mb-4">
                                                 <div class="col-md-6">
-                                                    <p><strong>First Name:</strong> <?php echo htmlspecialchars($manager_data['first_name']); ?></p>
-                                                    <p><strong>Last Name:</strong> <?php echo htmlspecialchars($manager_data['last_name']); ?></p>
+                                                    <p><strong>First Name:</strong> <span data-field="first_name"><?php echo htmlspecialchars($manager_data['first_name']); ?></span></p>
+                                                    <p><strong>Last Name:</strong> <span data-field="last_name"><?php echo htmlspecialchars($manager_data['last_name']); ?></span></p>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <p><strong>Email:</strong> <?php echo htmlspecialchars($manager_data['email']); ?></p>
-                                                    <p><strong>Phone:</strong> <?php echo htmlspecialchars($manager_data['phone']); ?></p>
+                                                    <p><strong>Email:</strong> <span data-field="email"><?php echo htmlspecialchars($manager_data['email']); ?></span></p>
+                                                    <p><strong>Phone:</strong> <span data-field="phone"><?php echo htmlspecialchars($manager_data['phone']); ?></span></p>
                                                 </div>
                                             </div>
                                             <div class="row mb-4">
                                                 <div class="col-md-6">
-                                                    <p><strong>Username:</strong> <?php echo htmlspecialchars($manager_data['username']); ?></p>
+                                                    <p><strong>Username:</strong> <span data-field="username"><?php echo htmlspecialchars($manager_data['username']); ?></span></p>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <p><strong>Password:</strong> ********</p>
@@ -2525,5 +2522,56 @@ $stmt->close();
     </div>
 
     <!-- Scripts moved to head with defer attribute -->
+    <!-- Direct script for profile functionality -->
+    <script>
+        // Check if we need to show profile on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if URL has #profile hash
+            if (window.location.hash === '#profile') {
+                // Show profile content
+                document.querySelectorAll('#main-content > div').forEach(div => {
+                    div.style.display = 'none';
+                });
+
+                const profileContent = document.getElementById('profile-content');
+                if (profileContent) {
+                    profileContent.style.display = 'block';
+                    console.log('Profile content displayed via direct script');
+
+                    // Load profile data if function exists
+                    if (typeof loadManagerProfile === 'function') {
+                        loadManagerProfile();
+                    }
+                }
+            }
+
+            // Add direct click handlers to profile elements
+            const profilePics = document.querySelectorAll('.profile-picture');
+            profilePics.forEach(pic => {
+                pic.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Show profile content
+                    document.querySelectorAll('#main-content > div').forEach(div => {
+                        div.style.display = 'none';
+                    });
+
+                    const profileContent = document.getElementById('profile-content');
+                    if (profileContent) {
+                        profileContent.style.display = 'block';
+                        console.log('Profile content displayed via direct click handler');
+
+                        // Load profile data if function exists
+                        if (typeof loadManagerProfile === 'function') {
+                            loadManagerProfile();
+                        }
+                    }
+
+                    return false;
+                });
+            });
+        });
+    </script>
 </body>
 </html>

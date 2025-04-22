@@ -1,5 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-    loadUserProfile();
+    // Check session data first
+    fetch('check_session.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Session data:', data);
+            // Now load the profile
+            loadUserProfile();
+        })
+        .catch(error => {
+            console.error('Error checking session:', error);
+            // Still try to load the profile
+            loadUserProfile();
+        });
 
     // Toggle between edit and view mode
     const editProfileBtn = document.getElementById('edit-profile-btn');
@@ -95,12 +107,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const formData = new FormData(this);
 
-            // Determine which endpoint to use based on the current page
-            let endpoint = 'update_user_profile.php';
+            // Force the correct endpoint based on the current page
+            let endpoint;
 
-            // Check if we're on the owner dashboard
-            if (window.location.pathname.includes('ownerDashboard.php')) {
+            // Get the current path and log it for debugging
+            const currentPath = window.location.pathname;
+            console.log('Current full pathname (update):', currentPath);
+
+            // Extract just the filename from the path
+            const pathParts = currentPath.split('/');
+            const filename = pathParts[pathParts.length - 1];
+            console.log('Current filename (update):', filename);
+
+            // Always use the correct endpoint based on the current page
+            if (filename === 'managerDashboard.php' || currentPath.includes('managerDashboard.php')) {
+                endpoint = 'update_manager_profile.php';
+                console.log('Using manager update endpoint');
+            } else if (filename === 'ownerDashboard.php' || currentPath.includes('ownerDashboard.php')) {
                 endpoint = 'update_owner_profile.php';
+                console.log('Using owner update endpoint');
+            } else {
+                endpoint = 'update_user_profile.php';
+                console.log('Using default update endpoint');
             }
 
             console.log('Using update endpoint:', endpoint);
@@ -154,21 +182,77 @@ document.addEventListener('DOMContentLoaded', function() {
 };
 
 function loadUserProfile() {
-    // Determine which endpoint to use based on the current page
-    let endpoint = 'get_user_profile.php';
+    console.log('loadUserProfile function called');
 
-    // Check if we're on the owner dashboard
-    if (window.location.pathname.includes('ownerDashboard.php')) {
+    // Get the current path to determine which dashboard we're on
+    const currentPath = window.location.pathname;
+    console.log('Current full pathname:', currentPath);
+
+    // Extract just the filename from the path
+    const pathParts = currentPath.split('/');
+    const filename = pathParts[pathParts.length - 1];
+    console.log('Current filename:', filename);
+
+    // Set the endpoint based on the current page
+    let endpoint;
+
+    // Force the correct endpoint based on the current page
+    if (filename === 'managerDashboard.php' || currentPath.includes('managerDashboard.php')) {
+        endpoint = 'get_manager_profile.php';
+        console.log('Using manager profile endpoint');
+    } else if (filename === 'ownerDashboard.php' || currentPath.includes('ownerDashboard.php')) {
         endpoint = 'get_owner_profile.php';
+        console.log('Using owner profile endpoint');
+    } else {
+        // Fallback to session check if we can't determine from the path
+        fetch('check_session.php')
+            .then(response => response.json())
+            .then(sessionData => {
+                console.log('Session data in loadUserProfile:', sessionData);
+
+                if (sessionData.session && sessionData.session.user_type) {
+                    const userType = sessionData.session.user_type;
+                    console.log('User type from session:', userType);
+
+                    if (userType === 'owner') {
+                        endpoint = 'get_owner_profile.php';
+                    } else if (userType === 'manager') {
+                        endpoint = 'get_manager_profile.php';
+                    } else {
+                        endpoint = 'get_user_profile.php';
+                    }
+                } else {
+                    endpoint = 'get_user_profile.php';
+                }
+
+                console.log('Using endpoint from session:', endpoint);
+                fetchProfileData(endpoint);
+            })
+            .catch(error => {
+                console.error('Error checking session:', error);
+                endpoint = 'get_user_profile.php';
+                fetchProfileData(endpoint);
+            });
+
+        return; // Exit early as we're handling the fetch in the promise chain
     }
 
-    console.log('Using profile endpoint:', endpoint);
-    console.log('Current pathname:', window.location.pathname);
+    // If we determined the endpoint from the path, fetch the profile data
+    fetchProfileData(endpoint);
+}
 
-    fetch(endpoint)
+function fetchProfileData(endpoint) {
+    console.log('Using profile endpoint:', endpoint);
+    console.log('Making fetch request to:', window.location.origin + '/' + endpoint);
+
+    // Add a timestamp to prevent caching
+    const fetchUrl = endpoint + '?t=' + new Date().getTime();
+
+    fetch(fetchUrl)
         .then(response => {
             console.log('Response status:', response.status);
             return response.text().then(text => {
+                console.log('Raw response text:', text);
                 try {
                     return JSON.parse(text);
                 } catch (e) {
@@ -232,9 +316,10 @@ function loadUserProfile() {
             } else {
                 console.error('Failed to load profile:', data.message);
 
-                // If we're on the owner dashboard and the profile failed to load,
+                // If we're on the owner or manager dashboard and the profile failed to load,
                 // try to get the profile data from the page itself
-                if (window.location.pathname.includes('ownerDashboard.php')) {
+                if (window.location.pathname.includes('ownerDashboard.php') ||
+                    window.location.pathname.includes('managerDashboard.php')) {
                     console.log('Attempting to get profile data from the page');
 
                     // Try to get profile data from the page
@@ -252,4 +337,6 @@ function loadUserProfile() {
         .catch(error => {
             console.error('Error loading profile:', error);
         });
-}})
+}
+
+});

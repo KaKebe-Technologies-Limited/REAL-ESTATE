@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Image preview functionality
     const profileImageInput = document.getElementById('profile-image-input');
-    const profilePreview = document.getElementById('owner-edit-profile-preview');
+    const profilePreview = document.getElementById('edit-profile-preview');
     const changeProfileBtn = document.getElementById('change-profile-btn');
 
     // Handle click on change picture button
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle image selection
     profileImageInput?.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
+        if (this.files && this.files[0] && profilePreview) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 profilePreview.src = e.target.result;
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.view-owner').forEach(button => {
         button.addEventListener('click', function() {
             const ownerId = this.getAttribute('data-id');
-            
+
             fetch('handle_owner.php', {
                 method: 'POST',
                 headers: {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.edit-owner').forEach(button => {
         button.addEventListener('click', function() {
             const ownerId = this.getAttribute('data-id');
-            
+
             fetch('handle_owner.php', {
                 method: 'POST',
                 headers: {
@@ -96,19 +96,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     console.log('Owner edit data:', data);
                     const owner = data.data;
-                    // Populate edit form with owner data
-                    document.getElementById('edit-owner-id').value = owner.owner_id;
-                    document.getElementById('edit-first-name').value = owner.first_name;
-                    document.getElementById('edit-last-name').value = owner.last_name;
-                    document.getElementById('edit-email').value = owner.email;
-                    document.getElementById('edit-phone').value = owner.phone;
-                    document.getElementById('edit-username').value = owner.username;
-                    document.getElementById('edit-id-type').value = owner.id_type;
-                    document.getElementById('edit-id-number').value = owner.id_num;
-                    document.getElementById('edit-address').value = owner.address;
-                    
+                    // Populate edit form with owner data - with defensive checks
+                    const setFieldValue = (id, value) => {
+                        const field = document.getElementById(id);
+                        if (field) field.value = value;
+                    };
+
+                    setFieldValue('edit-owner-id', owner.owner_id);
+                    setFieldValue('edit-first-name', owner.first_name);
+                    setFieldValue('edit-last-name', owner.last_name);
+                    setFieldValue('edit-email', owner.email);
+                    setFieldValue('edit-phone', owner.phone);
+                    setFieldValue('edit-username', owner.username);
+                    setFieldValue('edit-id-type', owner.id_type);
+                    setFieldValue('edit-id-number', owner.id_num);
+                    setFieldValue('edit-address', owner.address);
+
                     if (owner.profile_picture) {
-                        document.getElementById('owner-edit-profile-preview').src = owner.profile_picture;
+                        const profilePreview = document.getElementById('edit-profile-preview');
+                        if (profilePreview) {
+                            profilePreview.src = owner.profile_picture;
+                        }
                     }
                 } else {
                     alert('Error loading owner data: ' + data.message);
@@ -125,23 +133,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const editOwnerForm = document.getElementById('editOwnerForm');
     editOwnerForm?.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const formData = new FormData(this);
-        
+
         // Ensure owner_id is included
-        const ownerId = document.getElementById('edit-owner-id').value;
-        if (!ownerId) {
+        const ownerIdField = document.getElementById('edit-owner-id');
+        if (!ownerIdField || !ownerIdField.value) {
             alert('Owner ID is missing');
             return;
         }
-        
+
+        const ownerId = ownerIdField.value;
+
         // Add required fields and action
         formData.append('action', 'edit');
         formData.append('owner_id', ownerId);
-        
+
         // Debug log to check form data
         console.log('Form data being sent:', Object.fromEntries(formData));
-        
+
         fetch('handle_owner.php', {
             method: 'POST',
             body: formData
@@ -168,12 +178,30 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.delete-owner').forEach(button => {
         button.addEventListener('click', function() {
             const ownerId = this.getAttribute('data-id');
-            
+            if (!ownerId) {
+                console.error('No owner ID found for delete operation');
+                alert('Error: Could not identify the owner to delete');
+                return;
+            }
+
             // Show confirmation modal
-            const confirmModal = new bootstrap.Modal(document.getElementById('deleteOwnerModal'));
-            confirmModal.show();
-            
-            document.getElementById('confirmDeleteOwner').onclick = function() {
+            const confirmModal = document.getElementById('deleteOwnerModal');
+            if (!confirmModal) {
+                console.error('Delete confirmation modal not found');
+                alert('Error: Could not open confirmation dialog');
+                return;
+            }
+
+            const bsModal = new bootstrap.Modal(confirmModal);
+            bsModal.show();
+
+            const confirmDeleteBtn = document.getElementById('confirmDeleteOwner');
+            if (!confirmDeleteBtn) {
+                console.error('Confirm delete button not found');
+                return;
+            }
+
+            confirmDeleteBtn.onclick = function() {
                 fetch('handle_owner.php', {
                     method: 'POST',
                     headers: {

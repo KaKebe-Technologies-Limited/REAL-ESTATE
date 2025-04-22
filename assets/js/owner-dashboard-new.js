@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         label += ': ';
                                     }
                                     if (context.parsed.y !== null) {
-                                        label += '$' + context.parsed.y;
+                                        label += 'UGX ' + context.parsed.y;
                                     }
                                     return label;
                                 }

@@ -1,6 +1,68 @@
+// Function to show profile content
+function showProfile() {
+    console.log('showProfile function called');
+    // Hide all content sections
+    document.querySelectorAll('#main-content > div').forEach(div => {
+        div.style.display = 'none';
+    });
+
+    // Show profile content
+    const profileContent = document.getElementById('profile-content');
+    if (profileContent) {
+        profileContent.style.display = 'block';
+        console.log('Profile content displayed');
+
+        // Load user profile data
+        if (typeof loadUserProfile === 'function') {
+            loadUserProfile();
+            console.log('loadUserProfile function called');
+        } else {
+            console.error('loadUserProfile function not found');
+        }
+    } else {
+        console.error('Profile content element not found');
+    }
+}
+
+// Function to show dashboard content
+function showDashboard() {
+    console.log('showDashboard function called');
+    // Hide all content sections
+    document.querySelectorAll('#main-content > div').forEach(div => {
+        div.style.display = 'none';
+    });
+
+    // Show dashboard content
+    const dashboardContent = document.getElementById('dashboard-content');
+    if (dashboardContent) {
+        dashboardContent.style.display = 'block';
+        console.log('Dashboard content displayed');
+    } else {
+        console.error('Dashboard content element not found');
+    }
+}
+
+// Function to show settings content
+function showSettings() {
+    console.log('showSettings function called');
+    // Hide all content sections
+    document.querySelectorAll('#main-content > div').forEach(div => {
+        div.style.display = 'none';
+    });
+
+    // Show settings content
+    const settingsContent = document.getElementById('settings-content');
+    if (settingsContent) {
+        settingsContent.style.display = 'block';
+        console.log('Settings content displayed');
+    } else {
+        console.error('Settings content element not found');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded event fired in manager-dashboard-new.js');
-    
+
     // Get elements
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.getElementById('sidebar');
@@ -12,16 +74,16 @@ document.addEventListener('DOMContentLoaded', function() {
         function toggleSidebar(e) {
             if (e) e.preventDefault();
             sidebar.classList.toggle('collapsed');
-            
+
             // Only adjust main content on desktop
             if (window.innerWidth > 768) {
                 mainContent.classList.toggle('expanded');
             }
         }
-        
+
         // Add click event listener
         sidebarToggle.addEventListener('click', toggleSidebar);
-        
+
         // Handle responsive behavior
         window.addEventListener('resize', () => {
             if (window.innerWidth <= 768) {
@@ -52,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.remove('dark-theme');
             localStorage.setItem('preferred-theme', 'light');
         }
-        
+
         // Update theme switcher icon if it exists
         const themeIcon = document.querySelector('#theme-switcher i');
         if (themeIcon) {
@@ -76,13 +138,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelProfileBtn = document.getElementById('cancel-profile-btn');
     const profileView = document.getElementById('profile-view');
     const profileForm = document.getElementById('profile-form');
-    
+
     if (editProfileBtn && saveProfileBtn && cancelProfileBtn && profileView && profileForm) {
         editProfileBtn.addEventListener('click', function() {
             profileView.style.display = 'none';
             profileForm.style.display = 'block';
         });
-        
+
         cancelProfileBtn.addEventListener('click', function() {
             profileForm.style.display = 'none';
             profileView.style.display = 'block';
@@ -93,12 +155,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const profilePictureInput = document.getElementById('profile-picture-input');
     const changePictureBtn = document.getElementById('change-picture-btn');
     const profilePicturePreview = document.getElementById('profile-picture-preview');
-    
+
     if (profilePictureInput && changePictureBtn && profilePicturePreview) {
         changePictureBtn.addEventListener('click', function() {
             profilePictureInput.click();
         });
-        
+
         profilePictureInput.addEventListener('change', function() {
             if (this.files && this.files[0]) {
                 const reader = new FileReader();
@@ -179,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 maxTicksLimit: 5,
                                 padding: 10,
                                 callback: function(value) {
-                                    return '$' + value;
+                                    return 'UGX ' + value;
                                 }
                             },
                             grid: {
@@ -214,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         label += ': ';
                                     }
                                     if (context.parsed.y !== null) {
-                                        label += '$' + context.parsed.y;
+                                        label += 'UGX ' + context.parsed.y;
                                     }
                                     return label;
                                 }

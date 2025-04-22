@@ -51,7 +51,7 @@ try {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price AS rent,
-                property_class AS availability
+                status
                 FROM rental_property r
                 LEFT JOIN property_manager m ON r.manager_id = m.manager_id
                 WHERE r.owner_id = ?
@@ -86,7 +86,7 @@ try {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price,
-                property_type AS availability
+                status
                 FROM sales_property s
                 LEFT JOIN property_manager m ON s.manager_id = m.manager_id
                 WHERE s.owner_id = ?
@@ -292,10 +292,10 @@ try {
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $profile_pic; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="document.getElementById('profile-link').click(); return false;">
+                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" id="profile-link"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
                             <li><a class="dropdown-item" href="#" onclick="showSettings()"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
@@ -478,7 +478,7 @@ try {
                         <div class="summary-card">
                             <div class="summary-content">
                                 <div class="summary-icon bg-danger">
-                                    <i class="fas fa-dollar-sign"></i>
+                                    <i class="fas fa-money-bill-wave"></i>
                                 </div>
                                 <div class="summary-details">
                                     <h3 class="summary-title">Total Sales</h3>
@@ -1519,8 +1519,8 @@ try {
                                                 <th>Property Name</th>
                                                 <th>Property Manager</th>
                                                 <th>Location</th>
-                                                <th>Rent (USD)</th>
-                                                <th>Availability</th>
+                                                <th>Rent (UGX)</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1535,11 +1535,9 @@ try {
                                                 <td><?php echo htmlspecialchars($rental['property_name']); ?></td>
                                                 <td><?php echo htmlspecialchars($rental['manager_name'] ?? 'Not Assigned'); ?></td>
                                                 <td><?php echo htmlspecialchars($rental['location']); ?></td>
-                                                <td>$<?php echo htmlspecialchars($rental['rent']); ?></td>
+                                                <td>UGX <?php echo htmlspecialchars($rental['rent']); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $rental['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                        <?php echo htmlspecialchars($rental['availability']); ?>
-                                                    </span>
+                                                    <?php echo htmlspecialchars($rental['status']); ?>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
@@ -1621,8 +1619,8 @@ try {
                                                 <th>Property Name</th>
                                                 <th>Property Manager</th>
                                                 <th>Location</th>
-                                                <th>Price (USD)</th>
-                                                <th>Availability</th>
+                                                <th>Price (UGX)</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1637,11 +1635,9 @@ try {
                                                 <td><?php echo htmlspecialchars($sale['property_name']); ?></td>
                                                 <td><?php echo htmlspecialchars($sale['manager_name'] ?? 'Not Assigned'); ?></td>
                                                 <td><?php echo htmlspecialchars($sale['location']); ?></td>
-                                                <td>$<?php echo htmlspecialchars($sale['price']); ?></td>
+                                                <td>UGX <?php echo htmlspecialchars($sale['price']); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $sale['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                        <?php echo htmlspecialchars($sale['availability']); ?>
-                                                    </span>
+                                                    <?php echo htmlspecialchars($sale['status']); ?>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
@@ -2829,7 +2825,7 @@ try {
                             <i class="fas fa-home me-2"></i>Rental Properties Report
                         </button>
                         <button class="btn btn-success report-type-btn" data-report-type="sales">
-                            <i class="fas fa-dollar-sign me-2"></i>Sales Properties Report
+                            <i class="fas fa-money-bill-wave me-2"></i>Sales Properties Report
                         </button>
                         <button class="btn btn-info report-type-btn" data-report-type="managers">
                             <i class="fas fa-user-tie me-2"></i>Property Managers Report

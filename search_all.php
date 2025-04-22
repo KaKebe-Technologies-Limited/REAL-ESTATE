@@ -41,7 +41,7 @@ function searchDatabase($type, $search, $page = 1, $limit = 10) {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(r.parish, ', ', r.ward) as location,
                 r.price as rent,
-                CASE WHEN r.property_class = '1' THEN 'Available' ELSE 'Not Available' END as availability
+                status
             FROM rental_property r
             LEFT JOIN property_owner o ON r.owner_id = o.owner_id
             LEFT JOIN property_manager m ON r.manager_id = m.manager_id
@@ -102,7 +102,7 @@ function searchDatabase($type, $search, $page = 1, $limit = 10) {
                 CONCAT(o.first_name, ' ', o.last_name) as owner_name,
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(s.parish, ', ', s.ward) as location,
-                s.property_type as availability
+                status
             FROM sales_property s
             LEFT JOIN property_owner o ON s.owner_id = o.owner_id
             LEFT JOIN property_manager m ON s.manager_id = m.manager_id

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById('propertyDetails').innerHTML = `
                             <div class="property-info">
                                 <h4>${data.property.property_name}</h4>
-                                <p><strong>Price:</strong> $${data.property.price}</p>
+                                <p><strong>Price:</strong> UGX ${data.property.price}</p>
                                 <p><strong>Location:</strong> ${data.property.location}</p>
                                 <!-- Add more property details as needed -->
                             </div>
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const propertyId = this.getAttribute('data-id');
             document.getElementById('editPropertyId').value = propertyId;
-            
+
             fetch(`property-detail.php?id=${propertyId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Delete Property
     let propertyToDelete = null;
-    
+
     document.querySelectorAll('.delete-property').forEach(button => {
         button.addEventListener('click', function() {
             propertyToDelete = this.getAttribute('data-id');

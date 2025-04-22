@@ -619,6 +619,10 @@ $conn->close();
                                     <span class="value"><?php echo ucfirst($property['status']); ?></span>
                                 </li>
                                 <li>
+                                    <span class="label">Price:</span>
+                                    <span class="value">UGX <?php echo formatPrice($property['price']); ?></span>
+                                </li>
+                                <li>
                                     <span class="label">Property Size:</span>
                                     <span class="value"><?php echo $property['size']; ?> sq meters</span>
                                 </li>

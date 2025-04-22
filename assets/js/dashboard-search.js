@@ -177,11 +177,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${escapeHtml(item.property_name)}</td>
                         <td>${escapeHtml(item.owner_name || 'Not Assigned')}</td>
                         <td>${escapeHtml(item.location || item.parish + ', ' + item.ward)}</td>
-                        <td>$${escapeHtml(item.price || item.rent)}</td>
+                        <td>UGX ${escapeHtml(item.price || item.rent)}</td>
                         <td>
-                            <span class="badge ${item.property_class === '1' || item.availability === 'Available' ? 'bg-success' : 'bg-danger'}">
-                                ${item.property_class === '1' || item.availability === 'Available' ? 'Available' : 'Not Available'}
-                            </span>
+                            ${escapeHtml(item.status)}
                         </td>
                         <td>
                             <div class="btn-group">
@@ -212,11 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${escapeHtml(item.property_name)}</td>
                         <td>${escapeHtml(item.owner_name || 'Not Assigned')}</td>
                         <td>${escapeHtml(item.location || item.parish + ', ' + item.ward)}</td>
-                        <td>$${escapeHtml(item.price)}</td>
+                        <td>UGX ${escapeHtml(item.price)}</td>
                         <td>
-                            <span class="badge ${item.property_type === 'Available' ? 'bg-success' : 'bg-danger'}">
-                                ${escapeHtml(item.property_type || 'N/A')}
-                            </span>
+                            ${escapeHtml(item.status || item.property_type || 'N/A')}
                         </td>
                         <td>
                             <div class="btn-group">
@@ -478,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <p><strong>Location:</strong> ${escapeHtml(data.data.parish)}, ${escapeHtml(data.data.ward)}</p>
-                                                        <p><strong>Price:</strong> $${escapeHtml(data.data.price)}</p>
+                                                        <p><strong>Price:</strong> UGX ${escapeHtml(data.data.price)}</p>
                                                         <p><strong>Property Type:</strong> ${escapeHtml(data.data.property_type || 'N/A')}</p>
                                                         <p><strong>Property Size:</strong> ${escapeHtml(data.data.property_size || 'N/A')}</p>
                                                         <p><strong>Bedrooms:</strong> ${escapeHtml(data.data.bedrooms || '0')}</p>
@@ -487,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     <div class="col-md-6">
                                                         <p><strong>Owner:</strong> ${escapeHtml(data.data.owner_name || 'Not Assigned')}</p>
                                                         <p><strong>Manager:</strong> ${escapeHtml(data.data.manager_name || 'Not Assigned')}</p>
-                                                        <p><strong>Availability:</strong> ${data.data.property_class === '1' ? '<span class="badge bg-success">Available</span>' : '<span class="badge bg-danger">Not Available</span>'}</p>
+                                                        <p><strong>Status:</strong> ${escapeHtml(data.data.status || 'N/A')}</p>
                                                         <p><strong>Utilities:</strong> ${escapeHtml(data.data.utilities || 'N/A')}</p>
                                                     </div>
                                                 </div>
@@ -714,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <p><strong>Location:</strong> ${escapeHtml(data.data.parish || data.data.region)}, ${escapeHtml(data.data.ward || data.data.country)}</p>
-                                                        <p><strong>Price:</strong> $${escapeHtml(data.data.price)}</p>
+                                                        <p><strong>Price:</strong> UGX ${escapeHtml(data.data.price)}</p>
                                                         <p><strong>Property Type:</strong> ${escapeHtml(data.data.property_type || 'N/A')}</p>
                                                         <p><strong>Property Size:</strong> ${escapeHtml(data.data.property_size || 'N/A')}</p>
                                                         <p><strong>Bedrooms:</strong> ${escapeHtml(data.data.bedrooms || '0')}</p>
@@ -723,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     <div class="col-md-6">
                                                         <p><strong>Owner:</strong> ${escapeHtml(data.data.owner_name || 'Not Assigned')}</p>
                                                         <p><strong>Manager:</strong> ${escapeHtml(data.data.manager_name || 'Not Assigned')}</p>
-                                                        <p><strong>Availability:</strong> ${data.data.property_type === 'Available' ? '<span class="badge bg-success">Available</span>' : '<span class="badge bg-danger">Not Available</span>'}</p>
+                                                        <p><strong>Status:</strong> ${escapeHtml(data.data.status || data.data.property_type || 'N/A')}</p>
                                                         <p><strong>Utilities:</strong> ${escapeHtml(data.data.utilities || 'N/A')}</p>
                                                     </div>
                                                 </div>

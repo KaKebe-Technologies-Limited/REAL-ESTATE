@@ -49,7 +49,7 @@ try {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price AS rent,
-                property_class AS availability
+                status
                 FROM rental_property r
                 LEFT JOIN property_owner o ON r.owner_id = o.owner_id
                 LEFT JOIN property_manager m ON r.manager_id = m.manager_id
@@ -81,7 +81,7 @@ try {
                 CONCAT(m.first_name, ' ', m.last_name) as manager_name,
                 CONCAT(parish, ', ', ward) AS location,
                 price,
-                property_type AS availability
+                status
                 FROM sales_property s
                 LEFT JOIN property_owner o ON s.owner_id = o.owner_id
                 LEFT JOIN property_manager m ON s.manager_id = m.manager_id
@@ -1477,8 +1477,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <th>Property Owner</th>
                                                 <th>Property Manager</th>
                                                 <th>Location</th>
-                                                <th>Rent (USD)</th>
-                                                <th>Availability</th>
+                                                <th>Rent (UGX)</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1490,11 +1490,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                         <td><?php echo htmlspecialchars($rental['owner_name']); ?></td>
                                                         <td><?php echo htmlspecialchars($rental['manager_name']); ?></td>
                                                         <td><?php echo htmlspecialchars($rental['location']); ?></td>
-                                                        <td>$<?php echo htmlspecialchars($rental['rent']); ?></td>
+                                                        <td>UGX <?php echo htmlspecialchars($rental['rent']); ?></td>
                                                         <td>
-                                                            <span class="badge <?php echo $rental['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                                <?php echo htmlspecialchars($rental['availability']); ?>
-                                                            </span>
+                                                            <?php echo htmlspecialchars($rental['status']); ?>
                                                         </td>
                                                         <td>
                                                         <div class="btn-group">
@@ -1580,8 +1578,8 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                 <th>Property Owner</th>
                                                 <th>Property Manager</th>
                                                 <th>Location</th>
-                                                <th>Price (USD)</th>
-                                                <th>Availability</th>
+                                                <th>Price (UGX)</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1593,11 +1591,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                                         <td><?php echo htmlspecialchars($sale['owner_name']); ?></td>
                                                         <td><?php echo htmlspecialchars($sale['manager_name']); ?></td>
                                                         <td><?php echo htmlspecialchars($sale['location']); ?></td>
-                                                        <td><?php echo htmlspecialchars($sale['price']); ?></td>
+                                                        <td>UGX <?php echo htmlspecialchars($sale['price']); ?></td>
                                                         <td>
-                                                            <span class="badge <?php echo $sale['availability'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                                <?php echo htmlspecialchars($sale['availability']); ?>
-                                                            </span>
+                                                            <?php echo htmlspecialchars($sale['status']); ?>
                                                         </td>
                                                         <td>
                                                         <div class="btn-group">
@@ -3191,7 +3187,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                             <i class="fas fa-home me-2"></i>Rental Properties Report
                         </button>
                         <button class="btn btn-success report-type-btn" data-report-type="sales">
-                            <i class="fas fa-dollar-sign me-2"></i>Sales Properties Report
+                            <i class="fas fa-money-bill-wave me-2"></i>Sales Properties Report
                         </button>
                         <button class="btn btn-info report-type-btn" data-report-type="managers">
                             <i class="fas fa-user-tie me-2"></i>Property Managers Report

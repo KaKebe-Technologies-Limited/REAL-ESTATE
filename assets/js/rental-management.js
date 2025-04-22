@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <h4>${data.data.property_name}</h4>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p><strong>Price:</strong> $${data.data.price}</p>
+                                        <p><strong>Price:</strong> UGX ${data.data.price}</p>
                                         <p><strong>Property Type:</strong> ${data.data.property_type}</p>
                                         <p><strong>Property Size:</strong> ${data.data.property_size}</p>
                                         <p><strong>Bedrooms:</strong> ${data.data.bedrooms || 0}</p>

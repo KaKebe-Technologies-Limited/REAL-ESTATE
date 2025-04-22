@@ -207,11 +207,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${escapeHtml(row.owner_name || '')}</td>
                 <td>${escapeHtml(row.manager_name || '')}</td>
                 <td>${escapeHtml(row.location)}</td>
-                <td>$${escapeHtml(row.price)}</td>
+                <td>UGX ${escapeHtml(row.price)}</td>
                 <td>
-                    <span class="badge ${row.property_type === 'Available' ? 'bg-success' : 'bg-danger'}">
-                        ${escapeHtml(row.property_type || 'N/A')}
-                    </span>
+                    ${escapeHtml(row.status || row.property_type || 'N/A')}
                 </td>
                 <td>
                     <div class="btn-group">
@@ -246,8 +244,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${escapeHtml(row.owner_name || '')}</td>
                 <td>${escapeHtml(row.manager_name || '')}</td>
                 <td>${escapeHtml(row.location)}</td>
-                <td>${escapeHtml(row.price)}</td>
-                <td>${escapeHtml(row.property_type)}</td>
+                <td>UGX ${escapeHtml(row.price)}</td>
+                <td>${escapeHtml(row.status || row.property_type || 'N/A')}</td>
                 <td>
                     <div class="btn-group">
                         <button class="btn btn-sm btn-outline-primary view-sale"
@@ -638,10 +636,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h4>${data.data.property_name}</h4>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p><strong>Price:</strong> $${data.data.price}</p>
+                                    <p><strong>Price:</strong> UGX ${data.data.price}</p>
                                     <p><strong>Property Type:</strong> ${data.data.property_type}</p>
                                     <p><strong>Property Size:</strong> ${data.data.property_size}</p>
                                     <p><strong>Location:</strong> ${data.data.region}, ${data.data.country}</p>
+                                    <p><strong>Status:</strong> ${data.data.status}</p>
                                 </div>
                                 <div class="col-md-6">
                                     <p><strong>Owner:</strong> ${data.data.owner_name}</p>
@@ -810,10 +809,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h4>${data.data.property_name}</h4>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p><strong>Price:</strong> $${data.data.price}</p>
+                                    <p><strong>Price:</strong> UGX ${data.data.price}</p>
                                     <p><strong>Property Type:</strong> ${data.data.property_type}</p>
                                     <p><strong>Property Size:</strong> ${data.data.property_size}</p>
                                     <p><strong>Location:</strong> ${data.data.region}, ${data.data.country}</p>
+                                    <p><strong>Status:</strong> ${data.data.status}</p>
                                 </div>
                                 <div class="col-md-6">
                                     <p><strong>Owner:</strong> ${data.data.owner_name}</p>

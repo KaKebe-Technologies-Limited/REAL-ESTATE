@@ -339,7 +339,7 @@
                 </div>
             </div>
             <div class="features-image">
-                <img src="assets/images/property13.jpeg" alt="Why Choose Us" class="rounded-lg shadow-lg w-full">
+                <img src="assets/images/property23.jpeg" alt="Why Choose Us" class="rounded-lg shadow-lg w-full">
             </div>
         </div>
     </div>
@@ -357,11 +357,11 @@
                 <div class="mb-4">
                     <i class="fas fa-quote-left text-4xl text-blue-600"></i>
                 </div>
-                <p class="text-gray-600 mb-6">"Excellent service! They helped me find my dream home within my budget."</p>
+                <p class="text-gray-600 mb-6">"The property filter system is fantastic - I could narrow down exactly what I was looking for in seconds. Found my dream home because of it!"</p>
                 <div class="flex items-center">
                     <img src="assets/images/profile4.jpeg" alt="Client" class="w-12 h-12 rounded-full mr-4">
                     <div>
-                        <h5 class="font-bold">John Doe</h5>
+                        <h5 class="font-bold">Kansime Jackson</h5>
                         <p class="text-gray-600">Property Buyer</p>
                     </div>
                 </div>
@@ -374,7 +374,7 @@
                 <div class="flex items-center">
                     <img src="assets/images/profile5.jpeg" alt="Client" class="w-12 h-12 rounded-full mr-4">
                     <div>
-                        <h5 class="font-bold">John Doe</h5>
+                        <h5 class="font-bold">Oludi Tonny Blair</h5>
                         <p class="text-gray-600">Property Buyer</p>
                     </div>
                 </div>
@@ -387,7 +387,7 @@
                 <div class="flex items-center">
                     <img src="assets/images/profile6.jpeg" alt="Client" class="w-12 h-12 rounded-full mr-4">
                     <div>
-                        <h5 class="font-bold">John Doe</h5>
+                        <h5 class="font-bold">Bukenya John</h5>
                         <p class="text-gray-600">Property Buyer</p>
                     </div>
                 </div>
@@ -503,69 +503,84 @@
     const propertyCards = document.querySelectorAll('.property_listing');
     const contentSection = document.getElementById('content-section');
 
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            button.classList.add('active');
+    if (filterButtons.length > 0 && propertyCards.length > 0) {
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
 
-            const filterValue = button.getAttribute('data-filter');
+                const filterValue = button.getAttribute('data-filter');
 
-            propertyCards.forEach(card => {
-                if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                    card.style.display = 'block';
-                    card.style.opacity = '1';
-                } else {
-                    card.style.display = 'none';
-                    card.style.opacity = '0';
+                propertyCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        card.style.opacity = '1';
+                    } else {
+                        card.style.display = 'none';
+                        card.style.opacity = '0';
+                    }
+                });
+
+                // Smooth scroll to content section if it exists
+                if (contentSection) {
+                    contentSection.scrollIntoView({ behavior: 'smooth' });
                 }
             });
-
-            // Smooth scroll to content section
-            contentSection.scrollIntoView({ behavior: 'smooth' });
         });
-    });
+    }
 
     // Back to top button functionality
     const backToTopButton = document.getElementById('backToTop');
 
-    window.onscroll = function() {
-        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-            backToTopButton.style.display = "block";
-        } else {
-            backToTopButton.style.display = "none";
-        }
-    };
+    if (backToTopButton) {
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
 
-    backToTopButton.onclick = function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
+        backToTopButton.onclick = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+    }
 
     // Toggle advanced search
-    document.getElementById('advanced-search-btn').addEventListener('click', function() {
-        const searchWrapper = document.getElementById('search-wrapper');
-        const contentSection = document.getElementById('content-section');
+    const advancedSearchBtn = document.getElementById('advanced-search-btn');
+    if (advancedSearchBtn) {
+        advancedSearchBtn.addEventListener('click', function() {
+            const searchWrapper = document.getElementById('search-wrapper');
+            const contentSection = document.getElementById('content-section');
 
-        searchWrapper.classList.toggle('show');
-        this.classList.toggle('active');
+            if (searchWrapper) searchWrapper.classList.toggle('show');
+            this.classList.toggle('active');
 
-        // Ensure content section is always visible
-        contentSection.style.display = 'block';
-        contentSection.style.visibility = 'visible';
-        contentSection.style.opacity = '1';
-    });
+            // Ensure content section is always visible
+            if (contentSection) {
+                contentSection.style.display = 'block';
+                contentSection.style.visibility = 'visible';
+                contentSection.style.opacity = '1';
+            }
+        });
+    }
 
     // Handle search form submission
-    document.getElementById('advanced-search-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Here you would normally handle the search logic
-        // For demo, just update results count
-        document.getElementById('results-count').textContent = '5';
-    });
+    const advancedSearchForm = document.getElementById('advanced-search-form');
+    if (advancedSearchForm) {
+        advancedSearchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would normally handle the search logic
+            // For demo, just update results count
+            const resultsCount = document.getElementById('results-count');
+            if (resultsCount) resultsCount.textContent = '5';
+        });
+    }
 
     // Add header scroll effect
     let lastScrollPosition = 0;
@@ -575,13 +590,15 @@
         const topBarWrapper = document.querySelector('.top_bar_wrapper');
         const currentScroll = window.pageYOffset;
 
-        // Add scrolled class to header wrapper
-        if (currentScroll > 50) {
-            headerWrapper.classList.add('scrolled');
-            topBarWrapper.classList.add('hidden');
-        } else {
-            headerWrapper.classList.remove('scrolled');
-            topBarWrapper.classList.remove('hidden');
+        // Add scrolled class to header wrapper if elements exist
+        if (headerWrapper && topBarWrapper) {
+            if (currentScroll > 50) {
+                headerWrapper.classList.add('scrolled');
+                topBarWrapper.classList.add('hidden');
+            } else {
+                headerWrapper.classList.remove('scrolled');
+                topBarWrapper.classList.remove('hidden');
+            }
         }
 
         lastScrollPosition = currentScroll;
