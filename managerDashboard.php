@@ -164,8 +164,13 @@ $stmt->close();
     <link rel="stylesheet" href="assets/css/submenu-click-fix.css">
     <link rel="stylesheet" href="assets/css/direct-submenu-fix.css">
     <link rel="stylesheet" href="assets/css/profile-styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
     <!-- JavaScript files with defer attribute -->
+    <!-- jQuery must be loaded before other scripts that depend on it -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     <script src="assets/js/custom-loader.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -178,6 +183,7 @@ $stmt->close();
     <script src="assets/js/profile.js" defer></script>
     <script src="assets/js/profile-common.js" defer></script>
     <script src="assets/js/manager-profile-fix.js" defer></script>
+    <script src="assets/js/search.js" defer></script>
     <script src="assets/js/rental-management.js" defer></script>
     <script src="assets/js/sales-management.js" defer></script>
     <script src="assets/js/manager-management.js" defer></script>
@@ -1861,6 +1867,26 @@ $stmt->close();
                             </div>
                         </div>
 
+                        <!-- Bedrooms and Bathrooms -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Bedrooms</label>
+                                    <div class="col-sm-9">
+                                        <input name="bedrooms" type="number" min="0" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Bathrooms</label>
+                                    <div class="col-sm-9">
+                                        <input name="bathrooms" type="number" min="0" step="0.5" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Property Classification -->
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -2571,6 +2597,19 @@ $stmt->close();
                     return false;
                 });
             });
+
+            // Initialize Select2 for multiple select fields
+            if (typeof $ !== 'undefined' && typeof $.fn.select2 !== 'undefined') {
+                $('.select2-multiple').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    closeOnSelect: false,
+                    allowClear: true
+                });
+                console.log('Select2 initialized successfully');
+            } else {
+                console.warn('jQuery or Select2 is not loaded. Select2 initialization skipped.');
+            }
         });
     </script>
 </body>

@@ -18,19 +18,23 @@ document.addEventListener('DOMContentLoaded', function () {
         alertBox.style.border = '1px solid #f5c6cb';
         alertBox.style.borderRadius = '4px';
         alertBox.style.zIndex = '1000';
-        
+
         // Add to document
         document.body.appendChild(alertBox);
-        
+
         // Remove after duration
         setTimeout(() => {
             alertBox.remove();
             }, duration);
         }
 
+    // Check if we're on a page that has these forms
+    let formsFound = false;
+
     forms.forEach(({ id, url, formContainer }) => {
         const form = document.getElementById(id);
         if (form) {
+            formsFound = true;
             form.addEventListener('submit', function (e) {
                 e.preventDefault(); // Prevent the default form submission
 
@@ -58,8 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     })
                     .catch(error => console.error('Error:', error)); // Handle network or server errors
             });
-        } else {
-            console.error(`Form with ID "${id}" not found.`);
         }
     });
+
+    // Only log an error if we're on a page that should have these forms
+    // This prevents unnecessary console errors on pages that don't need these forms
+    if (!formsFound) {
+        console.log('Registration forms not found on this page. This is normal if you are not on a registration page.');
+    }
 });

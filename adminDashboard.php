@@ -3141,6 +3141,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <script src="assets/js/admin-dashboard.js"></script>
     <script src="assets/js/register.js"></script>
     <script src="assets/js/search.js"></script>
+    <script src="assets/js/dashboard-search.js"></script>
     <script src="assets/js/profile.js"></script>
     <script src="assets/js/profile-common.js"></script>
     <script src="assets/js/activity.js"></script>

@@ -1,0 +1,47 @@
+/* Fix for profile-content display in managerDashboard for desktop screens */
+
+/* Ensure profile-content respects sidebar width on desktop */
+@media (min-width: 992px) {
+    #profile-content {
+        margin-left: 0; /* Reset any existing margin */
+        padding: 20px;
+        width: 100%; /* Take full width of the main-content container */
+    }
+    
+    /* Ensure the profile card doesn't overflow */
+    #profile-content .card {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    /* Ensure the profile form and view have proper spacing */
+    #profile-form, #profile-view {
+        padding: 15px;
+    }
+    
+    /* Ensure the profile picture is properly sized */
+    #profile-content .profile-picture,
+    #profile-picture-preview {
+        width: 150px !important;
+        height: 150px !important;
+        object-fit: cover;
+    }
+}
+
+/* Additional responsive fixes for smaller desktop screens */
+@media (min-width: 992px) and (max-width: 1199px) {
+    #profile-content .card-body {
+        padding: 15px;
+    }
+    
+    #profile-content .form-group.row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    #profile-content .form-group.row .col-sm-3,
+    #profile-content .form-group.row .col-sm-9 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}

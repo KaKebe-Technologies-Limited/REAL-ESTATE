@@ -5,33 +5,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const profilePreview = document.getElementById('manager-edit-profile-preview');
     const changeProfileBtn = document.getElementById('change-profile-btn');
 
-    // Handle click on change picture button
-    changeProfileBtn.addEventListener('click', function() {
-        profileImageInput.click();
-    });
+    // Only add event listeners if elements exist
+    if (changeProfileBtn && profileImageInput) {
+        // Handle click on change picture button
+        changeProfileBtn.addEventListener('click', function() {
+            profileImageInput.click();
+        });
+    }
 
-    // Handle click on preview image
-    profilePreview.addEventListener('click', function() {
-        profileImageInput.click();
-    });
+    if (profilePreview && profileImageInput) {
+        // Handle click on preview image
+        profilePreview.addEventListener('click', function() {
+            profileImageInput.click();
+        });
+    }
 
-    // Handle image selection
-    profileImageInput.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                profilePreview.src = e.target.result;
-            };
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
+    if (profileImageInput && profilePreview) {
+        // Handle image selection
+        profileImageInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
 
     // Handle view manager modal
     const viewManagerButtons = document.querySelectorAll('.view-manager');
     viewManagerButtons.forEach(button => {
         button.addEventListener('click', function() {
             const managerId = this.getAttribute('data-id');
-            
+
             fetch('handle_manager.php', {
                 method: 'POST',
                 headers: {
@@ -44,16 +51,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     const manager = data.data;
                     console.log(manager);
-                    document.getElementById('manager-view-profile-image').src = manager.profile_picture || 'uploads/managers/default-profile.jpg';
-                    document.getElementById('manager-view-first-name').textContent = manager.first_name;
-                    document.getElementById('manager-view-last-name').textContent = manager.last_name;
-                    document.getElementById('manager-view-email').textContent = manager.email;
-                    document.getElementById('manager-view-phone').textContent = manager.phone;
-                    document.getElementById('manager-view-username').textContent = manager.username;
-                    document.getElementById('manager-view-property-count').textContent = manager.property_count;
-                    document.getElementById('manager-view-id-type').textContent = manager.id_type;
-                    document.getElementById('manager-view-id-number').textContent = manager.id_num;
-                    document.getElementById('manager-view-address').textContent = manager.address;
+
+                    // Check if elements exist before setting values
+                    const profileImage = document.getElementById('manager-view-profile-image');
+                    if (profileImage) profileImage.src = manager.profile_picture || 'uploads/managers/default-profile.jpg';
+
+                    const elements = {
+                        'manager-view-first-name': manager.first_name,
+                        'manager-view-last-name': manager.last_name,
+                        'manager-view-email': manager.email,
+                        'manager-view-phone': manager.phone,
+                        'manager-view-username': manager.username,
+                        'manager-view-property-count': manager.property_count,
+                        'manager-view-id-type': manager.id_type,
+                        'manager-view-id-number': manager.id_num,
+                        'manager-view-address': manager.address
+                    };
+
+                    // Set values only if elements exist
+                    for (const [id, value] of Object.entries(elements)) {
+                        const element = document.getElementById(id);
+                        if (element) element.textContent = value;
+                    }
                 } else {
                     alert(data.message);
                 }
@@ -66,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.edit-manager').forEach(button => {
         button.addEventListener('click', function() {
             const managerId = this.getAttribute('data-id');
-            
+
             fetch('handle_manager.php', {
                 method: 'POST',
                 headers: {
@@ -80,15 +99,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     console.log(data)
                     const manager = data.data;
-                    document.getElementById('manager-edit-manager-id').value = manager.manager_id;
-                    document.getElementById('manager-edit-first-name').value = manager.first_name;
-                    document.getElementById('manager-edit-last-name').value = manager.last_name;
-                    document.getElementById('manager-edit-email').value = manager.email;
-                    document.getElementById('manager-edit-phone').value = manager.phone;
-                    document.getElementById('manager-edit-username').value = manager.username;
-                    document.getElementById('manager-edit-id-type').value = manager.id_type;
-                    document.getElementById('manager-edit-id-number').value = manager.id_num;
-                    document.getElementById('manager-edit-address').value = manager.address;
+
+                    // Check if elements exist before setting values
+                    const elements = {
+                        'manager-edit-manager-id': manager.manager_id,
+                        'manager-edit-first-name': manager.first_name,
+                        'manager-edit-last-name': manager.last_name,
+                        'manager-edit-email': manager.email,
+                        'manager-edit-phone': manager.phone,
+                        'manager-edit-username': manager.username,
+                        'manager-edit-id-type': manager.id_type,
+                        'manager-edit-id-number': manager.id_num,
+                        'manager-edit-address': manager.address
+                    };
+
+                    // Set values only if elements exist
+                    for (const [id, value] of Object.entries(elements)) {
+                        const element = document.getElementById(id);
+                        if (element) element.value = value;
+                    }
                 } else {
                     alert(data.message);
                 }
@@ -99,51 +128,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle edit manager form submission
     const editManagerForm = document.getElementById('editManagerForm');
-    editManagerForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        formData.append('action', 'edit');
-        
-        fetch('handle_manager.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            if (data.success) {
-                location.reload();
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
+    if (editManagerForm) {
+        editManagerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            formData.append('action', 'edit');
+
+            fetch('handle_manager.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
 
     // Delete manager
     document.querySelectorAll('.delete-manager').forEach(button => {
         button.addEventListener('click', function() {
             const managerId = this.getAttribute('data-id');
-            
-            document.getElementById('confirmDeleteManager').onclick = function() {
-                fetch('handle_manager.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=delete&manager_id=${managerId}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload(); // Refresh the page to show updated data
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            };
+
+            const confirmDeleteBtn = document.getElementById('confirmDeleteManager');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.onclick = function() {
+                    fetch('handle_manager.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `action=delete&manager_id=${managerId}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload(); // Refresh the page to show updated data
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                };
+            }
         });
     });
 });

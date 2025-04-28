@@ -2,12 +2,12 @@
 require_once 'log_activity.php';
 header('Content-Type: application/json'); // Ensure JSON response
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1); 
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = new mysqli('localhost', 'root', '', 'allea');
+    $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
     if ($conn->connect_error) {
         echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
@@ -49,15 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert the new property owner
-    $stmt = $conn->prepare("INSERT INTO property_owner (username, first_name, last_name, email, password, phone, id_type, id_num, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssisis", $username, $first_name, $last_name, $email, $hashedPassword, $phone, $id_type, $id_num, $address);
+    $stmt = $conn->prepare("INSERT INTO property_owner (username, first_name, last_name, email, password, phone, id_type, id_num, address, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("sssssssss", $username, $first_name, $last_name, $email, $hashedPassword, $phone, $id_type, $id_num, $address);
 
     if ($stmt->execute()) {
         // Log the activity after successful owner registration
-        logOwnerRegistered($owner_name);
-        echo json_encode(['success' => true, 'message' => 'Registration successful!']);
+        $owner_name = "$first_name $last_name";
+        logActivity('registration', 'New Owner Registered', "Owner $owner_name has registered", 'fas fa-user-plus', 'bg-success');
+        echo json_encode(['success' => true, 'message' => 'Registration successful! You can now login with your credentials.']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
+        echo json_encode(['success' => false, 'message' => "Error: {$stmt->error}"]);
     }
 
     $stmt->close();
@@ -66,4 +67,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit;
 }
-?>

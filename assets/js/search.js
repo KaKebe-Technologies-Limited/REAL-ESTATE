@@ -680,34 +680,46 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 const form = document.getElementById('editRentalForm');
                 if (form) {
-                    // Set basic form values
-                    form.querySelector('[name="rental_id"]').value = rentalId;
-                    form.querySelector('[name="property_name"]').value = data.data.property_name;
-                    form.querySelector('[name="price"]').value = data.data.price;
-                    form.querySelector('[name="property_type"]').value = data.data.property_type;
-                    form.querySelector('[name="property_size"]').value = data.data.property_size;
-                    form.querySelector('[name="utilities"]').value = data.data.utilities;
-                    form.querySelector('[name="status"]').value = data.data.status;
-                    form.querySelector('[name="country"]').value = data.data.country;
-                    form.querySelector('[name="description"]').value = data.data.description;
-                    form.querySelector('[name="bedrooms"]').value = data.data.bedrooms;
-                    form.querySelector('[name="bathrooms"]').value = data.data.bathrooms;
-                    form.querySelector('[name="region"]').value = data.data.region;
-                    form.querySelector('[name="subregion"]').value = data.data.subregion;
-                    form.querySelector('[name="parish"]').value = data.data.parish;
-                    form.querySelector('[name="ward"]').value = data.data.ward;
-                    form.querySelector('[name="cell"]').value = data.data.cell;
-                    form.querySelector('[name="landlord"]').value = data.data.landlord;
-                    form.querySelector('[name="parking"]').value = data.data.parking;
-                    form.querySelector('[name="convenience"]').value = data.data.convenience;
-                    form.querySelector('[name="property_class"]').value = data.data.property_class;
+                    // Helper function to safely set form field values
+                    const setFieldValue = (fieldName, value) => {
+                        try {
+                            const field = form.querySelector(`[name="${fieldName}"]`);
+                            if (field) {
+                                field.value = value || '';
+                            } else {
+                                console.warn(`Field [name="${fieldName}"] not found in form`);
+                            }
+                        } catch (error) {
+                            console.error(`Error setting value for ${fieldName}:`, error);
+                        }
+                    };
+
+                    // Set basic form values with error handling
+                    setFieldValue('rental_id', rentalId);
+                    setFieldValue('property_name', data.data.property_name);
+                    setFieldValue('price', data.data.price);
+                    setFieldValue('property_type', data.data.property_type);
+                    setFieldValue('property_size', data.data.property_size);
+                    setFieldValue('utilities', data.data.utilities);
+                    setFieldValue('status', data.data.status);
+                    setFieldValue('country', data.data.country);
+                    setFieldValue('description', data.data.description);
+                    setFieldValue('bedrooms', data.data.bedrooms || 0);
+                    setFieldValue('bathrooms', data.data.bathrooms || 0);
+                    // Set remaining form fields
+                    setFieldValue('region', data.data.region);
+                    setFieldValue('subregion', data.data.subregion);
+                    setFieldValue('parish', data.data.parish);
+                    setFieldValue('ward', data.data.ward);
+                    setFieldValue('cell', data.data.cell);
+                    setFieldValue('landlord', data.data.landlord);
+                    setFieldValue('parking', data.data.parking);
+                    setFieldValue('convenience', data.data.convenience);
+                    setFieldValue('property_class', data.data.property_class);
 
                     // Set owner and manager
-                    const ownerSelect = form.querySelector('[name="owner_id"]');
-                    const managerSelect = form.querySelector('[name="manager_id"]');
-
-                    if (ownerSelect) ownerSelect.value = data.data.owner_id || '';
-                    if (managerSelect) managerSelect.value = data.data.manager_id || '';
+                    setFieldValue('owner_id', data.data.owner_id || '');
+                    setFieldValue('manager_id', data.data.manager_id || '');
 
                     // Handle multiple selects (security and amenities)
                     const securitySelect = form.querySelector('[name="security[]"]');
