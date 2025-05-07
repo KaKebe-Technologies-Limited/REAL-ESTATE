@@ -132,7 +132,7 @@ if (!empty($property['images'])) {
     $images = array_map('trim', explode(',', $property['images']));
 } else {
     // If no images, add a placeholder
-    $images[] = 'uploads/contact.jpeg';
+    $images[] = 'uploads/house.jpeg';
 }
 
 // Format price function
@@ -282,7 +282,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
+                                <div class="gallery-item" style="background-image:url('uploads/house.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -292,7 +292,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
+                                <div class="gallery-item" style="background-image:url('uploads/house.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -305,7 +305,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
+                                <div class="gallery-item" style="background-image:url('uploads/house.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -315,7 +315,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
+                                <div class="gallery-item" style="background-image:url('uploads/house.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -325,7 +325,7 @@ $conn->close();
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php else: ?>
-                                <div class="gallery-item" style="background-image:url('uploads/contact.jpeg')">
+                                <div class="gallery-item" style="background-image:url('uploads/house.jpeg')">
                                     <div class="img_listings_overlay"></div>
                                 </div>
                             <?php endif; ?>
@@ -530,8 +530,8 @@ $conn->close();
                     <div class="property-sidebar">
                         <div class="widget contact-agent-widget">
                             <div class="agent-info">
-                                <div class="agent-image">
-                                    <img src="<?php echo htmlspecialchars($property['profile_picture']); ?>" alt="<?php echo htmlspecialchars($property['manager_name']); ?>">
+                                <div class="agent-image"> 
+                                    <img src="<?php echo htmlspecialchars($property['profile_picture']) ?? 'uploads/profile_picture/default-profile.jpeg'; ?>" alt="<?php echo htmlspecialchars($property['manager_name']); ?>">
                                 </div>
                                 <div class="agent-details">
                                     <h4><?php echo htmlspecialchars($property['manager_name']); ?></h4>

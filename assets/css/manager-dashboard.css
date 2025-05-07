@@ -186,7 +186,7 @@ body {
     margin-right: 10px;
     text-align: center;
 }
-/* 
+/*
 .sidebar.collapsed .nav-link span {
     display: none;
 } */
@@ -223,6 +223,7 @@ body {
     color: var(--secondary-color);
     text-decoration: none;
     transition: all 0.3s ease;
+    max-height: 40px;
 }
 
 .submenu-link:hover {
@@ -230,11 +231,25 @@ body {
     background: var(--bg-light);
 }
 
+.submenu-link.active {
+    color: var(--primary-color);
+    background: var(--bg-light);
+    /* Ensure consistent height */
+    height: auto;
+    min-height: inherit;
+    max-height: 40px;
+}
+
 .submenu-link i {
     width: 20px;
     margin-right: 10px;
     text-align: center;
     font-size: 0.9em;
+}
+
+.submenu-link span {
+    width: auto;
+    min-width: 120px;
 }
 
 .sidebar.collapsed .submenu {
@@ -741,7 +756,7 @@ body {
     .card-body {
         padding: 1.5rem;
     }
-    
+
     .form-sample .row {
         margin-bottom: 1rem;
     }
@@ -845,8 +860,8 @@ body {
     min-height: 400px;
 }
 
-.btn-outline-primary:hover, 
-.btn-outline-warning:hover, 
+.btn-outline-primary:hover,
+.btn-outline-warning:hover,
 .btn-outline-danger:hover {
     color: var(--text-color);
 }
