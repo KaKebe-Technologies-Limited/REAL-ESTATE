@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebarOverlay.classList.remove('active');
         }
     }
-    if (sidebar) {
-        // Create close button if it doesn't exist
+    if (sidebar && isMobile) {
+        // Create close button if it doesn't exist and we're on mobile
         if (!document.querySelector('.sidebar-close')) {
             const closeButton = document.createElement('button');
             closeButton.className = 'sidebar-close';
@@ -199,6 +199,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     document.body.style.overflow = '';
                 }
+
+                // Add close button if it doesn't exist
+                if (!document.querySelector('.sidebar-close')) {
+                    const closeButton = document.createElement('button');
+                    closeButton.className = 'sidebar-close';
+                    closeButton.innerHTML = '<i class="fas fa-times"></i>';
+                    closeButton.setAttribute('aria-label', 'Close sidebar');
+                    sidebar.prepend(closeButton);
+
+                    // Add event listener to close button
+                    closeButton.addEventListener('click', function() {
+                        toggleSidebar();
+                    });
+                }
             } else {
                 // If transitioning to desktop, make sure body scroll is enabled
                 document.body.style.overflow = '';
@@ -206,6 +220,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Hide the overlay
                 if (sidebarOverlay) {
                     sidebarOverlay.classList.remove('active');
+                }
+
+                // Remove close button if it exists
+                const closeButton = document.querySelector('.sidebar-close');
+                if (closeButton) {
+                    closeButton.remove();
                 }
             }
         }

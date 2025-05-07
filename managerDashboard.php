@@ -789,14 +789,12 @@ $stmt->close();
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="display: none;">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Manager</label>
                                                 <div class="col-sm-9">
-                                                    <select name="manager_id" id="sale_manager_id" class="form-control">
-                                                        <option value="">Select Manager</option>
-                                                        <!-- Options will be populated dynamically -->
-                                                    </select>
+                                                    <input type="hidden" name="manager_id" id="sale_manager_id" value="<?php echo $manager_id; ?>" />
+                                                    <p class="form-control-static">Auto-assigned to you</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1113,14 +1111,12 @@ $stmt->close();
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="display: none;">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Manager</label>
                                                 <div class="col-sm-9">
-                                                    <select name="manager_id" id="rental_manager_id" class="form-control">
-                                                        <option value="">Select Manager</option>
-                                                        <!-- Options will be populated dynamically -->
-                                                    </select>
+                                                    <input type="hidden" name="manager_id" id="rental_manager_id" value="<?php echo $manager_id; ?>" />
+                                                    <p class="form-control-static">Auto-assigned to you</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1977,14 +1973,12 @@ $stmt->close();
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display: none;">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Property Manager</label>
                                     <div class="col-sm-9">
-                                        <select name="manager_id" id="rental_manager_id" class="form-control">
-                                            <option value="">Select Manager</option>
-                                            <!-- Options will be populated dynamically -->
-                                        </select>
+                                        <input type="hidden" name="manager_id" id="rental_manager_id" value="<?php echo $manager_id; ?>" />
+                                        <p class="form-control-static">Auto-assigned to you</p>
                                     </div>
                                 </div>
                             </div>
@@ -2256,14 +2250,12 @@ $stmt->close();
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display: none;">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Property Manager</label>
                                     <div class="col-sm-9">
-                                        <select name="manager_id" id="rental_manager_id" class="form-control">
-                                            <option value="">Select Manager</option>
-                                            <!-- Options will be populated dynamically -->
-                                        </select>
+                                        <input type="hidden" name="manager_id" id="rental_manager_id" value="<?php echo $manager_id; ?>" />
+                                        <p class="form-control-static">Auto-assigned to you</p>
                                     </div>
                                 </div>
                             </div>

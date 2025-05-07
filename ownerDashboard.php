@@ -1019,14 +1019,12 @@ try {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="display: none;">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Owner</label>
                                                 <div class="col-sm-9">
-                                                    <select name="owner_id" id="sale_owner_id" class="form-control" required>
-                                                        <option value="">Select Owner</option>
-                                                        <!-- Options will be populated dynamically -->
-                                                    </select>
+                                                    <input type="hidden" name="owner_id" id="sale_owner_id" value="<?php echo $owner_id; ?>" />
+                                                    <p class="form-control-static">Auto-assigned to you</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1362,14 +1360,12 @@ try {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="display: none;">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Property Owner</label>
                                                 <div class="col-sm-9">
-                                                    <select name="owner_id" id="rental_owner_id" class="form-control" required>
-                                                        <option value="">Select Owner</option>
-                                                        <!-- Options will be populated dynamically -->
-                                                    </select>
+                                                    <input type="hidden" name="owner_id" id="rental_owner_id" value="<?php echo $owner_id; ?>" />
+                                                    <p class="form-control-static">Auto-assigned to you</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2242,14 +2238,12 @@ try {
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display: none;">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Property Owner</label>
                                     <div class="col-sm-9">
-                                        <select name="owner_id" id="rental_owner_id" class="form-control" required>
-                                            <option value="">Select Owner</option>
-                                            <!-- Options will be populated dynamically -->
-                                        </select>
+                                        <input type="hidden" name="owner_id" id="rental_owner_id" value="<?php echo $owner_id; ?>" />
+                                        <p class="form-control-static">Auto-assigned to you</p>
                                     </div>
                                 </div>
                             </div>
@@ -2574,14 +2568,12 @@ try {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display: none;">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Property Owner</label>
                                     <div class="col-sm-9">
-                                        <select name="owner_id" id="rental_owner_id" class="form-control" required>
-                                            <option value="">Select Owner</option>
-                                            <!-- Options will be populated dynamically -->
-                                        </select>
+                                        <input type="hidden" name="owner_id" id="rental_owner_id" value="<?php echo $owner_id; ?>" />
+                                        <p class="form-control-static">Auto-assigned to you</p>
                                     </div>
                                 </div>
                             </div>

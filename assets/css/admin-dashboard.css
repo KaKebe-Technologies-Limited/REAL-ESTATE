@@ -173,6 +173,7 @@ body {
     color: var(--secondary-color);
     text-decoration: none;
     transition: all 0.3s ease;
+    max-height: 48px;
 }
 
 .sidebar-nav .nav-link:hover,
@@ -187,9 +188,13 @@ body {
     text-align: center;
 }
 
-/* .sidebar.collapsed .nav-link span {
-    display: none;
-} */
+/* Hide span text in collapsed sidebar on desktop */
+@media (min-width: 992px) {
+    .sidebar.collapsed .nav-link span,
+    .sidebar.collapsed .submenu-link span {
+        display: none;
+    }
+}
 
 .has-submenu .submenu-arrow {
     margin-left: auto;

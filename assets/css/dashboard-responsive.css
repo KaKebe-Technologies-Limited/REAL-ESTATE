@@ -75,7 +75,11 @@
     position: relative;
 }
 
-/* Global submenu link styles */
+/* Global nav and submenu link styles */
+.sidebar-nav .nav-link {
+    max-height: 48px;
+}
+
 .submenu-link {
     max-height: 40px;
 }
@@ -104,7 +108,11 @@
         margin-left: var(--sidebar-collapsed-width, 70px);
     }
 
-    /* Desktop-specific submenu link styles */
+    /* Desktop-specific nav and submenu link styles */
+    .sidebar-nav .nav-link {
+        max-height: 48px;
+    }
+
     .submenu-link {
         max-height: 40px;
     }
@@ -115,6 +123,19 @@
 
     .submenu-link span {
         min-width: 120px;
+    }
+
+    /* Hide span text in collapsed sidebar on desktop */
+    .sidebar.collapsed .nav-link span,
+    .sidebar.collapsed .submenu-link span,
+    .sidebar.desktop-collapsed .nav-link span,
+    .sidebar.desktop-collapsed .submenu-link span {
+        display: none;
+    }
+
+    /* Hide sidebar close button on desktop */
+    .sidebar-close {
+        display: none !important;
     }
 }
 
@@ -184,7 +205,12 @@
     }
 
     /* Improved touch targets for mobile */
-    .sidebar-nav .nav-link,
+    .sidebar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+        max-height: 48px;
+    }
+
     .submenu-link {
         padding: 0.75rem 1rem;
         min-height: 44px;

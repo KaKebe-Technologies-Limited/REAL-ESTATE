@@ -6,6 +6,11 @@
         transform: translateX(0) !important;
         left: 0 !important; /* Ensure sidebar is positioned correctly on desktop */
     }
+
+    /* Hide sidebar close button on desktop */
+    .sidebar-close {
+        display: none !important;
+    }
 }
 
 /* Fix submenu display */
