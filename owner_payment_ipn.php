@@ -3,6 +3,7 @@ session_start();
 require_once 'pesapal_functions.php';
 require_once 'log_activity.php';
 require_once 'config.php';
+require_once 'validate_subscription.php'; // Added for subscription functions
 // Disable error display for production
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
@@ -144,7 +145,18 @@ try {
             if ($ownerResult->num_rows > 0) {
                 $owner = $ownerResult->fetch_assoc();
                 $ownerName = "{$owner['first_name']} {$owner['last_name']}";
-                logActivity('payment', 'Registration Fee Paid', "Owner $ownerName has paid registration fee", 'fas fa-money-bill', 'bg-success');
+
+                // Set up initial subscription (registration fee acts as first subscription payment)
+                $subscriptionMonths = 4; // Default subscription period
+                $subscriptionResult = renewSubscription($ownerId, $subscriptionMonths, $confirmationCode, $paymentMethod);
+
+                if ($subscriptionResult) {
+                    error_log("Initial subscription set up successfully for owner ID: $ownerId");
+                    logActivity('payment', 'Registration Fee Paid', "Owner $ownerName has paid registration fee. Initial subscription activated for $subscriptionMonths months.", 'fas fa-money-bill', 'bg-success');
+                } else {
+                    error_log("Failed to set up initial subscription for owner ID: $ownerId");
+                    logActivity('payment', 'Registration Fee Paid', "Owner $ownerName has paid registration fee", 'fas fa-money-bill', 'bg-success');
+                }
             }
         }
     } else {
@@ -185,9 +197,23 @@ try {
                             'merchant_reference' => $merchantReference
                         ]);
 
+                        // Get the transaction ID/confirmation code from the payment
+                        $confirmationCode = $transactionStatus['confirmation_code'] ?? $orderTrackingId;
+                        $paymentMethod = $transactionStatus['payment_method'] ?? 'pesapal';
+
+                        // Set up initial subscription (registration fee acts as first subscription payment)
+                        $subscriptionMonths = 4; // Default subscription period
+                        $subscriptionResult = renewSubscription($ownerId, $subscriptionMonths, $confirmationCode, $paymentMethod);
+
+                        if ($subscriptionResult) {
+                            error_log("Initial subscription set up successfully for owner ID: $ownerId");
+                        } else {
+                            error_log("Failed to set up initial subscription for owner ID: $ownerId");
+                        }
+
                         // Log the activity
                         $owner_name = "{$userData['first_name']} {$userData['last_name']}";
-                        logActivity('registration', 'New Owner Registered', "Owner $owner_name has registered and paid registration fee", 'fas fa-user-plus', 'bg-success');
+                        logActivity('registration', 'New Owner Registered', "Owner $owner_name has registered and paid registration fee. Initial subscription activated for $subscriptionMonths months.", 'fas fa-user-plus', 'bg-success');
 
                         // Clear session data
                         unset($_SESSION['temp_owner_data']);

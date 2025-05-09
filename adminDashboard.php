@@ -189,6 +189,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
     <script src="assets/js/submenu-click-fix.js" defer></script>
     <script src="assets/js/direct-submenu-fix.js" defer></script>
     <script src="assets/js/report-generator.js" defer></script>
+    <script src="assets/js/subscription-management.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -356,6 +357,12 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                         <a href="#" class="submenu-link" data-form="create-owner" onclick="showCreateOwner()">
                             <i class="fas fa-user-plus"></i>
                             <span>Create Owner</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="submenu-link" data-form="owner-subscriptions" onclick="showOwnerSubscriptions()">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Subscriptions</span>
                         </a>
                     </li>
                 </ul>
@@ -664,6 +671,187 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Owner Subscriptions Content -->
+        <div id="owner-subscriptions" style="display: none;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="page-title">Owner Subscriptions</h1>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" id="subscription-search" class="form-control" placeholder="Search by name, email or username...">
+                            <button class="btn btn-primary" id="subscription-search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary" id="refresh-subscriptions">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Subscription Status</h3>
+                                <div class="card-actions">
+                                    <select id="subscription-filter" class="form-select form-select-sm">
+                                        <option value="all">All Statuses</option>
+                                        <option value="active">Active</option>
+                                        <option value="expired">Expired</option>
+                                        <option value="pending">Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="dashboard-card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Owner</th>
+                                                <th>Email</th>
+                                                <th>Status</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Days Left</th>
+                                                <th>Properties</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="subscriptions-table-body">
+                                            <!-- Subscription data will be loaded here -->
+                                            <tr>
+                                                <td colspan="8" class="text-center">Loading subscription data...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="dashboard-card-footer">
+                                <nav aria-label="Subscription pagination">
+                                    <ul class="pagination justify-content-center" id="subscription-pagination">
+                                        <!-- Pagination will be generated here -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extend Subscription Modal -->
+        <div class="modal fade" id="extendSubscriptionModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Extend Subscription</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="extendSubscriptionForm">
+                            <input type="hidden" id="extend-owner-id" name="owner_id">
+
+                            <div class="mb-3">
+                                <label class="form-label">Owner</label>
+                                <input type="text" id="extend-owner-name" class="form-control" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Current Status</label>
+                                <input type="text" id="extend-current-status" class="form-control" >
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Current End Date</label>
+                                <input type="text" id="extend-current-end-date" class="form-control" >
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Extend By (Months)</label>
+                                <select id="extend-months" name="months" class="form-select" required>
+                                    <option value="1">1 Month</option>
+                                    <option value="2">2 Months</option>
+                                    <option value="3">3 Months</option>
+                                    <option value="4" selected>4 Months</option>
+                                    <option value="6">6 Months</option>
+                                    <option value="8">8 Months</option>
+                                    <option value="12">12 Months</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Admin Notes</label>
+                                <textarea id="extend-notes" name="notes" class="form-control" rows="3" placeholder="Optional notes about this extension"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirm-extend-btn">Extend Subscription</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription History Modal -->
+        <div class="modal fade" id="subscriptionHistoryModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Subscription History</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="owner-info mb-4">
+                            <h6>Owner Information</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Name:</strong> <span id="history-owner-name"></span></p>
+                                    <p><strong>Email:</strong> <span id="history-owner-email"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Status:</strong> <span id="history-owner-status"></span></p>
+                                    <p><strong>Current End Date:</strong> <span id="history-owner-end-date"></span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6>Payment History</h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                        <th>Period</th>
+                                        <th>Transaction ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subscription-history-table">
+                                    <!-- History data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

@@ -49,7 +49,7 @@ function submitOrderRequest($userData, $token) {
     $merchantReference = 'REG-' . time() . '-' . rand(1000, 9999);
 
     // Construct the callback URL
-    $callbackUrl = BASE_URL . '/REAL-ESTATE/owner_payment_callback.php';
+    $callbackUrl = BASE_URL . '/owner_payment_callback.php';
     error_log("Using callback URL: $callbackUrl");
 
     $data = [

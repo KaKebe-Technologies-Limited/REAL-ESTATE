@@ -5,8 +5,21 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'owner') {
     exit();
 }
 
-// Include database connection
+// Include database connection and subscription validation
 require_once 'config.php';
+require_once 'validate_subscription.php';
+
+// Check if subscription is valid
+$owner_id = $_SESSION['user_id'];
+$subscription_valid = isSubscriptionValid($owner_id);
+
+// If subscription is not valid, redirect to renewal page
+if (!$subscription_valid) {
+    // Store the current URL in session to redirect back after renewal
+    $_SESSION['redirect_after_renewal'] = $_SERVER['REQUEST_URI'];
+    header('Location: renew_subscription.php');
+    exit();
+}
 
 // Initialize variables
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;

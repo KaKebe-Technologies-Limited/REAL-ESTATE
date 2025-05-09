@@ -788,6 +788,35 @@ body {
     }
 }
 
+/* Owner Subscriptions Styles */
+#owner-subscriptions .dashboard-card {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#owner-subscriptions .dashboard-card-header {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#owner-subscriptions .dashboard-card-body {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#owner-subscriptions .table {
+    margin-bottom: 0;
+}
+
+#owner-subscriptions .dashboard-card-footer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#owner-subscriptions .pagination {
+    margin-bottom: 0;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .sidebar {

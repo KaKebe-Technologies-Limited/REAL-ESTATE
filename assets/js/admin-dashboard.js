@@ -166,7 +166,7 @@ function togglePropertySubmenu(el) {
 }
 
 function hideAllForms() {
-    const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form', 'rental-listing', 'sales-listing', 'owners-listing', 'managers-listing', 'profile-content'];
+    const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form', 'rental-listing', 'sales-listing', 'owners-listing', 'managers-listing', 'profile-content', 'owner-subscriptions'];
     forms.forEach(form => {
         document.getElementById(form).style.display = 'none';
     });
@@ -308,6 +308,21 @@ function showManagersListing() {
 document.querySelector('[data-form="managers-listing"]').addEventListener('click', function (e) {
     e.preventDefault();
     showManagersListing();
+});
+
+function showOwnerSubscriptions() {
+    // Hide all other content
+    hideAllForms();
+
+    // Show managers listing
+    document.getElementById('owner-subscriptions').style.display = 'block';
+    updateActiveNav('owner-subscriptions');
+}
+
+// Add event listener for the managers listing menu item
+document.querySelector('[data-form="owner-subscriptions"]').addEventListener('click', function (e) {
+    e.preventDefault();
+    showOwnerSubscriptions();
 });
 
 function showDashboard() {

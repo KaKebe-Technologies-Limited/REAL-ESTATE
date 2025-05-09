@@ -1,26 +1,29 @@
 <?php
-header('Content-Type: application/json'); // Ensure JSON response
+// Only set header if this file is being accessed directly, not included
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+    header('Content-Type: application/json'); // Ensure JSON response
+}
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1); 
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php'; // Include database configuration
 function logActivity($type, $title, $description, $icon_class = '', $icon_bg_class = '') {
     $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    
+
     if ($conn->connect_error) {
         return false;
     }
 
-    $query = "INSERT INTO activities (activity_type, title, description, icon_class, icon_bg_class) 
+    $query = "INSERT INTO activities (activity_type, title, description, icon_class, icon_bg_class)
                 VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('sssss', $type, $title, $description, $icon_class, $icon_bg_class);
-    
+
     $success = $stmt->execute();
-    
+
     $stmt->close();
     $conn->close();
-    
+
     return $success;
 }
 

@@ -9,9 +9,11 @@ if ($redirect_back) {
     $query = $_SERVER['QUERY_STRING'];
     $query = str_replace('redirect_back=1', '', $query);
     $query = trim($query, '&');
-    
-    // Construct the callback URL with processing parameter
-    $callback_url = 'owner_payment_callback.php?processing=1';
+
+    // Determine which callback to use based on the subscription parameter
+    $is_subscription = isset($_GET['subscription']) && $_GET['subscription'] == 1;
+    $callback_url = $is_subscription ? 'subscription_payment_callback.php?processing=1' : 'owner_payment_callback.php?processing=1';
+
     if (!empty($query)) {
         $callback_url .= '&' . $query;
     }
@@ -95,7 +97,7 @@ if ($redirect_back) {
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
+
     <?php if ($redirect_back && !empty($callback_url)): ?>
     <script>
         // Redirect back to the callback URL after a short delay

@@ -34,16 +34,17 @@ $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' 
 $host = $_SERVER['HTTP_HOST'];
 $baseUrl = $protocol . $host;
 
-// If running in a subdirectory, add it to the base URL
-$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
-if ($scriptDir !== '/' && $scriptDir !== '\\') {
-    // Remove REAL-ESTATE from the path if it's there
-    $baseDir = str_replace('/REAL-ESTATE', '', $scriptDir);
-    $baseDir = str_replace('\\REAL-ESTATE', '', $baseDir);
-
-    // Only add the directory if it's not the root
-    if ($baseDir !== '/' && $baseDir !== '\\' && $baseDir !== '') {
-        $baseUrl .= $baseDir;
+// For local development, just use the host with REAL-ESTATE directory
+if ($host === 'localhost' || strpos($host, '127.0.0.1') !== false) {
+    $baseUrl = $protocol . $host . '/REAL-ESTATE';
+} else {
+    // If running in a subdirectory, add it to the base URL
+    $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+    if ($scriptDir !== '/' && $scriptDir !== '\\') {
+        // Only add the directory if it's not the root
+        if ($scriptDir !== '/' && $scriptDir !== '\\' && $scriptDir !== '') {
+            $baseUrl .= $scriptDir;
+        }
     }
 }
 

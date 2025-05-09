@@ -10,10 +10,29 @@ document.getElementById('ownerLogin').addEventListener('submit', function (e) {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                window.location.href = 'ownerDashboard.php';
+                // Check if subscription has expired
+                if(data.subscription_expired) {
+                    // Redirect to subscription renewal page
+                    window.location.href = data.redirect || 'renew_subscription.php';
+                } else {
+                    // Normal login flow
+                    window.location.href = 'ownerDashboard.php';
+                }
             } else {
-                alert(data.message);
+                // Show error message
+                if (typeof showCustomAlert === 'function') {
+                    showCustomAlert('error', 'Login Failed', data.message);
+                } else {
+                    alert(data.message);
+                }
             }
         })
-        .catch(error => console.error('Error: ', error))
+        .catch(error => {
+            console.error('Error: ', error);
+            if (typeof showCustomAlert === 'function') {
+                showCustomAlert('error', 'Login Error', 'An error occurred during login. Please try again.');
+            } else {
+                alert('An error occurred during login. Please try again.');
+            }
+        });
 });
