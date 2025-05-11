@@ -35,6 +35,40 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Calculate summary data for dashboard
+// Rental properties count and total income
+$rental_summary_query = "SELECT
+                            COUNT(*) as total_rentals,
+                            IFNULL(SUM(price), 0) as total_rental_income
+                        FROM rental_property";
+$rental_summary_result = $conn->query($rental_summary_query);
+$rental_summary = $rental_summary_result->fetch_assoc();
+$total_rental_income = $rental_summary['total_rental_income'];
+
+// Sales properties count and total income
+$sales_summary_query = "SELECT
+                            COUNT(*) as total_sales,
+                            IFNULL(SUM(price), 0) as total_sales_income
+                        FROM sales_property";
+$sales_summary_result = $conn->query($sales_summary_query);
+$sales_summary = $sales_summary_result->fetch_assoc();
+$total_sales_income = $sales_summary['total_sales_income'];
+
+// Subscription income
+$subscription_summary_query = "SELECT
+                                COUNT(*) as total_subscriptions,
+                                IFNULL(SUM(amount), 0) as total_subscription_income
+                            FROM owner_subscriptions
+                            WHERE payment_status = 'completed'";
+$subscription_summary_result = $conn->query($subscription_summary_query);
+$subscription_summary = $subscription_summary_result->fetch_assoc();
+$total_subscription_income = $subscription_summary['total_subscription_income'];
+
+// Format currency values
+function format_currency($amount) {
+    return 'UGX ' . number_format($amount, 0, '.', ',');
+}
+
 // Fetch rentals data
 try {
     // Get total count of rentals
@@ -247,7 +281,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
+                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpeg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -277,7 +311,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
         <!-- Profile section in sidebar for mobile -->
         <div class="sidebar-profile d-none d-lg-none">
             <a href="#" onclick="showProfile(); return false;">
-                <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="profile-picture">
+                <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpeg'; ?>" alt="Profile" class="profile-picture">
             </a>
             <div class="profile-name">Admin User</div>
             <div class="profile-role">Administrator</div>
@@ -407,8 +441,9 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                         <h1 class="page-title">Dashboard Overview</h1>
                     </div>
                 </div>
-                <div class="row" style="justify-content: space-between;">
-                    <div class="col-md-6 col-xl-4">
+                <!-- First Row of Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
                         <div class="summary-card">
                             <div class="summary-content">
                                 <div class="summary-icon bg-primary">
@@ -429,7 +464,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xl-4">
+                    <div class="col-md-4">
                         <div class="summary-card">
                             <div class="summary-content">
                                 <div class="summary-icon bg-success">
@@ -450,18 +485,106 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon" style="background-color: #673ab7;">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Owner Subscriptions</h3>
+                                    <p class="summary-number"><?php echo $subscription_summary['total_subscriptions']; ?></p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-money-bill-wave"></i> <?php echo format_currency($total_subscription_income); ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details" onclick="showOwnerSubscriptions()">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row of Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon" style="background-color: #ff9800;">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Rental Properties</h3>
+                                    <p class="summary-number"><?php echo $rental_summary['total_rentals']; ?></p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-money-bill-wave"></i> <?php echo format_currency($total_rental_income); ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details" onclick="showRentalListing()">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon" style="background-color: #e91e63;">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Sales Properties</h3>
+                                    <p class="summary-number"><?php echo $sales_summary['total_sales']; ?></p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-money-bill-wave"></i> <?php echo format_currency($total_sales_income); ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details" onclick="showSalesListing()">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon" style="background-color: #009688;">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Total Income</h3>
+                                    <p class="summary-number"><?php echo format_currency($total_rental_income + $total_sales_income + $total_subscription_income); ?></p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> Combined Revenue
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details generate-report-btn">
+                                    Generate Report <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Property Statistics -->
                 <div class="row">
                     <div class="col-xl-8">
                         <div class="dashboard-card">
                             <div class="dashboard-card-header">
-                                <h3>Property Statistics</h3>
+                                <h3>Income Statistics</h3>
                                 <div class="card-actions">
-                                    <select class="form-select form-select-sm">
-                                        <option>Last 7 days</option>
-                                        <option>Last 30 days</option>
-                                        <option>Last 90 days</option>
+                                    <select class="form-select form-select-sm" id="income-period-selector">
+                                        <option value="current">Current Period</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
                                     </select>
                                 </div>
                             </div>
@@ -3358,6 +3481,117 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                     return data.text;
                 }
             });
+
+            // Update charts with real data
+            // Income Statistics Chart
+            if (typeof propertyChart !== 'undefined') {
+                // Convert to bar chart for income data
+                propertyChart.config.type = 'bar';
+
+                // Set up datasets for different income sources
+                propertyChart.data.datasets = [
+                    {
+                        label: 'Rental Income',
+                        data: [<?php echo $total_rental_income; ?>],
+                        backgroundColor: '#ff9800',
+                        borderColor: '#e68a00',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Sales Income',
+                        data: [<?php echo $total_sales_income; ?>],
+                        backgroundColor: '#e91e63',
+                        borderColor: '#c2185b',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Subscription Income',
+                        data: [<?php echo $total_subscription_income; ?>],
+                        backgroundColor: '#673ab7',
+                        borderColor: '#512da8',
+                        borderWidth: 1
+                    }
+                ];
+
+                propertyChart.data.labels = ['Income Sources'];
+
+                // Update chart options
+                propertyChart.options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'UGX ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += 'UGX ' + context.raw.toLocaleString();
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                };
+
+                propertyChart.update();
+
+                // Add event listener for period selector
+                $('#income-period-selector').on('change', function() {
+                    // In a real application, this would fetch data for the selected period
+                    // For now, we'll just show a message
+                    alert('This would fetch data for the ' + $(this).val() + ' period in a real application.');
+                });
+            }
+
+            // Property Distribution Chart
+            if (typeof distributionChart !== 'undefined') {
+                distributionChart.data.datasets[0].data = [
+                    <?php echo $sales_summary['total_sales']; ?>,
+                    <?php echo $rental_summary['total_rentals']; ?>,
+                    <?php echo $subscription_summary['total_subscriptions']; ?>
+                ];
+                distributionChart.data.labels = ['Sales Properties', 'Rental Properties', 'Subscriptions'];
+                distributionChart.data.datasets[0].backgroundColor = ['#e91e63', '#ff9800', '#673ab7'];
+
+                // Update chart options
+                distributionChart.options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                };
+
+                distributionChart.update();
+            }
         });
     </script>
 

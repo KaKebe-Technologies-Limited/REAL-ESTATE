@@ -8,28 +8,89 @@ require_once 'config.php';
  * @return string|null The authentication token or null on failure
  */
 function getPesapalToken() {
+    // Ensure credentials don't have any whitespace or special characters
+    $consumer_key = trim(PESAPAL_CONSUMER_KEY);
+    $consumer_secret = trim(PESAPAL_CONSUMER_SECRET);
+
     $data = [
-        'consumer_key' => PESAPAL_CONSUMER_KEY,
-        'consumer_secret' => PESAPAL_CONSUMER_SECRET
+        'consumer_key' => $consumer_key,
+        'consumer_secret' => $consumer_secret
     ];
+
+    error_log("Pesapal Auth URL: " . PESAPAL_AUTH_URL);
+    error_log("Pesapal Auth Data: " . json_encode($data));
+
+    // Check if cURL is available
+    if (!function_exists('curl_init')) {
+        error_log("cURL is not available on this server");
+        return null;
+    }
+
+    // Check if credentials are set
+    if (empty($consumer_key) || empty($consumer_secret)) {
+        error_log("Pesapal credentials are empty or not set correctly");
+        return null;
+    }
+
+    // Validate URL format
+    if (!filter_var(PESAPAL_AUTH_URL, FILTER_VALIDATE_URL)) {
+        error_log("Pesapal Auth URL is not a valid URL format: " . PESAPAL_AUTH_URL);
+        return null;
+    }
+
+    // Prepare JSON data
+    $jsonData = json_encode($data);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log("JSON encoding error: " . json_last_error_msg());
+        return null;
+    }
 
     $ch = curl_init(PESAPAL_AUTH_URL);
     curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
+        'Content-Length: ' . strlen($jsonData),
         'Accept: application/json'
     ]);
+    // Add timeout to prevent hanging
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    // SSL options - try with and without verification
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    // Enable verbose output for debugging
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    $verbose = fopen('php://temp', 'w+');
+    curl_setopt($ch, CURLOPT_STDERR, $verbose);
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    // Log curl errors if any
+    if (curl_errno($ch)) {
+        error_log("Pesapal Auth cURL Error: " . curl_error($ch));
+    }
+
+    // Get verbose information
+    rewind($verbose);
+    $verboseLog = stream_get_contents($verbose);
+    error_log("Pesapal Auth Verbose Log: " . $verboseLog);
+
     curl_close($ch);
+
+    error_log("Pesapal Auth HTTP Code: " . $httpCode);
+    error_log("Pesapal Auth Response: " . $response);
 
     if ($httpCode == 200) {
         $result = json_decode($response, true);
+        error_log("Pesapal Auth Decoded Response: " . print_r($result, true));
         if (isset($result['token'])) {
+            error_log("Pesapal Auth Token Retrieved Successfully");
             return $result['token'];
+        } else {
+            error_log("Pesapal Auth Token Not Found in Response");
         }
     }
 
@@ -253,65 +314,103 @@ function completeOwnerRegistration($userData) {
         }
     }
 
-    // Check if username or email already exists
-    $checkStmt = $conn->prepare("SELECT * FROM property_owner WHERE username = ? OR email = ?");
-    $checkStmt->bind_param("ss", $userData['username'], $userData['email']);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
+    // Validate that we have all required user data
+    $requiredFields = ['first_name', 'last_name', 'email', 'phone', 'username', 'password', 'id_type', 'id_num', 'address'];
+    foreach ($requiredFields as $field) {
+        if (!isset($userData[$field]) || empty($userData[$field])) {
+            error_log("Missing required user data field: $field");
+            return false;
+        }
+    }
 
-    if ($result->num_rows > 0) {
-        error_log("Username or email already exists");
+    // Check if username or email already exists
+    try {
+        $checkStmt = $conn->prepare("SELECT * FROM property_owner WHERE username = ? OR email = ?");
+        if (!$checkStmt) {
+            error_log("Prepare failed for duplicate check: " . $conn->error);
+            return false;
+        }
+
+        $checkStmt->bind_param("ss", $userData['username'], $userData['email']);
+        $checkResult = $checkStmt->execute();
+
+        if (!$checkResult) {
+            error_log("Execute failed for duplicate check: " . $checkStmt->error);
+            return false;
+        }
+
+        $result = $checkStmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $existingUser = $result->fetch_assoc();
+            error_log("Username or email already exists: " . print_r($existingUser, true));
+            return false;
+        }
+    } catch (Exception $e) {
+        error_log("Exception during duplicate check: " . $e->getMessage());
         return false;
     }
 
     // Hash the password
     $hashedPassword = password_hash($userData['password'], PASSWORD_DEFAULT);
 
-    // Insert the new property owner
-    $query = "INSERT INTO property_owner (
-        username,
-        first_name,
-        last_name,
-        email,
-        password,
-        phone,
-        id_type,
-        id_num,
-        address,
-        date_created,
-        payment_status
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'paid')";
+    try {
+        // Insert the new property owner
+        $query = "INSERT INTO property_owner (
+            username,
+            first_name,
+            last_name,
+            email,
+            password,
+            phone,
+            id_type,
+            id_num,
+            address,
+            date_created,
+            payment_status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'paid')";
 
-    error_log("Preparing SQL query: $query");
+        error_log("Preparing SQL query: $query");
 
-    $stmt = $conn->prepare($query);
-    if (!$stmt) {
-        error_log("Prepare failed: " . $conn->error);
-        return false;
-    }
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed for insert: " . $conn->error);
+            return false;
+        }
 
-    $stmt->bind_param(
-        "sssssssss",
-        $userData['username'],
-        $userData['first_name'],
-        $userData['last_name'],
-        $userData['email'],
-        $hashedPassword,
-        $userData['phone'],
-        $userData['id_type'],
-        $userData['id_num'],
-        $userData['address']
-    );
+        error_log("Binding parameters for insert");
+        $bindResult = $stmt->bind_param(
+            "sssssssss",
+            $userData['username'],
+            $userData['first_name'],
+            $userData['last_name'],
+            $userData['email'],
+            $hashedPassword,
+            $userData['phone'],
+            $userData['id_type'],
+            $userData['id_num'],
+            $userData['address']
+        );
 
-    error_log("Executing SQL statement");
+        if (!$bindResult) {
+            error_log("Bind param failed: " . $stmt->error);
+            return false;
+        }
 
-    if ($stmt->execute()) {
+        error_log("Executing SQL statement");
+        $executeResult = $stmt->execute();
+
+        if (!$executeResult) {
+            error_log("Execute failed: " . $stmt->error);
+            return false;
+        }
+
         $ownerId = $conn->insert_id;
         error_log("Owner registered successfully with ID: $ownerId");
         return $ownerId;
+    } catch (Exception $e) {
+        error_log("Exception during owner insertion: " . $e->getMessage());
+        return false;
     }
-
-    error_log("Error registering owner: " . $stmt->error);
-    return false;
 }
 

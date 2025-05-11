@@ -2,7 +2,7 @@
 session_start();
 require_once 'pesapal_functions.php';
 require_once 'log_activity.php';
-header('Content-Type: application/json');
+header('Content-Type: application/json'); 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

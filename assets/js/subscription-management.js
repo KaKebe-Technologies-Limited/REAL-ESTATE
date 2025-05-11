@@ -14,9 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add function to window object to show subscriptions
     window.showOwnerSubscriptions = function() {
         // Hide all content sections
-        const forms = ['dashboard-content', 'settings-content', 'create-manager-form', 'create-owner-form', 'add-sale-form', 'add-rental-form', 'rental-listing', 'sales-listing', 'owners-listing', 'managers-listing', 'profile-content', 'owner-subscriptions'];
-        forms.forEach(form => {
-            document.getElementById(form).style.display = 'none';
+        document.querySelectorAll('.main-content > div').forEach(div => {
+            div.style.display = 'none';
         });
         
         // Show subscriptions section

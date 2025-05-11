@@ -79,6 +79,7 @@ $rentals = [];
 $sales = [];
 $managers = [];
 $owners = [];
+$subscriptions = [];
 
 // Fetch data based on report type
 if ($report_type == 'rentals' || $report_type == 'all') {
@@ -147,6 +148,26 @@ if ($report_type == 'owners' || $report_type == 'all') {
     $stmt->close();
 }
 
+if ($report_type == 'subscriptions' || $report_type == 'all') {
+    // Fetch subscription data
+    $query = "SELECT s.*,
+                CONCAT(o.first_name, ' ', o.last_name) as owner_name,
+                o.email as owner_email,
+                DATE_FORMAT(s.payment_date, '%Y-%m-%d') as formatted_payment_date,
+                DATE_FORMAT(s.subscription_start_date, '%Y-%m-%d') as formatted_start_date,
+                DATE_FORMAT(s.subscription_end_date, '%Y-%m-%d') as formatted_end_date
+              FROM owner_subscriptions s
+              LEFT JOIN property_owner o ON s.owner_id = o.owner_id
+              WHERE s.payment_status = 'completed'
+              ORDER BY s.payment_date DESC";
+
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $subscriptions = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
+
 // Close connection
 $conn->close();
 
@@ -163,6 +184,8 @@ if ($report_type == 'rentals') {
     $report_title = "Property Managers Report";
 } else if ($report_type == 'owners') {
     $report_title = "Property Owners Report";
+} else if ($report_type == 'subscriptions') {
+    $report_title = "Owner Subscriptions Report";
 }
 
 // Helper function to format currency
@@ -501,6 +524,57 @@ function formatCurrency($amount) {
             </table>
             <?php else: ?>
             <p>No owners found.</p>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($report_type == 'subscriptions' || $report_type == 'all'): ?>
+        <div class="report-section">
+            <div class="section-title">Owner Subscriptions</div>
+
+            <div class="summary-box">
+                <div class="summary-item">
+                    <span class="summary-label">Total Subscriptions:</span>
+                    <span><?php echo count($subscriptions); ?></span>
+                </div>
+                <?php
+                $total_subscription_income = array_sum(array_column($subscriptions, 'amount'));
+                ?>
+                <div class="summary-item">
+                    <span class="summary-label">Total Subscription Income:</span>
+                    <span>UGX <?php echo formatCurrency($total_subscription_income); ?></span>
+                </div>
+            </div>
+
+            <?php if (count($subscriptions) > 0): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Owner Name</th>
+                        <th>Email</th>
+                        <th>Payment Date</th>
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        <th>Transaction ID</th>
+                        <th>Subscription Period</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($subscriptions as $subscription): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($subscription['owner_name']); ?></td>
+                        <td><?php echo htmlspecialchars($subscription['owner_email']); ?></td>
+                        <td><?php echo htmlspecialchars($subscription['formatted_payment_date']); ?></td>
+                        <td>UGX <?php echo formatCurrency($subscription['amount']); ?></td>
+                        <td><?php echo htmlspecialchars($subscription['payment_method']); ?></td>
+                        <td><?php echo htmlspecialchars($subscription['transaction_id']); ?></td>
+                        <td><?php echo htmlspecialchars($subscription['formatted_start_date']); ?> to <?php echo htmlspecialchars($subscription['formatted_end_date']); ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php else: ?>
+            <p>No subscription payments found.</p>
             <?php endif; ?>
         </div>
         <?php endif; ?>

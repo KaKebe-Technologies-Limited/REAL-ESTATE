@@ -252,7 +252,7 @@ $stmt->close();
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
+                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpeg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -1594,7 +1594,7 @@ $stmt->close();
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body"> 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="card-title">User Profile</h4>
                                     <button class="btn btn-primary" id="edit-profile-btn">Edit Profile</button>
@@ -1605,7 +1605,7 @@ $stmt->close();
                                         <div class="col-md-4 text-center">
                                             <div class="profile-picture-wrapper">
                                                 <?php
-                                                $profile_pic = !empty($manager_data['profile_picture']) ? $manager_data['profile_picture'] : 'assets/images/profile.jpg';
+                                                $profile_pic = !empty($manager_data['profile_picture']) ? $manager_data['profile_picture'] : 'uploads/profile_picture/default-profile.jpeg';
                                                 ?>
                                                 <img id="profile-picture-preview" src="<?php echo $profile_pic; ?>" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
                                                 <input type="file" id="profile-picture-input" name="profile_picture" class="form-control" accept="image/*" style="display: none;">

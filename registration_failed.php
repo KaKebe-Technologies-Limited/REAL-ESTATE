@@ -95,6 +95,17 @@ session_start();
                     <li>A temporary issue with our system</li>
                 </ul>
                 <p>Please try again with different information or contact our support team for assistance.</p>
+
+                <?php
+                // Display error details if available
+                if (isset($_SESSION['registration_error'])) {
+                    echo '<div class="alert alert-danger mt-3">';
+                    echo '<strong>Error Details:</strong> ' . htmlspecialchars($_SESSION['registration_error']);
+                    echo '</div>';
+                    // Clear the error after displaying
+                    unset($_SESSION['registration_error']);
+                }
+                ?>
                 <div class="buttons">
                     <a href="register.html" class="btn btn-primary">Try Again</a>
                     <a href="index.html" class="btn btn-secondary">Return to Home</a>
@@ -102,7 +113,7 @@ session_start();
             </div>
         </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

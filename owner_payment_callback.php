@@ -84,11 +84,11 @@ try {
     }
 
     // Validate that we have all required user data
-    $requiredFields = ['first_name', 'last_name', 'email', 'phone', 'username', 'password'];
+    $requiredFields = ['first_name', 'last_name', 'email', 'phone', 'username', 'password', 'id_type', 'id_num', 'address'];
     foreach ($requiredFields as $field) {
         if (!isset($userData[$field]) || empty($userData[$field])) {
             error_log("Missing required user data field: $field");
-            header('Location: register.html?error=incomplete_data');
+            header('Location: register.html?error=incomplete_data&missing_field=' . $field);
             exit;
         }
     }
@@ -143,6 +143,8 @@ try {
                 exit;
             } else {
                 error_log("Owner registration failed");
+                // Store error details in session for display
+                $_SESSION['registration_error'] = "Registration failed after payment. Please try with a different username or email.";
                 header('Location: registration_failed.php');
                 exit;
             }
