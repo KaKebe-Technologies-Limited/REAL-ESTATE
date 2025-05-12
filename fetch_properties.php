@@ -8,6 +8,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once 'config.php';
 
+// Note: This script has been modified to only display properties from owners with active subscription status
+
 $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 if ($conn->connect_error) {
@@ -31,11 +33,11 @@ function getProperties($conn, $type = null, $searchParams = []) {
     $params = [];
     $types = '';
     $hasSearchParams = false;
-    
+
     // Process search parameters
     if (!empty($searchParams)) {
         $orConditions = [];
-        
+
         // City filter
         if (!empty($searchParams['city']) && $searchParams['city'] !== 'all') {
             $orConditions[] = 'country = ?';
@@ -43,7 +45,7 @@ function getProperties($conn, $type = null, $searchParams = []) {
             $types .= 's';
             $hasSearchParams = true;
         }
-        
+
         // Area filter
         if (!empty($searchParams['area']) && $searchParams['area'] !== 'all') {
             $orConditions[] = 'parish = ?';
@@ -51,7 +53,7 @@ function getProperties($conn, $type = null, $searchParams = []) {
             $types .= 's';
             $hasSearchParams = true;
         }
-        
+
         // Property Size filter
         if (!empty($searchParams['property_size'])) {
             $orConditions[] = 'property_size >= ?';
@@ -59,7 +61,7 @@ function getProperties($conn, $type = null, $searchParams = []) {
             $types .= 'i';
             $hasSearchParams = true;
         }
-        
+
         // Utilities filter
         if (!empty($searchParams['utilities'])) {
             $orConditions[] = 'utilities LIKE ?';
@@ -67,7 +69,7 @@ function getProperties($conn, $type = null, $searchParams = []) {
             $types .= 's';
             $hasSearchParams = true;
         }
-        
+
         // If we have search conditions, add them to the WHERE clause
         if ($hasSearchParams) {
             $whereConditions[] = '(' . implode(' OR ', $orConditions) . ')';
@@ -100,15 +102,16 @@ function getProperties($conn, $type = null, $searchParams = []) {
             'rental' as property_type
             FROM rental_property r
             LEFT JOIN property_owner o ON r.owner_id = o.owner_id
-            LEFT JOIN property_manager m ON r.manager_id = m.manager_id";
-        
-        // Add WHERE clause if we have conditions
+            LEFT JOIN property_manager m ON r.manager_id = m.manager_id
+            WHERE (o.subscription_status = 'active' OR o.owner_id IS NULL)";
+
+        // Add search conditions if we have them
         if (!empty($whereConditions)) {
-            $rentalSql .= " WHERE " . implode(' AND ', $whereConditions);
+            $rentalSql .= " AND " . implode(' AND ', $whereConditions);
         }
-        
+
         $rentalSql .= " ORDER BY r.property_id DESC";
-        
+
         if (!empty($params)) {
             $stmt = $conn->prepare($rentalSql);
             $stmt->bind_param($types, ...$params);
@@ -117,13 +120,13 @@ function getProperties($conn, $type = null, $searchParams = []) {
         } else {
             $result = $conn->query($rentalSql);
         }
-        
+
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $row['formatted_price'] = formatPropertyPrice($row['price']);
                 $row['utilities'] = $row['utilities'] ? explode(',', $row['utilities']) : [];
                 $row['amenities'] = $row['amenities'] ? explode(',', $row['amenities']) : [];
-                
+
                 // Process images
                 if (!empty($row['images'])) {
                     $imageArray = explode(',', $row['images']);
@@ -133,10 +136,10 @@ function getProperties($conn, $type = null, $searchParams = []) {
                     $row['image'] = 'uploads/contact.jpeg';
                     $row['all_images'] = [];
                 }
-                
+
                 $properties[] = $row;
             }
-            
+
             if (!empty($stmt)) {
                 $stmt->close();
             }
@@ -171,15 +174,16 @@ function getProperties($conn, $type = null, $searchParams = []) {
             'sale' as property_type
             FROM sales_property s
             LEFT JOIN property_owner o ON s.owner_id = o.owner_id
-            LEFT JOIN property_manager m ON s.manager_id = m.manager_id";
-        
-        // Add WHERE clause if we have conditions
+            LEFT JOIN property_manager m ON s.manager_id = m.manager_id
+            WHERE (o.subscription_status = 'active' OR o.owner_id IS NULL)";
+
+        // Add search conditions if we have them
         if (!empty($whereConditions)) {
-            $saleSql .= " WHERE " . implode(' AND ', $whereConditions);
+            $saleSql .= " AND " . implode(' AND ', $whereConditions);
         }
-        
+
         $saleSql .= " ORDER BY s.property_id DESC";
-        
+
         if (!empty($params)) {
             $stmt = $conn->prepare($saleSql);
             $stmt->bind_param($types, ...$params);
@@ -188,13 +192,13 @@ function getProperties($conn, $type = null, $searchParams = []) {
         } else {
             $result = $conn->query($saleSql);
         }
-        
+
         if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $row['formatted_price'] = formatPropertyPrice($row['price']);
                 $row['utilities'] = $row['utilities'] ? explode(',', $row['utilities']) : [];
                 $row['amenities'] = $row['amenities'] ? explode(',', $row['amenities']) : [];
-                
+
                 // Process images
                 if (!empty($row['images'])) {
                     $imageArray = explode(',', $row['images']);
@@ -204,10 +208,10 @@ function getProperties($conn, $type = null, $searchParams = []) {
                     $row['image'] = 'uploads/contact.jpeg';
                     $row['all_images'] = [];
                 }
-                
+
                 $properties[] = $row;
             }
-            
+
             if (!empty($stmt)) {
                 $stmt->close();
             }
