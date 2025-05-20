@@ -252,7 +252,7 @@ $stmt->close();
                     </li>
                     <li class="nav-item dropdown d-none d-lg-block">
                         <a class="nav-link profile-link" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="<?php echo $_SESSION['profile_picture'] ?? 'uploads/profile_picture/default-profile.jpeg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
+                            <img src="<?php echo $profile_pic ?? 'uploads/profile_picture/default-profile.jpeg'; ?>" alt="Profile" class="rounded-circle profile-picture" onclick="showProfile(); return false;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"  onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -412,22 +412,89 @@ $stmt->close();
                         </div>
                     </div>
                 </div>
+                <!-- Income Statistics Card -->
+                <div class="row mb-4">
+                    <div class="col-xl-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon bg-success">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Total Income</h3>
+                                    <p class="summary-number" id="total-income">Loading...</p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> <span id="income-trend">--</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details" onclick="showIncomeDetails()">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon bg-primary">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Rental Income</h3>
+                                    <p class="summary-number" id="rental-income">Loading...</p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> <span id="rental-trend">--</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details" onclick="showRentalListing()">
+                                    View Rentals <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="summary-card">
+                            <div class="summary-content">
+                                <div class="summary-icon bg-danger">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <h3 class="summary-title">Sales Income</h3>
+                                    <p class="summary-number" id="sales-income">Loading...</p>
+                                    <p class="summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> <span id="sales-trend">--</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="summary-footer">
+                                <a href="#" class="view-details" onclick="showSalesListing()">
+                                    View Sales <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Property Statistics -->
                 <div class="row">
                     <div class="col-xl-8">
                         <div class="dashboard-card">
                             <div class="dashboard-card-header">
-                                <h3>Property Statistics</h3>
+                                <h3>Income Statistics</h3>
                                 <div class="card-actions">
-                                    <select class="form-select form-select-sm">
-                                        <option>Last 7 days</option>
-                                        <option>Last 30 days</option>
-                                        <option>Last 90 days</option>
+                                    <select class="form-select form-select-sm" id="income-period-selector">
+                                        <option value="6months">Last 6 months</option>
+                                        <option value="3months">Last 3 months</option>
+                                        <option value="1month">Last month</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="dashboard-card-body">
-                                <canvas id="propertyChart" height="300"></canvas>
+                                <canvas id="incomeChart" height="300"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1584,7 +1651,7 @@ $stmt->close();
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -1594,7 +1661,7 @@ $stmt->close();
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body"> 
+                            <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="card-title">User Profile</h4>
                                     <button class="btn btn-primary" id="edit-profile-btn">Edit Profile</button>

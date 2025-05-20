@@ -40,35 +40,121 @@ function toggleSubmenu(el) {
 }
 
 // Initialize Charts
-const propertyChart = new Chart(document.getElementById('propertyChart'), {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
-            label: 'Properties Listed',
-            data: [65, 59, 80, 81, 56, 55],
-            borderColor: '#007bff',
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
+let incomeChart;
+let distributionChart;
 
-const distributionChart = new Chart(document.getElementById('distributionChart'), {
-    type: 'doughnut',
-    data: {
-        labels: ['For Sale', 'For Rent', 'Sold', 'Rented'],
-        datasets: [{
-            data: [45, 25, 20, 10],
-            backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107']
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Income Chart
+    const incomeChartCtx = document.getElementById('incomeChart');
+    if (incomeChartCtx) {
+        incomeChart = new Chart(incomeChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Loading...'],
+                datasets: [
+                    {
+                        label: 'Rental Income',
+                        backgroundColor: '#007bff',
+                        borderColor: '#0056b3',
+                        borderWidth: 1,
+                        data: [0]
+                    },
+                    {
+                        label: 'Sales Income',
+                        backgroundColor: '#dc3545',
+                        borderColor: '#a71d2a',
+                        borderWidth: 1,
+                        data: [0]
+                    },
+                    {
+                        label: 'Subscription Income',
+                        backgroundColor: '#28a745',
+                        borderColor: '#1e7e34',
+                        borderWidth: 1,
+                        data: [0]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'UGX ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += 'UGX ' + context.parsed.y.toLocaleString();
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize Distribution Chart
+    const distributionChartCtx = document.getElementById('distributionChart');
+    if (distributionChartCtx) {
+        distributionChart = new Chart(distributionChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Rental Income', 'Sales Income', 'Subscription Income'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: ['#007bff', '#dc3545', '#28a745']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += 'UGX ' + context.parsed.toLocaleString();
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Fetch income data
+    fetchAdminIncomeData();
+
+    // Add event listener for period selector
+    const incomePeriodSelector = document.getElementById('income-period-selector');
+    if (incomePeriodSelector) {
+        incomePeriodSelector.addEventListener('change', function() {
+            fetchAdminIncomeData(this.value);
+        });
     }
 });
 
@@ -401,3 +487,111 @@ document.querySelectorAll('.language-option').forEach(option => {
         document.getElementById('selected-language-flag').src = selectedFlag;
     });
 });
+
+// Function to fetch income data for admin dashboard
+function fetchAdminIncomeData(period = '6months') {
+    fetch(`get_admin_income.php?period=${period}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Update income charts
+                updateIncomeChart(data, incomeChart);
+
+                // Update distribution chart
+                updateDistributionChart(data, distributionChart);
+
+                // Update top owners table
+                updateTopOwnersTable(data.income_by_owner);
+
+                // Update top managers table
+                updateTopManagersTable(data.income_by_manager);
+            } else {
+                console.error('Error fetching income data:', data.message);
+                alert('Failed to load income data. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to load income data. Please try again.');
+        });
+}
+
+// Function to update income chart
+function updateIncomeChart(data, chart) {
+    if (chart && data.monthly_data) {
+        chart.data.labels = data.monthly_data.months;
+        chart.data.datasets[0].data = data.monthly_data.rental;
+        chart.data.datasets[1].data = data.monthly_data.sales;
+        chart.data.datasets[2].data = data.monthly_data.subscription;
+        chart.update();
+    }
+}
+
+// Function to update distribution chart
+function updateDistributionChart(data, chart) {
+    if (chart) {
+        chart.data.datasets[0].data = [
+            data.rental_income,
+            data.sales_income,
+            data.subscription_income
+        ];
+        chart.update();
+    }
+}
+
+// Function to update top owners table
+function updateTopOwnersTable(owners) {
+    const tableBody = document.getElementById('top-owners-table').querySelector('tbody');
+    if (!tableBody) return;
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    if (owners && owners.length > 0) {
+        owners.forEach(owner => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${owner.owner_name}</td>
+                <td>UGX ${owner.rental_income.toLocaleString()}</td>
+                <td>UGX ${owner.sales_income.toLocaleString()}</td>
+                <td>UGX ${owner.total_income.toLocaleString()}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } else {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td colspan="4" class="text-center">No data available</td>';
+        tableBody.appendChild(row);
+    }
+}
+
+// Function to update top managers table
+function updateTopManagersTable(managers) {
+    const tableBody = document.getElementById('top-managers-table').querySelector('tbody');
+    if (!tableBody) return;
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    if (managers && managers.length > 0) {
+        managers.forEach(manager => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${manager.manager_name}</td>
+                <td>UGX ${manager.rental_income.toLocaleString()}</td>
+                <td>UGX ${manager.sales_income.toLocaleString()}</td>
+                <td>UGX ${manager.total_income.toLocaleString()}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } else {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td colspan="4" class="text-center">No data available</td>';
+        tableBody.appendChild(row);
+    }
+}

@@ -286,5 +286,175 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
+        // Income Chart
+        const incomeChartCtx = document.getElementById('incomeChart');
+        let incomeChart;
+        if (incomeChartCtx) {
+            incomeChart = new Chart(incomeChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Loading...'],
+                    datasets: [
+                        {
+                            label: 'Rental Income',
+                            backgroundColor: '#007bff',
+                            borderColor: '#0056b3',
+                            borderWidth: 1,
+                            data: [0]
+                        },
+                        {
+                            label: 'Sales Income',
+                            backgroundColor: '#dc3545',
+                            borderColor: '#a71d2a',
+                            borderWidth: 1,
+                            data: [0]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'UGX ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += 'UGX ' + context.parsed.y.toLocaleString();
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Property Distribution Chart
+        const distributionChartCtx = document.getElementById('distributionChart');
+        let distributionChart;
+        if (distributionChartCtx) {
+            distributionChart = new Chart(distributionChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Rental Properties', 'Sales Properties'],
+                    datasets: [{
+                        data: [0, 0],
+                        backgroundColor: ['#007bff', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fetch income data
+        fetchIncomeData();
+
+        // Add event listener for period selector
+        const incomePeriodSelector = document.getElementById('income-period-selector');
+        if (incomePeriodSelector) {
+            incomePeriodSelector.addEventListener('change', function() {
+                fetchIncomeData(this.value);
+            });
+        }
+
+        // Function to fetch income data
+        function fetchIncomeData(period = '6months') {
+            fetch(`get_manager_income.php?period=${period}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Update income summary cards
+                        updateIncomeSummary(data);
+
+                        // Update income chart
+                        updateIncomeChart(data, incomeChart);
+
+                        // Update distribution chart
+                        updateDistributionChart(data, distributionChart);
+                    } else {
+                        console.error('Error fetching income data:', data.message);
+                        showCustomAlert('error', 'Error', 'Failed to load income data. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showCustomAlert('error', 'Error', 'Failed to load income data. Please try again.');
+                });
+        }
+
+        // Function to update income summary
+        function updateIncomeSummary(data) {
+            // Format currency
+            const formatCurrency = (amount) => {
+                return 'UGX ' + amount.toLocaleString();
+            };
+
+            // Update summary cards
+            document.getElementById('total-income').textContent = formatCurrency(data.total_income);
+            document.getElementById('rental-income').textContent = formatCurrency(data.rental_income);
+            document.getElementById('sales-income').textContent = formatCurrency(data.sales_income);
+
+            // Update trends (using placeholder values for now)
+            document.getElementById('income-trend').textContent = '15% from last month';
+            document.getElementById('rental-trend').textContent = '12% from last month';
+            document.getElementById('sales-trend').textContent = '18% from last month';
+        }
+
+        // Function to update income chart
+        function updateIncomeChart(data, chart) {
+            if (chart && data.monthly_data) {
+                chart.data.labels = data.monthly_data.months;
+                chart.data.datasets[0].data = data.monthly_data.rental;
+                chart.data.datasets[1].data = data.monthly_data.sales;
+                chart.update();
+            }
+        }
+
+        // Function to update distribution chart
+        function updateDistributionChart(data, chart) {
+            if (chart && data.property_distribution) {
+                chart.data.datasets[0].data = [
+                    data.property_distribution.rental,
+                    data.property_distribution.sales
+                ];
+                chart.update();
+            }
+        }
     }
+
+    // Function to show income details
+    window.showIncomeDetails = function() {
+        // This function would show a detailed income breakdown
+        // For now, just show an alert
+        showCustomAlert('info', 'Income Details', 'Detailed income breakdown will be available in a future update.');
+    };
 });

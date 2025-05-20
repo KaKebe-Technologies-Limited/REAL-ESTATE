@@ -152,7 +152,7 @@ function renewSubscription($owner_id, $months = 4, $transaction_id = null, $paym
         
         // Record subscription payment
         if ($transaction_id) {
-            $amount = 50000; // Default amount in UGX
+            $amount = 30000; // Default amount in UGX
             $currency = 'UGX';
             
             $payment_query = "INSERT INTO owner_subscriptions (

@@ -574,7 +574,7 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                         </div>
                     </div>
                 </div>
-                <!-- Property Statistics -->
+                <!-- Income Statistics -->
                 <div class="row">
                     <div class="col-xl-8">
                         <div class="dashboard-card">
@@ -582,24 +582,80 @@ $total_pages = max($total_pages_rentals, $total_pages_sales, $total_pages_owners
                                 <h3>Income Statistics</h3>
                                 <div class="card-actions">
                                     <select class="form-select form-select-sm" id="income-period-selector">
-                                        <option value="current">Current Period</option>
-                                        <option value="monthly">Monthly</option>
-                                        <option value="yearly">Yearly</option>
+                                        <option value="6months">Last 6 months</option>
+                                        <option value="3months">Last 3 months</option>
+                                        <option value="1month">Last month</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="dashboard-card-body">
-                                <canvas id="propertyChart" height="300"></canvas>
+                                <canvas id="incomeChart" height="300"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4">
                         <div class="dashboard-card">
                             <div class="dashboard-card-header">
-                                <h3>Property Distribution</h3>
+                                <h3>Income Distribution</h3>
                             </div>
                             <div class="dashboard-card-body">
                                 <canvas id="distributionChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Performers -->
+                <div class="row mt-4">
+                    <div class="col-xl-6">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Top Owners by Income</h3>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="top-owners-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Owner</th>
+                                                <th>Rental Income</th>
+                                                <th>Sales Income</th>
+                                                <th>Total Income</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="4" class="text-center">Loading data...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <h3>Top Managers by Income</h3>
+                            </div>
+                            <div class="dashboard-card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="top-managers-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Manager</th>
+                                                <th>Rental Income</th>
+                                                <th>Sales Income</th>
+                                                <th>Total Income</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="4" class="text-center">Loading data...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

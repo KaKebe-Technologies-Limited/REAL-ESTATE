@@ -9,7 +9,7 @@ define('PESAPAL_CONSUMER_KEY', 'HZzvECTOC3KlHU+FJ9AyWB9uLslsKz00');
 define('PESAPAL_CONSUMER_SECRET', 'OAHwYOSP8gFJKJr83CaZdup8ss4=');
 
 // Registration fee amount in UGX
-define('REGISTRATION_FEE', 500); // 500 UGX
+define('REGISTRATION_FEE', 30000); // 30000 UGX
 
 // API URLs
 if (PESAPAL_IS_DEMO) {
